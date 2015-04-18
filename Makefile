@@ -1,20 +1,20 @@
 ################################
 CXX = mpicc
-DEBUG = -g
+################################
+CXXFLAGS = -std=c99 -Wall -ferror-limit=1 -O
+################################
+I = -ICSparse/Include
+CS = CSparse/Lib/libcsparse.a
 ################################
 
-CXXFLAGS = -std=c99 -Wall -ferror-limit=1 $(DEBUG)
-################################
+all: lib crank
 
-################################
-
-################################
-
-all: crank
+lib:
+	( cd CSparse/Lib ; $(MAKE) )
 
 crank_dep = crank.o
-crank: $(crank_dep)
-	$(CXX) $(CXXFLAGS) $(crank_dep) -o $@
+crank: lib $(crank_dep)
+	$(CXX) $(CXXFLAGS) $(I) $(crank_dep) $(CS) -o $@
 
 crank.o: crank.c
 	$(CXX) $(CXXFLAGS) -c -o $@ crank.c
