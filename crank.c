@@ -7,7 +7,7 @@
 
 
 // numerical parameters
-#define N 512
+#define N 64
 #define hx 1.0/(N-1)
 #define hx2 hx2*hx2
 #define MAXITER 1
@@ -24,8 +24,8 @@ int main(int argc, char *argv[])
 	rc = MPI_Init(&argc, &argv);
 	rc = MPI_Comm_size(MPI_COMM_WORLD, &Psq);
 	rc = MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-	if (N < Psq) {
-		fprintf(stdout, "Too few discretization points...\n");
+	if (N % Psq != 0) {
+		fprintf(stdout, "Psq must divide N...\n");
 		exit(1);
 	}
 
@@ -44,16 +44,24 @@ int main(int argc, char *argv[])
 
 	//printf("process rank: %d, tn: %d, ts: %d, te: %d, tw: %d \n", rank, target_north, target_south, target_east, target_west);
 
-	int n = 3; //length of example boundary data
+	//the long solution vector
+	int n_local = N/Psq;
+	double u[n_local];
+	//example values (index)
+	for(int i = 0; i < n_local; i++){
+		u[i] = i;
+	}
+
+	int n = sqrt(n_local); //length of boundary data
 	//vectors receiving boudary data
 	double uin_north[n], uin_south[n], uin_east[n], uin_west[n];
 	//vectors sending boundary data
 	double uout_north[n], uout_south[n], uout_east[n], uout_west[n];
 	for(int i=0;i<n;i++) {
-		uout_north[i] = rank;
-		uout_south[i] = rank;
-		uout_east[i] = rank;
-		uout_west[i] = rank;
+		uout_north[i] = u[i+(n-1)*n];
+		uout_south[i] = u[i];
+		uout_east[i] = u[(i+1)*n-1];
+		uout_west[i] = u[i*n];
 	}
 
 
@@ -183,12 +191,20 @@ int main(int argc, char *argv[])
 			0,
 			MPI_COMM_WORLD,
 			MPI_STATUS_IGNORE);
+
+
+
 	}
 
-	printf("rank: %d, uin_north: %f, %f, %f  \n", rank, uin_north[0], uin_north[1], uin_north[2]);
-	printf("rank: %d, uin_south: %f, %f, %f  \n", rank, uin_south[0], uin_south[1], uin_south[2]);
-	printf("rank: %d, uin_east: %f, %f, %f  \n", rank, uin_east[0], uin_east[1], uin_east[2]);
-	printf("rank: %d, uin_west: %f, %f, %f  \n", rank, uin_west[0], uin_west[1], uin_west[2]);
+	// printf("rank: %d, uin_north: %f, %f, %f  \n", rank, uin_north[0], uin_north[1], uin_north[2]);
+	// printf("rank: %d, uin_south: %f, %f, %f  \n", rank, uin_south[0], uin_south[1], uin_south[2]);
+	// printf("rank: %d, uin_east: %f, %f, %f  \n", rank, uin_east[0], uin_east[1], uin_east[2]);
+	// printf("rank: %d, uin_west: %f, %f, %f  \n", rank, uin_west[0], uin_west[1], uin_west[2]);
+
+	// for(int i = 0; i < n; i++) printf("rank: %d, uout_north: %f  \n", rank, uout_north[i]);
+	// for(int i = 0; i < n; i++) printf("rank: %d, uout_south: %f  \n", rank, uout_south[i]);
+	// for(int i = 0; i < n; i++) printf("rank: %d, uout_east: %f  \n", rank, uout_east[i]);
+	// for(int i = 0; i < n; i++) printf("rank: %d, uout_west: %f  \n", rank, uout_west[i]);
 
 	MPI_Finalize();
 	return 0;
