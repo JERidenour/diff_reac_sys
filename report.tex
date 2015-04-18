@@ -1,0 +1,79 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage{cite}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{fancyheadings}
+\usepackage{geometry}
+\usepackage{multicol}
+\usepackage{amsmath}
+%\usepackage[]{mcode}
+\usepackage{pdfpages}
+\usepackage{caption} 
+\captionsetup[table]{skip=10pt}
+
+ \newcommand{\ba}[1]{\begin{align*}    #1    \end{align*}}
+ \newcommand{\ban}[1]{\begin{align}    #1    \end{align}}
+ \renewcommand{\vec}[1]{\mathbf{#1}}
+ \newcommand{\bothset}[3]{\overset{#2}{\underset{#3}{#1}}}
+
+ \definecolor{light-gray}{gray}{0.95}
+
+\setlength{\headsep}{1in}
+
+\pagestyle{fancy}
+
+\lhead{ridenour@kth.se \\ herczka@kth.se}
+\rhead{Parallel Programming for Large-Scale Problems SF2568}
+\title{ A Parallel Crank-Nicholson Solver for the Gray-Scott Reaction-Diffusion System\\ 
+\vspace{1.2cm}
+\large Parallel Programming for Large-Scale Problems SF2568 \\ 
+Teacher: Michael Hanke}
+\author{Jonathan Ridenour, 780514-7779\\
+Mateusz Herczka, 700624-9234}
+
+\begin{document}
+%\lstdefinestyle{customc}{
+% backgroundcolor=\color{light-gray},
+%  belowcaptionskip=1\baselineskip,
+%  breaklines=true,
+%  frame=L,
+%  xleftmargin=\parindent,
+%  language=C,
+%  showstringspaces=false,
+%  basicstyle=\footnotesize\ttfamily,
+%  keywordstyle=\bfseries\color{green!40!black},
+%  commentstyle=\itshape\color{purple!40!black},
+%  identifierstyle=\color{blue},
+%  stringstyle=\color{orange},
+%}
+%
+%\lstdefinestyle{output}{
+% backgroundcolor=\color{light-gray},
+% language=bash,
+% xleftmargin=\parindent,
+% keywordstyle=\color{blue},
+% basicstyle=\ttfamily,
+% morekeywords={peter@kbpet},
+% %alsoletter={:~$},
+% morekeywords=[2]{peter@kbpet:},
+%}
+\maketitle
+\pagebreak
+\section*{Problem description}
+The subject of this report is the numerical solution of a two-component reaction-diffusion system known as the Gray-Scott system \cite{Wang}. 
+\subsection*{mathematical formulation}
+\subsection*{numerical method}
+\section*{Psuedo-code algorithm description}
+\section*{Theoretical performance evaluation}
+\section*{Implementation details}
+\section*{Testing with different cases}
+\section*{Experimental speedup investigation with meaningful data}
+
+\begin{thebibliography}{}
+\bibitem{Wang} Weiming Wang, Yezhi Lin, Feng Yang, Lei Zhang, Yongji Tan {\it Numerical study of pattern formation in an extended Gray–Scott model}, Communications in Nonlinear Science and Numerical Simulation, 16 (2011).
+%\bibitem{Wilkinson} Barry Wilkinson, Michael Allen {\it Parallel Programming, Techniques and Applications Using Networked Workstations and Parallel Computers}, 2005, Pearson Prentice Hall, pp 9.
+\end{thebibliography}
+
+\end{document}

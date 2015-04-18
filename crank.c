@@ -15,9 +15,9 @@
 #define K 0.065
 #define Du 1.0
 #define Dv 0.5
-#define u0 1.0 ;
-#define v0 0.0 ;
-#define MAXITER 1
+#define u0 1.0
+#define v0 0.0
+#define MAXITER 100
 
 
 int main(int argc, char *argv[])
@@ -38,24 +38,23 @@ int main(int argc, char *argv[])
 
 	//determine position in process mesh:
 	P = sqrt(Psq);	//process mesh dimension
-	int north = rank > (P-1)*P-1;
+	int north = rank > (P - 1) * P - 1;
 	int south = rank < P;
 	int west = rank % P == 0;
-	int east = (rank+1) % P == 0;
+	int east = (rank + 1) % P == 0;
 
 	//calculate rank of neighbors
-	target_north = (1-north)*(rank + P) + north*(rank - (P-1)*P);
-	target_south = (1-south)*(rank - P) + south*(rank + (P-1)*P);
-	target_east = (1-east)*(rank + 1) + east*(rank - P + 1);
-	target_west = (1-west)*(rank - 1) + west*(rank + P - 1);
+	target_north = (1 - north) * (rank + P) + north * (rank - (P - 1) * P);
+	target_south = (1 - south) * (rank - P) + south * (rank + (P - 1) * P);
+	target_east = (1 - east) * (rank + 1) + east * (rank - P + 1);
+	target_west = (1 - west) * (rank - 1) + west * (rank + P - 1);
 
 	//dimension sizes
-	csi N_inner = Nglobal/Psq;
+	csi N_inner = Nglobal / Psq;
 	csi n_inner = sqrt(N_inner);
 	csi n = n_inner + 2;
-	csi N = n*n;
+	csi N = n * n;
 
-	//printf("process rank: %d, tn: %d, ts: %d, te: %d, tw: %d \n", rank, target_north, target_south, target_east, target_west);
 	double *u, *v, *unew, *vnew ;
 	// allocate and initialize u and v
 	u = (double*) malloc( N * sizeof(double)) ;
@@ -71,33 +70,23 @@ int main(int argc, char *argv[])
 	unew = (double*) malloc( N * sizeof(double)) ;
 	vnew = (double*) malloc( N * sizeof(double)) ;
 
-	//the long solution vector
-	
-
-	/*double u[N];
-	double v[N];*/
-	//example values (index)
-	/*for(int i = 0; i < N; i++){
-		u[i] = i;
-	}*/
-
 	//vectors receiving boudary data
-	double bin_north[2*n_inner], bin_south[2*n_inner], bin_east[2*n_inner], bin_west[2*n_inner];
+	double bin_north[2 * n_inner], bin_south[2 * n_inner], bin_east[2 * n_inner], bin_west[2 * n_inner];
 	//vectors sending boundary data
-	double bout_north[2*n_inner], bout_south[2*n_inner], bout_east[2*n_inner], bout_west[2*n_inner];
+	double bout_north[2 * n_inner], bout_south[2 * n_inner], bout_east[2 * n_inner], bout_west[2 * n_inner];
 
-	for(int i=0;i<n_inner;i++) {
-		bout_north[i] = u[i+(n_inner-1)*n_inner];
-		bout_north[i+n_inner] = v[i+(n_inner-1)*n_inner];
+	for (int i = 0; i < n_inner; i++) {
+		bout_north[i] = u[i + (n_inner - 1) * n_inner];
+		bout_north[i + n_inner] = v[i + (n_inner - 1) * n_inner];
 
 		bout_south[i] = u[i];
-		bout_south[i+n_inner] = v[i];
+		bout_south[i + n_inner] = v[i];
 
-		bout_east[i] = u[(i+1)*n_inner-1];
-		bout_east[i+n_inner] = v[(i+1)*n_inner-1];
+		bout_east[i] = u[(i + 1) * n_inner - 1];
+		bout_east[i + n_inner] = v[(i + 1) * n_inner - 1];
 
-		bout_west[i] = u[i*n_inner];
-		bout_west[i+n_inner] = v[i*n_inner];
+		bout_west[i] = u[i * n_inner];
+		bout_west[i + n_inner] = v[i * n_inner];
 	}
 
 	// CSparse data
@@ -109,8 +98,10 @@ int main(int argc, char *argv[])
 	//==========================
 
 	csi nz = N + 2 * (N - 1) + 2 * (N - n) ;	// main + 2*(sub) + 2*(subsub) diagonals
-	double hx = 1.0/(Nglobal-1);
-	/*double hx2 = hx2*hx2;*/
+	double hx = 1.0 / (Nglobal - 1);
+	double hx2 = hx*hx;
+	double ru = Du*ht/(2*hx2);
+	double rv = Dv*ht/(2*hx2);
 
 	// create ImT
 
@@ -138,185 +129,230 @@ int main(int argc, char *argv[])
 	IpTv = cs_compress(T) ;
 	cs_spfree (T) ;
 
-	
+
 
 	//==========================
 	// Begin iteration
 	//==========================
 
-	//==========================
-	// Integration step
-	//==========================
+	for (int i = 0; i < MAXITER; i++) {
 
-	// RHSu = sparse(IpTu*u + ht*(-u.*(v.^2) + F*(1-u)));
-	for (int i = 0; i < N; ++i) {
-		unew[i] = ht * ( (-u[i] * v[i] * v[i]) + (F * (1.0 - u[i])) ) ;	// RHSu part 1
+		//==========================
+		// Integration step
+		//==========================
+
+		// RHSu = sparse(IpTu*u + ht*(-u.*(v.^2) + F*(1-u)));
+		for (int i = 0; i < N; ++i) {
+			unew[i] = ht * ( (-u[i] * v[i] * v[i]) + (F * (1.0 - u[i])) ) ;	// RHSu part 1
+		}
+		//add boundary values to rhs
+		for (int i = 0; i < n_inner; i++) {
+			unew[i + (n_inner - 1)*n_inner] -= ru*bin_north[i];
+			unew[i] -= ru*bin_south[i];
+			unew[(i + 1)*n_inner - 1] -= ru*bin_east[i];
+			unew[i * n_inner] -= ru*bin_west[i];
+		}
+		err = cs_gaxpy(IpTu, u, unew) ; // RHSu part 2
+
+		// RHSv = sparse(IpTv*v + ht*(u.*(v.^2) - (F+k)*v));
+		for (int i = 0; i < N; ++i) {
+			vnew[i] = ht * ( (u[i] * v[i] * v[i]) - ((F + K) * v[i]) ) ;	// RHSv part 1
+		}
+		//add boundary values to rhs
+		for (int i = 0; i < n_inner; i++) {
+			vnew[i + (n_inner - 1)*n_inner] -= rv*bin_north[i + n_inner];
+			vnew[i] -= rv*bin_south[i + n_inner];
+			vnew[(i + 1)*n_inner - 1] -= rv*bin_east[i + n_inner];
+			vnew[i * n_inner] -= rv*bin_west[i + n_inner];
+		}
+		err = cs_gaxpy(IpTv, v, vnew) ;	// RHSv part 2
+
+		// u_new = ImTu\RHSu;
+		// v_new = ImTv\RHSv;
+		err = cs_lusol(0, ImTu, unew, 0) ;
+		err = cs_lusol(0, ImTv, vnew, 0) ;
+		// TODO: print unew to file
+
+		//==========================
+		// communication step
+		//==========================
+
+		// are we red? (if not, we are black)
+		bool red = (rank % 2) ? false : true;
+		if (red) {
+			MPI_Send(
+			    bout_north,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_north,
+			    0,
+			    MPI_COMM_WORLD);
+			MPI_Send(
+			    bout_south,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_south,
+			    0,
+			    MPI_COMM_WORLD);
+			MPI_Send(
+			    bout_east,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_east,
+			    0,
+			    MPI_COMM_WORLD);
+			MPI_Send(
+			    bout_west,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_west,
+			    0,
+			    MPI_COMM_WORLD);
+
+			MPI_Recv(
+			    bin_north,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_north,
+			    0,
+			    MPI_COMM_WORLD,
+			    MPI_STATUS_IGNORE);
+			MPI_Recv(
+			    bin_south,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_south,
+			    0,
+			    MPI_COMM_WORLD,
+			    MPI_STATUS_IGNORE);
+			MPI_Recv(
+			    bin_east,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_east,
+			    0,
+			    MPI_COMM_WORLD,
+			    MPI_STATUS_IGNORE);
+			MPI_Recv(
+			    bin_west,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_west,
+			    0,
+			    MPI_COMM_WORLD,
+			    MPI_STATUS_IGNORE);
+		} else {
+			MPI_Send(
+			    bout_north,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_north,
+			    0,
+			    MPI_COMM_WORLD);
+			MPI_Send(
+			    bout_south,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_south,
+			    0,
+			    MPI_COMM_WORLD);
+			MPI_Send(
+			    bout_east,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_east,
+			    0,
+			    MPI_COMM_WORLD);
+			MPI_Send(
+			    bout_west,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_west,
+			    0,
+			    MPI_COMM_WORLD);
+
+			MPI_Recv(
+			    bin_north,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_north,
+			    0,
+			    MPI_COMM_WORLD,
+			    MPI_STATUS_IGNORE);
+			MPI_Recv(
+			    bin_south,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_south,
+			    0,
+			    MPI_COMM_WORLD,
+			    MPI_STATUS_IGNORE);
+			MPI_Recv(
+			    bin_east,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_east,
+			    0,
+			    MPI_COMM_WORLD,
+			    MPI_STATUS_IGNORE);
+			MPI_Recv(
+			    bin_west,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_west,
+			    0,
+			    MPI_COMM_WORLD,
+			    MPI_STATUS_IGNORE);
+
+
+
+		}
+
+		//==========================
+		// end iteration
+		//==========================
 	}
-	//add boundary values to rhs
-	for (int i = 0; i < n_inner; i++){
-		unew[i+(n_inner-1)*n_inner] -= bin_north[i];
-		unew[i] -= bin_south[i];
-		unew[(i+1)*n_inner-1] -= bin_east[i];
-		unew[i*n_inner] -= bin_west[i];
-	}
-	err = cs_gaxpy(IpTu, u, unew) ; // RHSu part 2
-
-	// RHSv = sparse(IpTv*v + ht*(u.*(v.^2) - (F+k)*v));
-	for (int i = 0; i < N; ++i) {
-		vnew[i] = ht * ( (u[i] * v[i] * v[i]) - ((F + K) * v[i]) ) ;	// RHSv part 1
-	}
-	//add boundary values to rhs
-	for (int i = 0; i < n_inner; i++){
-		vnew[i+(n_inner-1)*n_inner] -= bin_north[i+n_inner];
-		vnew[i] -= bin_south[i+n_inner];
-		vnew[(i+1)*n_inner-1] -= bin_east[i+n_inner];
-		vnew[i*n_inner] -= bin_west[i+n_inner];
-	}
-	err = cs_gaxpy(IpTv, v, vnew) ;	// RHSv part 2
-
-	// u_new = ImTu\RHSu;
-	// v_new = ImTv\RHSv;
-	err = cs_lusol(0, ImTu, unew, 0) ;
-	err = cs_lusol(0, ImTv, vnew, 0) ;
-	// TODO: print unew to file
-
 	//==========================
-	// communication step
+	// print results
 	//==========================
 
-	// are we red? (if not, we are black)
-	bool red = (rank % 2) ? false : true;
-	if(red){
-		MPI_Send(
-			bout_north,
-			n_inner,
-			MPI_DOUBLE,
-			target_north,
-			0,
-			MPI_COMM_WORLD);
-		MPI_Send(
-			bout_south,
-			n_inner,
-			MPI_DOUBLE,
-			target_south,
-			0,
-			MPI_COMM_WORLD);
-		MPI_Send(
-			bout_east,
-			n_inner,
-			MPI_DOUBLE,
-			target_east,
-			0,
-			MPI_COMM_WORLD);
-		MPI_Send(
-			bout_west,
-			n_inner,
-			MPI_DOUBLE,
-			target_west,
-			0,
-			MPI_COMM_WORLD);
+	FILE *fp;
+	if (rank == 0) {
+		fp = fopen("u_vals.txt", "w");	// open new file to write
+		for (int i = 0; i < N_inner; ++i) {
+			fprintf(fp, "%f\n", unew[i]);
+		}
+		fclose(fp);
 
-		MPI_Recv( 
-			bin_north,
-			n_inner,
-			MPI_DOUBLE,
-			target_north,
-			0,
-			MPI_COMM_WORLD,
-			MPI_STATUS_IGNORE);
-		MPI_Recv( 
-			bin_south,
-			n_inner,
-			MPI_DOUBLE,
-			target_south,
-			0,
-			MPI_COMM_WORLD,
-			MPI_STATUS_IGNORE);
-		MPI_Recv( 
-			bin_east,
-			n_inner,
-			MPI_DOUBLE,
-			target_east,
-			0,
-			MPI_COMM_WORLD,
-			MPI_STATUS_IGNORE);
-		MPI_Recv( 
-			bin_west,
-			n_inner,
-			MPI_DOUBLE,
-			target_west,
-			0,
-			MPI_COMM_WORLD,
-			MPI_STATUS_IGNORE);
-	}else{
-		MPI_Send(
-			bout_north,
-			n_inner,
-			MPI_DOUBLE,
-			target_north,
-			0,
-			MPI_COMM_WORLD);
-		MPI_Send(
-			bout_south,
-			n_inner,
-			MPI_DOUBLE,
-			target_south,
-			0,
-			MPI_COMM_WORLD);
-		MPI_Send(
-			bout_east,
-			n_inner,
-			MPI_DOUBLE,
-			target_east,
-			0,
-			MPI_COMM_WORLD);
-		MPI_Send(
-			bout_west,
-			n_inner,
-			MPI_DOUBLE,
-			target_west,
-			0,
-			MPI_COMM_WORLD);
+	} else {
+		int go;
+		MPI_Recv(	&go,
+		            1,
+		            MPI_INT,
+		            rank - 1,
+		            666,	// tag
+		            MPI_COMM_WORLD,
+		            MPI_STATUS_IGNORE);
 
-		MPI_Recv(
-			bin_north,
-			n_inner,
-			MPI_DOUBLE,
-			target_north,
-			0,
-			MPI_COMM_WORLD,
-			MPI_STATUS_IGNORE);
-		MPI_Recv(
-			bin_south,
-			n_inner,
-			MPI_DOUBLE,
-			target_south,
-			0,
-			MPI_COMM_WORLD,
-			MPI_STATUS_IGNORE);		
-		MPI_Recv(
-			bin_east,
-			n_inner,
-			MPI_DOUBLE,
-			target_east,
-			0,
-			MPI_COMM_WORLD,
-			MPI_STATUS_IGNORE);
-		MPI_Recv(
-			bin_west,
-			n_inner,
-			MPI_DOUBLE,
-			target_west,
-			0,
-			MPI_COMM_WORLD,
-			MPI_STATUS_IGNORE);
+		fp = fopen("u_vals.txt", "a");	// open to append
 
+		for (int i = 0; i < N_inner; ++i) {
+			fprintf(fp, "%f\n", unew[i]);
+		}
+		fclose(fp);
+	}
 
-
+	if (rank < Psq - 1) {
+		MPI_Send(	&rank,	// send my rank to next process
+		            1,
+		            MPI_INT,
+		            rank + 1,
+		            666,
+		            MPI_COMM_WORLD);
 	}
 
 	//==========================
-	// end iteration
+	// free resources
 	//==========================
 
 	cs_spfree (ImTu) ;
