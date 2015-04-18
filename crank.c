@@ -49,9 +49,11 @@ int main(int argc, char *argv[])
 	target_east = (1-east)*(rank + 1) + east*(rank - P + 1);
 	target_west = (1-west)*(rank - 1) + west*(rank + P - 1);
 
-	// length of solution vector, 
-	// as well as one side of NxN laplacian matrix
-	csi N = Nglobal/Psq;
+	//dimension sizes
+	csi N_inner = Nglobal/Psq;
+	csi n_inner = sqrt(N_inner);
+	csi n = n_inner + 2;
+	csi N = n*n;
 
 	//printf("process rank: %d, tn: %d, ts: %d, te: %d, tw: %d \n", rank, target_north, target_south, target_east, target_west);
 	double *u, *v, *unew, *vnew ;
@@ -79,19 +81,23 @@ int main(int argc, char *argv[])
 		u[i] = i;
 	}*/
 
-	csi n = sqrt(N); //length of boundary data
-
-	// TODO: define boundary vectors for v
-
 	//vectors receiving boudary data
-	double uin_north[n], uin_south[n], uin_east[n], uin_west[n];
+	double bin_north[2*n_inner], bin_south[2*n_inner], bin_east[2*n_inner], bin_west[2*n_inner];
 	//vectors sending boundary data
-	double uout_north[n], uout_south[n], uout_east[n], uout_west[n];
-	for(int i=0;i<n;i++) {
-		uout_north[i] = u[i+(n-1)*n];
-		uout_south[i] = u[i];
-		uout_east[i] = u[(i+1)*n-1];
-		uout_west[i] = u[i*n];
+	double bout_north[2*n_inner], bout_south[2*n_inner], bout_east[2*n_inner], bout_west[2*n_inner];
+
+	for(int i=0;i<n_inner;i++) {
+		bout_north[i] = u[i+(n_inner-1)*n_inner];
+		bout_north[i+n_inner] = v[i+(n_inner-1)*n_inner];
+
+		bout_south[i] = u[i];
+		bout_south[i+n_inner] = v[i];
+
+		bout_east[i] = u[(i+1)*n_inner-1];
+		bout_east[i+n_inner] = v[(i+1)*n_inner-1];
+
+		bout_west[i] = u[i*n_inner];
+		bout_west[i+n_inner] = v[i*n_inner];
 	}
 
 	// CSparse data
@@ -146,11 +152,25 @@ int main(int argc, char *argv[])
 	for (int i = 0; i < N; ++i) {
 		unew[i] = ht * ( (-u[i] * v[i] * v[i]) + (F * (1.0 - u[i])) ) ;	// RHSu part 1
 	}
+	//add boundary values to rhs
+	for (int i = 0; i < n_inner; i++){
+		unew[i+(n_inner-1)*n_inner] -= bin_north[i];
+		unew[i] -= bin_south[i];
+		unew[(i+1)*n_inner-1] -= bin_east[i];
+		unew[i*n_inner] -= bin_west[i];
+	}
 	err = cs_gaxpy(IpTu, u, unew) ; // RHSu part 2
 
 	// RHSv = sparse(IpTv*v + ht*(u.*(v.^2) - (F+k)*v));
 	for (int i = 0; i < N; ++i) {
 		vnew[i] = ht * ( (u[i] * v[i] * v[i]) - ((F + K) * v[i]) ) ;	// RHSv part 1
+	}
+	//add boundary values to rhs
+	for (int i = 0; i < n_inner; i++){
+		vnew[i+(n_inner-1)*n_inner] -= bin_north[i+n_inner];
+		vnew[i] -= bin_south[i+n_inner];
+		vnew[(i+1)*n_inner-1] -= bin_east[i+n_inner];
+		vnew[i*n_inner] -= bin_west[i+n_inner];
 	}
 	err = cs_gaxpy(IpTv, v, vnew) ;	// RHSv part 2
 
@@ -158,7 +178,7 @@ int main(int argc, char *argv[])
 	// v_new = ImTv\RHSv;
 	err = cs_lusol(0, ImTu, unew, 0) ;
 	err = cs_lusol(0, ImTv, vnew, 0) ;
-
+	// TODO: print unew to file
 
 	//==========================
 	// communication step
@@ -168,61 +188,61 @@ int main(int argc, char *argv[])
 	bool red = (rank % 2) ? false : true;
 	if(red){
 		MPI_Send(
-			uout_north,
-			n,
+			bout_north,
+			n_inner,
 			MPI_DOUBLE,
 			target_north,
 			0,
 			MPI_COMM_WORLD);
 		MPI_Send(
-			uout_south,
-			n,
+			bout_south,
+			n_inner,
 			MPI_DOUBLE,
 			target_south,
 			0,
 			MPI_COMM_WORLD);
 		MPI_Send(
-			uout_east,
-			n,
+			bout_east,
+			n_inner,
 			MPI_DOUBLE,
 			target_east,
 			0,
 			MPI_COMM_WORLD);
 		MPI_Send(
-			uout_west,
-			n,
+			bout_west,
+			n_inner,
 			MPI_DOUBLE,
 			target_west,
 			0,
 			MPI_COMM_WORLD);
 
 		MPI_Recv( 
-			uin_north,
-			n,
+			bin_north,
+			n_inner,
 			MPI_DOUBLE,
 			target_north,
 			0,
 			MPI_COMM_WORLD,
 			MPI_STATUS_IGNORE);
 		MPI_Recv( 
-			uin_south,
-			n,
+			bin_south,
+			n_inner,
 			MPI_DOUBLE,
 			target_south,
 			0,
 			MPI_COMM_WORLD,
 			MPI_STATUS_IGNORE);
 		MPI_Recv( 
-			uin_east,
-			n,
+			bin_east,
+			n_inner,
 			MPI_DOUBLE,
 			target_east,
 			0,
 			MPI_COMM_WORLD,
 			MPI_STATUS_IGNORE);
 		MPI_Recv( 
-			uin_west,
-			n,
+			bin_west,
+			n_inner,
 			MPI_DOUBLE,
 			target_west,
 			0,
@@ -230,61 +250,61 @@ int main(int argc, char *argv[])
 			MPI_STATUS_IGNORE);
 	}else{
 		MPI_Send(
-			uout_north,
-			n,
+			bout_north,
+			n_inner,
 			MPI_DOUBLE,
 			target_north,
 			0,
 			MPI_COMM_WORLD);
 		MPI_Send(
-			uout_south,
-			n,
+			bout_south,
+			n_inner,
 			MPI_DOUBLE,
 			target_south,
 			0,
 			MPI_COMM_WORLD);
 		MPI_Send(
-			uout_east,
-			n,
+			bout_east,
+			n_inner,
 			MPI_DOUBLE,
 			target_east,
 			0,
 			MPI_COMM_WORLD);
 		MPI_Send(
-			uout_west,
-			n,
+			bout_west,
+			n_inner,
 			MPI_DOUBLE,
 			target_west,
 			0,
 			MPI_COMM_WORLD);
 
 		MPI_Recv(
-			uin_north,
-			n,
+			bin_north,
+			n_inner,
 			MPI_DOUBLE,
 			target_north,
 			0,
 			MPI_COMM_WORLD,
 			MPI_STATUS_IGNORE);
 		MPI_Recv(
-			uin_south,
-			n,
+			bin_south,
+			n_inner,
 			MPI_DOUBLE,
 			target_south,
 			0,
 			MPI_COMM_WORLD,
 			MPI_STATUS_IGNORE);		
 		MPI_Recv(
-			uin_east,
-			n,
+			bin_east,
+			n_inner,
 			MPI_DOUBLE,
 			target_east,
 			0,
 			MPI_COMM_WORLD,
 			MPI_STATUS_IGNORE);
 		MPI_Recv(
-			uin_west,
-			n,
+			bin_west,
+			n_inner,
 			MPI_DOUBLE,
 			target_west,
 			0,
@@ -308,16 +328,6 @@ int main(int argc, char *argv[])
 	free(v) ;
 	free(unew) ;
 	free(vnew) ;
-
-	// printf("rank: %d, uin_north: %f, %f, %f  \n", rank, uin_north[0], uin_north[1], uin_north[2]);
-	// printf("rank: %d, uin_south: %f, %f, %f  \n", rank, uin_south[0], uin_south[1], uin_south[2]);
-	// printf("rank: %d, uin_east: %f, %f, %f  \n", rank, uin_east[0], uin_east[1], uin_east[2]);
-	// printf("rank: %d, uin_west: %f, %f, %f  \n", rank, uin_west[0], uin_west[1], uin_west[2]);
-
-	// for(int i = 0; i < n; i++) printf("rank: %d, uout_north: %f  \n", rank, uout_north[i]);
-	// for(int i = 0; i < n; i++) printf("rank: %d, uout_south: %f  \n", rank, uout_south[i]);
-	// for(int i = 0; i < n; i++) printf("rank: %d, uout_east: %f  \n", rank, uout_east[i]);
-	// for(int i = 0; i < n; i++) printf("rank: %d, uout_west: %f  \n", rank, uout_west[i]);
 
 	MPI_Finalize();
 	return 0;
