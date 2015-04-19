@@ -7,17 +7,17 @@
 #include "cn.h"
 
 // numerical parameters
-#define Nglobal 64
+#define Nglobal 81
 /*#define hx 1.0/(Nglobal-1)
 #define hx2 hx2*hx2*/
-#define ht 1.0
-#define F 0.034
-#define K 0.065
-#define Du 1.0
-#define Dv 0.5
+#define ht 0.25
+#define F 0.026
+#define K 0.055
+#define Du 2.0*1e-5
+#define Dv 1*1e-5
 #define u0 1.0
 #define v0 0.0
-#define MAXITER 100
+#define MAXITER 50
 
 
 int main(int argc, char *argv[])
@@ -99,9 +99,9 @@ int main(int argc, char *argv[])
 
 	csi nz = N + 2 * (N - 1) + 2 * (N - n) ;	// main + 2*(sub) + 2*(subsub) diagonals
 	double hx = 1.0 / (Nglobal - 1);
-	double hx2 = hx*hx;
-	double ru = Du*ht/(2*hx2);
-	double rv = Dv*ht/(2*hx2);
+	double hx2 = hx * hx;
+	double ru = Du * ht / (2 * hx2);
+	double rv = Dv * ht / (2 * hx2);
 
 	// create ImT
 
@@ -147,10 +147,10 @@ int main(int argc, char *argv[])
 		}
 		//add boundary values to rhs
 		for (int i = 0; i < n_inner; i++) {
-			unew[i + (n_inner - 1)*n_inner] -= ru*bin_north[i];
-			unew[i] -= ru*bin_south[i];
-			unew[(i + 1)*n_inner - 1] -= ru*bin_east[i];
-			unew[i * n_inner] -= ru*bin_west[i];
+			unew[i + (n_inner - 1)*n_inner] -= ru * bin_north[i];
+			unew[i] -= ru * bin_south[i];
+			unew[(i + 1)*n_inner - 1] -= ru * bin_east[i];
+			unew[i * n_inner] -= ru * bin_west[i];
 		}
 		err = cs_gaxpy(IpTu, u, unew) ; // RHSu part 2
 
@@ -160,18 +160,16 @@ int main(int argc, char *argv[])
 		}
 		//add boundary values to rhs
 		for (int i = 0; i < n_inner; i++) {
-			vnew[i + (n_inner - 1)*n_inner] -= rv*bin_north[i + n_inner];
-			vnew[i] -= rv*bin_south[i + n_inner];
-			vnew[(i + 1)*n_inner - 1] -= rv*bin_east[i + n_inner];
-			vnew[i * n_inner] -= rv*bin_west[i + n_inner];
+			vnew[i + (n_inner - 1)*n_inner] -= rv * bin_north[i + n_inner];
+			vnew[i] -= rv * bin_south[i + n_inner];
+			vnew[(i + 1)*n_inner - 1] -= rv * bin_east[i + n_inner];
+			vnew[i * n_inner] -= rv * bin_west[i + n_inner];
 		}
 		err = cs_gaxpy(IpTv, v, vnew) ;	// RHSv part 2
 
-		// u_new = ImTu\RHSu;
-		// v_new = ImTv\RHSv;
+		//solve linear system (backslash)
 		err = cs_lusol(0, ImTu, unew, 0) ;
 		err = cs_lusol(0, ImTv, vnew, 0) ;
-		// TODO: print unew to file
 
 		//==========================
 		// communication step
@@ -303,9 +301,6 @@ int main(int argc, char *argv[])
 			    0,
 			    MPI_COMM_WORLD,
 			    MPI_STATUS_IGNORE);
-
-
-
 		}
 
 		//==========================
