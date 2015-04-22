@@ -17,7 +17,7 @@
 
 int main(int argc, char const *argv[])
 {
-	size_t nsteps = 100;
+	size_t nsteps = 10;
 	double N = 4;
 	double dt = 0.5;
 	double Du = 0.000002;
@@ -98,6 +98,11 @@ int main(int argc, char const *argv[])
 
 	for (int step = 0; step < nsteps; ++step)
 	{
+		for (int i = 0; i < N2; ++i)
+		{
+			rhsu[i] = 0;
+			rhsv[i] = 0;
+		}
 		create_RHSu(rhsu, u, v, uold, vold, N, N2, Du, F, h, dt);
 		create_RHSv(rhsv, u, v, uold, vold, N, N2, Dv, F, K, h, dt);
 

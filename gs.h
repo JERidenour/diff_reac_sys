@@ -84,8 +84,8 @@ void create_ImT(double *T, size_t n, size_t N, double D, double hx, double ht) {
 
 
 /* Needs *rhs array of length N */
-void create_RHSu(	double *rhs, 
-					/*const double *T,*/
+void create_RHSu(	double *rhs,
+                    /*const double *T,*/
                     const double *u,
                     const double *v,
                     const double *uold,
@@ -250,12 +250,15 @@ void create_RHSv(	double *rhs,
 	print_vector(rhs,N);*/
 }
 
-void gauss_seidel(	const double *A, 
-					const double *b, 
-					double *x, 
-					const double *x0, 
-					size_t N, 
-					size_t maxiter) {
+void gauss_seidel(	const double *A,
+                    const double *b,
+                    double *x,
+                    const double *x0,
+                    size_t N,
+                    size_t maxiter) {
+
+	double omega = 1;	// 1 => GS
+
 	for (int i = 0; i < N; ++i)
 	{
 		x[i] = x0[i];
@@ -269,9 +272,11 @@ void gauss_seidel(	const double *A,
 			sigma = 0;
 			for (int j = 0; j < N; ++j)
 			{
-				if(j!=i) sigma += A[N*i + j]*x[j];
+				if (j != i) sigma += A[N * i + j] * x[j];
 			}
-			x[i] = (1/A[N*i + i])*(b[i]-sigma);
+			// x[i] = (1.0 / A[N * i + i]) * (b[i] - sigma);	// pure GS
+			
+			x[i] = (1-omega)*x[i] + (omega/A[N * i + i])*(b[i]-sigma);
 		}
 	}
 }
