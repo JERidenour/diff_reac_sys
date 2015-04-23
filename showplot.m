@@ -1,53 +1,44 @@
+clear all
 load u_vals.txt -ascii
 
 N=81;
 n=sqrt(N);
 Psq = 9;
 P = 3;
+u = zeros(N,1);
 
-u = u_vals;
-% u = [0 1 2 9 10 11 18 19 20 3 4 5 12 13 14 ...
-%     21 22 23 6 7 8 15 16 17 24 25 26 27 28 ...
-%     29 36 37 38 45 46 47 30 31 32 39 40 41 ...
-%     48 49 50 33 34 35 42 43 44 51 52 53 54 ...
-%     55 56 63 64 65 72 73 74 57 58 59 66 67 ...
-%     68 75 76 77 60 61 62 69 70 71 78 79 80]';
-U = zeros(n*n,1);
-
-U(1:P)       = u(1:P);
-U(P+1:2*P)   = u(Psq+1:Psq+P);
-U(2*P+1:3*P) = u(2*Psq+1:2*Psq+P);
-
-U(3*P+1:4*P) = u(P+1:2*P);
-U(4*P+1:5*P) = u(Psq+P+1:Psq+2*P);
-U(5*P+1:6*P) = u(2*Psq+P+1:2*Psq+2*P);
-
-U(6*P+1:7*P) = u(2*P+1:3*P);
-U(7*P+1:8*P) = u(Psq+2*P+1:Psq+3*P);
-U(8*P+1:9*P) = u(2*Psq+2*P+1:2*Psq+3*P);
-
-U(9*P+1:10*P)  = u(28:30);
-U(10*P+1:11*P) = u(37:39);
-U(11*P+1:12*P) = u(46:48);
-
-U(12*P+1:13*P) = u(31:33);
-U(13*P+1:14*P) = u(40:42);
-U(14*P+1:15*P) = u(49:51);
-
-U(15*P+1:16*P) = u(34:36);
-U(16*P+1:17*P) = u(43:45);
-U(17*P+1:18*P) = u(52:54);
-
-U(18*P+1:19*P) = u(55:57);
-U(19*P+1:20*P) = u(64:66);
-U(20*P+1:21*P) = u(73:75);
-
-U(21*P+1:22*P) = u(58:60);
-U(22*P+1:23*P) = u(67:69);
-U(23*P+1:24*P) = u(76:78);
-
-U(24*P+1:25*P) = u(61:63);
-U(25*P+1:26*P) = u(70:72);
-U(26*P+1:27*P) = u(79:81);
-
-contourf(reshape(U,n,n))
+for i=1:P
+    
+    u(i) = u_vals(i);
+    u(i + P) = u_vals(i + Psq);
+    u(i + 2*P) = u_vals(i + 2*Psq);
+    u(i + 3*P) = u_vals(i + P);
+    u(i + 4*P) = u_vals(i + P + Psq);
+    u(i + 5*P) = u_vals(i + P + 2*Psq);
+    u(i + 6*P) = u_vals(i + 2*P);
+    u(i + 7*P) = u_vals(i + 2*P + Psq);
+    u(i + 8*P) = u_vals(i + 2*P + 2*Psq);
+    
+    u(i + 9*P) = u_vals(3*Psq + i);
+    u(i + 10*P) = u_vals(3*Psq + i + Psq);
+    u(i + 11*P) = u_vals(3*Psq + i + 2*Psq);
+    u(i + 12*P) = u_vals(3*Psq + i + P);
+    u(i + 13*P) = u_vals(3*Psq + i + P + Psq);
+    u(i + 14*P) = u_vals(3*Psq + i + P + 2*Psq);
+    u(i + 15*P) = u_vals(3*Psq + i + 2*P);
+    u(i + 16*P) = u_vals(3*Psq + i + 2*P + Psq);
+    u(i + 17*P) = u_vals(3*Psq + i + 2*P + 2*Psq);
+    
+    u(i + 18*P) = u_vals(6*Psq + i);
+    u(i + 19*P) = u_vals(6*Psq + i + Psq);
+    u(i + 20*P) = u_vals(6*Psq + i + 2*Psq);
+    u(i + 21*P) = u_vals(6*Psq + i + P);
+    u(i + 22*P) = u_vals(6*Psq + i + P + Psq);
+    u(i + 23*P) = u_vals(6*Psq + i + P + 2*Psq);
+    u(i + 24*P) = u_vals(6*Psq + i + 2*P);
+    u(i + 25*P) = u_vals(6*Psq + i + 2*P + Psq);
+    u(i + 26*P) = u_vals(6*Psq + i + 2*P + 2*Psq);
+    
+end
+U = reshape(u,n,n);
+contourf(U);
