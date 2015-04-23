@@ -7,17 +7,17 @@ I = -ICSparse/Include
 CS = CSparse/Lib/libcsparse.a
 ################################
 
-all: lib crank
+all: lib lap
 
 lib:
 	( cd CSparse/Lib ; $(MAKE) )
 
-crank_dep = crank.o
-crank: lib $(crank_dep)
-	$(CXX) $(CXXFLAGS) $(I) $(crank_dep) $(CS) -o $@
+lap_dep = lap.o
+lap: lib $(lap_dep)
+	$(CXX) $(CXXFLAGS) $(I) $(lap_dep) $(CS) -o $@
 
-crank.o: crank.c
-	$(CXX) $(CXXFLAGS) -c -o $@ crank.c
+lap.o: lap.c
+	$(CXX) $(CXXFLAGS) -c -o $@ lap.c
 
 # mtsort_dep = mtsort.o
 # mtsort: $(mtsort_dep)
