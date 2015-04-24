@@ -267,12 +267,14 @@ void gauss_seidel(	const double *A,
 	for (int iter = 0; iter < maxiter; ++iter)
 	{
 		double sigma;
+		double left, right;
 		for (int i = 0; i < N; ++i)
 		{
 			sigma = 0;
 			for (int j = 0; j < N; ++j)
 			{
-				if (j != i) sigma += A[N * i + j] * x[j];
+				 if (j != i) sigma += A[N * i + j] * x[j];
+				//sigma += A[N * i + j] * x[j];
 			}
 			// x[i] = (1.0 / A[N * i + i]) * (b[i] - sigma);	// pure GS
 			

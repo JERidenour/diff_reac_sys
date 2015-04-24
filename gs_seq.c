@@ -17,11 +17,11 @@
 
 int main(int argc, char const *argv[])
 {
-	size_t nsteps = 10;
+	size_t nsteps = 1;
 	double N = 4;
 	double dt = 0.5;
-	double Du = 0.000002;
-	double Dv = 0.000001;
+	double Du = 0.00002;
+	double Dv = 0.00001;
 	/*double Du = 1.0;
 	double Dv = 0.5;*/
 	double F = 0.034;
@@ -40,7 +40,7 @@ int main(int argc, char const *argv[])
 	double *unew = (double*) calloc(N2, sizeof(double));	// zero initialized
 	double *vnew = (double*) calloc(N2, sizeof(double));	// zero initialized
 	double *uold = (double*) calloc(N2, sizeof(double));	// zero initialized
-	//for (int i = 0; i < N2; ++i) uold[i] = 1;
+	// for (int i = 0; i < N2; ++i) uold[i] = 1;
 	double *vold = (double*) calloc(N2, sizeof(double));	// zero initialized
 	//for (int i = 0; i < N2; ++i) vold[i] = 1;
 
@@ -71,20 +71,17 @@ int main(int argc, char const *argv[])
 	printf("Creating RHSv.\n");
 	create_RHSv(rhsv, u, v, uold, vold, N, N2, Dv, F, K, h, dt);*/
 
-	/*printf("ImTu:\n");
+	printf("ImTu:\n");
 	print_matrix(ImTu,N2);
 	printf("ImTv:\n");
 	print_matrix(ImTv,N2);
 
-	printf("IpTu:\n");
+	/*printf("IpTu:\n");
 	print_matrix(IpTu,N2);
 	printf("IpTv:\n");
-	print_matrix(IpTv,N2);
+	print_matrix(IpTv,N2);*/
 
-	printf("RHSu:\n");
-	print_vector(rhsu,N2);
-	printf("RHSv:\n");
-	print_vector(rhsv,N2);
+	
 
 	printf("u:\n");
 	print_vector(u,N2);
@@ -94,17 +91,22 @@ int main(int argc, char const *argv[])
 	printf("uold:\n");
 	print_vector(uold,N2);
 	printf("vold:\n");
-	print_vector(vold,N2);*/
+	print_vector(vold,N2);
 
 	for (int step = 0; step < nsteps; ++step)
 	{
-		for (int i = 0; i < N2; ++i)
+		/*for (int i = 0; i < N2; ++i)
 		{
 			rhsu[i] = 0;
 			rhsv[i] = 0;
-		}
+		}*/
 		create_RHSu(rhsu, u, v, uold, vold, N, N2, Du, F, h, dt);
 		create_RHSv(rhsv, u, v, uold, vold, N, N2, Dv, F, K, h, dt);
+
+		printf("RHSu:\n");
+		print_vector(rhsu,N2);
+		printf("RHSv:\n");
+		print_vector(rhsv,N2);
 
 		gauss_seidel(ImTu, rhsu, unew, guess, N2, 50);
 		gauss_seidel(ImTv, rhsv, vnew, guess, N2, 50);

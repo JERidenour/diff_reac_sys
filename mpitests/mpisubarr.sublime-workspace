@@ -1,0 +1,748 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"unew",
+				"unew"
+			],
+			[
+				"v",
+				"v"
+			],
+			[
+				"ImT",
+				"ImTv"
+			],
+			[
+				"Tu",
+				"Tu"
+			],
+			[
+				"cs_",
+				"cs_entry"
+			],
+			[
+				"n",
+				"nz"
+			],
+			[
+				"MPI_S",
+				"MPI_Sendrecv"
+			],
+			[
+				"MPI",
+				"MPI_DOUBLE"
+			],
+			[
+				"MPI_",
+				"MPI_Sendrecv"
+			],
+			[
+				"in",
+				"include"
+			],
+			[
+				"con",
+				"console"
+			],
+			[
+				"no",
+				"notify"
+			],
+			[
+				"len",
+				"length"
+			],
+			[
+				"active",
+				"activeDish"
+			],
+			[
+				"larg",
+				"largeImgUrl"
+			],
+			[
+				"Re",
+				"RecipeID"
+			],
+			[
+				"ac",
+				"activeDish"
+			],
+			[
+				"sear",
+				"searchDishDatabase"
+			],
+			[
+				"pa",
+				"page"
+			],
+			[
+				"re",
+				"results"
+			],
+			[
+				"sea",
+				"searchUrl"
+			],
+			[
+				"di",
+				"dishes"
+			],
+			[
+				"new",
+				"newpath"
+			],
+			[
+				"le",
+				"length"
+			],
+			[
+				"calc",
+				"calcPages"
+			],
+			[
+				"set",
+				"setFound"
+			],
+			[
+				"per",
+				"perPage"
+			],
+			[
+				"selected",
+				"selectedCourses"
+			],
+			[
+				"start",
+				"start_wgtime"
+			],
+			[
+				"right",
+				"righthead"
+			],
+			[
+				"to",
+				"toFixed"
+			],
+			[
+				"course",
+				"course"
+			],
+			[
+				"paddin",
+				"padding-right"
+			],
+			[
+				"fon",
+				"font-size"
+			],
+			[
+				"S",
+				"SelectedDishes"
+			],
+			[
+				"sle",
+				"selectedList"
+			],
+			[
+				"add",
+				"addMenuRow"
+			],
+			[
+				"sele",
+				"selectedList"
+			],
+			[
+				"b",
+				"bottom"
+			],
+			[
+				"marg",
+				"margin"
+			],
+			[
+				"border-co",
+				"border-color"
+			],
+			[
+				"mar",
+				"margin"
+			],
+			[
+				"border",
+				"border-radius"
+			],
+			[
+				"cours",
+				"courseList"
+			],
+			[
+				"cou",
+				"courseList"
+			],
+			[
+				"margin",
+				"margin-top"
+			],
+			[
+				"margin-",
+				"margin-bottom"
+			],
+			[
+				"thu",
+				"thumbId"
+			],
+			[
+				"select",
+				"selectdish"
+			],
+			[
+				"ali",
+				"vertical-align"
+			],
+			[
+				"fo",
+				"font-size"
+			],
+			[
+				"ma",
+				"margin-left"
+			],
+			[
+				"bo",
+				"border-top"
+			],
+			[
+				"bor",
+				"border-collapse"
+			],
+			[
+				"ba",
+				"background"
+			],
+			[
+				"borde",
+				"border-color"
+			],
+			[
+				"font",
+				"font-style"
+			],
+			[
+				"backg",
+				"background-color"
+			],
+			[
+				"padding",
+				"padding-top"
+			],
+			[
+				"D",
+				"DATA_TAG"
+			],
+			[
+				"H",
+				"HEIGHT"
+			],
+			[
+				"W",
+				"WIDTH"
+			],
+			[
+				"w",
+				"width"
+			],
+			[
+				"map",
+				"map_screen"
+			],
+			[
+				"SC",
+				"SCREEN_H"
+			],
+			[
+				"h",
+				"height"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "subarr.c",
+			"settings":
+			{
+				"buffer_size": 2343,
+				"line_ending": "Unix",
+				"name": "#include <stdio.h>"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"pa",
+				"Package Control: Remove Package"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"prett",
+				"HTMLPrettify"
+			],
+			[
+				"html",
+				"HTMLPrettify"
+			],
+			[
+				"htm",
+				"HTMLPrettify"
+			],
+			[
+				"rein",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"ht",
+				"HTMLPrettify: Set Prettify Preferences"
+			],
+			[
+				"packag",
+				"Package Control: Install Package"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			],
+			[
+				"tod",
+				"TodoReview: Project and Open Files"
+			],
+			[
+				"to",
+				"TodoReview: Project and Open Files"
+			],
+			[
+				"todo",
+				"TodoReview: Project and Open Files"
+			],
+			[
+				"Build: ",
+				"Build: Build"
+			],
+			[
+				"package",
+				"Package Control: Install Package"
+			],
+			[
+				"pac",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: List Packages"
+			],
+			[
+				"Package Contro",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 530.0
+	},
+	"console":
+	{
+		"height": 125.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/mh/Documents/Git/Iprog15/projectdh2642/Sorter/www/index.html",
+		"/Users/mh/Documents/Git/Iprog15/projectdh2642/Sorter/www/css/style.css",
+		"/Users/mh/Documents/Git/Iprog15/projectdh2642/Sorter/www/js/controllers.js",
+		"/Users/mh/Documents/Git/Iprog15/projectdh2642/Sorter/www/templates/home.html",
+		"/Users/mh/Documents/Git/Iprog15/projectdh2642/Plannify/www/css/style.css",
+		"/Users/mh/Documents/Git/Iprog15/projectdh2642/Sorter/www/lib/ionic/css/ionic.css",
+		"/Users/mh/Documents/Git/Iprog15/Ionic-Sorter/www/index.html",
+		"/Users/mh/Documents/Git/Iprog15/projectdh2642/Sorter/lib/.gitignore",
+		"/Users/mh/Documents/Git/Iprog15/projectdh2642/Sorter/.gitignore",
+		"/Users/mh/Documents/Git/Iprog15/projectdh2642/.gitignore",
+		"/Users/mh/Documents/Ionic/todo/www/index.html",
+		"/Users/mh/Documents/Ionic/todo/www/js/app.js",
+		"/Users/mh/Documents/Git/Parpro15/project/SuiteSparse/CSparse/Lib/Makefile",
+		"/Users/mh/Documents/Git/Parpro15/project/SuiteSparse/CSparse/Source/cs_compress.c",
+		"/Users/mh/Documents/Git/Parpro15/lab2/ppar_for_paper.c",
+		"/Users/mh/Documents/Git/Parpro15/project/SuiteSparse/CSparse/Demo/cs_demo.c",
+		"/Users/mh/Documents/Git/Parpro15/project/SuiteSparse/CSparse/Demo/cs_demo1.c",
+		"/Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/crank.c",
+		"/Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/notes.txt",
+		"/Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/Makefile",
+		"/Users/mh/Documents/Git/Parpro15/project/cstest/cn.h",
+		"/Users/mh/Documents/Git/Parpro15/project/cstest/Makefile",
+		"/Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/CSparse/Lib/Makefile",
+		"/Users/mh/Documents/Git/Parpro15/project/SuiteSparse/CSparse/Demo/cs_demo2.c",
+		"/Users/mh/Documents/Git/Parpro15/project/cstest/cn_snippets.c",
+		"/Users/mh/Documents/Git/Parpro15/project/cstest/cn_mat.c",
+		"/Users/mh/Documents/Git/Parpro15/project/SuiteSparse/CSparse/Source/cs_load.c",
+		"/Users/mh/Documents/Git/Parpro15/project/SuiteSparse/CSparse/Include/cs.h",
+		"/Users/mh/Documents/Git/Parpro15/project/SuiteSparse/CSparse/Demo/Makefile",
+		"/Users/mh/Documents/Git/Parpro15/project/cstest/ax.c",
+		"/Users/mh/Documents/Git/Parpro15/project/cstest/CSparse/Lib/Makefile",
+		"/Users/mh/Documents/Git/Parpro15/project/SuiteSparse/SuiteSparse_config/SuiteSparse_config.mk",
+		"/Users/mh/Documents/Git/Parpro15/project/SuiteSparse/CSparse/Demo/cs_demo3.c",
+		"/Users/mh/Documents/Git/Parpro15/project/SuiteSparse/Makefile",
+		"/Users/mh/Documents/Git/Parpro15/project/Makefile",
+		"/Users/mh/Library/Application Support/Sublime Text 2/Packages/User/MacTerminal.sublime-settings",
+		"/Users/mh/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/Users/mh/Documents/Git/Parpro15/project/SuiteSparse/CSparse/Matrix/bcsstk16",
+		"/Users/mh/Documents/Git/Parpro15/lab2/ppar_sr.c",
+		"/Users/mh/Documents/Git/Parpro15/lab2/ppar.c",
+		"/Users/mh/Documents/Git/Opsys15/lab/error.c",
+		"/Users/mh/Documents/Git/Opsys15/lab/cd.c",
+		"/Users/mh/Documents/Git/Opsys15/lab/error.h",
+		"/Users/mh/Documents/Git/Opsys15/lab/cd.h",
+		"/Users/mh/Documents/Git/Opsys15/lab/checkEnv.c",
+		"/Users/mh/Documents/Git/Opsys15/lab/.git/COMMIT_EDITMSG",
+		"/Users/mh/Documents/Git/Opsys15/lab/README.md",
+		"/Users/mh/Documents/Git/Opsys15/ovn/prog1.c",
+		"/Users/mh/Documents/Git/Opsys15/lab/README.",
+		"/Users/mh/Google Drive/KTH/Ak3/ParPro15/ParPro15_Sync/Project/MHCode/INITIALIZING, and RANDOM SEEDS",
+		"/tmp/subl stdin seYvnF.txt",
+		"/Users/mh/Documents/Git/Iprog15/lab4/index.html",
+		"/Users/mh/Documents/Git/Iprog15/lab5/app/css/fixed.css",
+		"/Users/mh/Documents/Git/Iprog15/lab5/app/partials/home-header.html",
+		"/Users/mh/Documents/Git/Iprog15/lab5/app/js/searchCtrl.js",
+		"/Users/mh/Documents/Git/Iprog15/lab5/app/js/dishCtrl.js",
+		"/Users/mh/Documents/Git/Iprog15/lab5/app/js/dinnerService.js",
+		"/Users/mh/Documents/Git/Iprog15/lab5/package.json",
+		"/Users/mh/Documents/Git/Iprog15/lab5/app/js/dinnerCtrl.js",
+		"/Users/mh/Documents/Git/Iprog15/lab5/app/js/app.js",
+		"/Users/mh/Documents/Git/Iprog15/lab5/app/off/select.css",
+		"/Users/mh/Documents/Git/Iprog15/lab5/app/off/fixed.css",
+		"/Users/mh/Documents/Git/Iprog15/lab4/js/model/dinnerModel.js",
+		"/Users/mh/Documents/Git/Iprog15/lab5/app/partials/dish.html",
+		"/Users/mh/Documents/Git/Iprog15/lab5/README.md",
+		"/Users/mh/Documents/Git/Iprog15/lab4/js/controller/homeController.js",
+		"/Users/mh/Google Drive/KTH/Ak3/Iprog15/Iprog15_sync/HTML5 Web Application Development By Example _ Beginner's guide/5947OT_08_Codes/example8.1/weather.html",
+		"/Users/mh/Google Drive/KTH/Ak3/Iprog15/Iprog15_sync/HTML5 Web Application Development By Example _ Beginner's guide/5947OT_08_Codes/example8.1/weatherWidget.js",
+		"/Users/mh/Google Drive/KTH/Ak3/Iprog15/Iprog15_sync/HTML5 Web Application Development By Example _ Beginner's guide/5947OT_08_Codes/example8.1/weather.js",
+		"/Users/mh/Documents/Git/Dbtd15/Lab0/queries",
+		"/Users/mh/Documents/Git/Dbtd15/lab0/getstarted",
+		"/Users/mh/Google Drive/KTH/Ak1/DD1345 Grund Programmering Datalogi/Lab9/stege.py",
+		"/Users/mh/.bashrc",
+		"/Users/mh/.bash",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/snippets.html",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/css/homelette.css",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/css/generic.css",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/select.html",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/css/select.css",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/test2.html",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/select_old.html",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/recipe.html",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/css/recipe.css",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/css/selectdish.css",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/js/snippets.js",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/GivenExample/index.html",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/js/model/homeletteModel.js",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/GivenExample/js/view/exampleView.js",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/homelette.html",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/js/view/view.js",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/GivenExample/js/app.js",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/index.html",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/js/view/exampleView.js",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/js/homelette.js",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/js/selectdish.js",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/instructions.txt",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/selectdish2.html",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/js/spinner.js",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/css/snippets.css",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/lasagna.html",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/css/lasagna.css",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/js/app.js",
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/js/model/dinnerModel.js",
+		"/Users/mh/Library/Application Support/Sublime Text 2/Packages/HTML-CSS-JS Prettify/.jsbeautifyrc",
+		"/Users/mh/Library/Application Support/Sublime Text 2/Packages/User/LaTeXing.sublime-settings",
+		"/Users/mh/Library/Application Support/Sublime Text 2/Packages/LaTeXing/LaTeXing.sublime-settings",
+		"/Users/mh/Documents/Git/Parpro15/lab1/report.tex",
+		"/etc/krb5.conf",
+		"/Users/mh/Documents/Git/Parpro15/lab1/Makefile",
+		"/Users/mh/Documents/Git/Parpro15/lab1/hello.c",
+		"/Users/mh/Documents/Git/Parpro15/lab1/mandel_seq.c",
+		"/Users/mh/Documents/Git/Parpro15/lab1/.git/config",
+		"/Users/mh/.ssh/config",
+		"/Users/mh/krb5.conf",
+		"/etc/krb5.keytab",
+		"/Users/mh/Documents/Git/Parpro15/lab1/hello.sublime-project",
+		"/Users/mh/Library/Application Support/Sublime Text 2/Packages/Mh/CarbonightBlueMh.tmTheme",
+		"/Users/mh/Documents/Git/Cprog14/lab3/character.cpp"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			"/Users/mh/Documents/Git/Iprog15/lab4"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			".card",
+			"card",
+			"email",
+			"mobile",
+			"phone",
+			"double",
+			"uin_",
+			"n_local",
+			"N",
+			"n",
+			"N",
+			"unew",
+			"RHSu",
+			"Du",
+			"i",
+			"j",
+			"i",
+			"Eye",
+			"i",
+			"cstest",
+			"cs_demo1",
+			"CFLAGS",
+			"MV",
+			"CFLAGS",
+			"Hw2_serial",
+			"apiKey",
+			".Dish",
+			"Dish",
+			"apiKey",
+			"this.notify",
+			"notify",
+			"self.notify",
+			"notify",
+			"destroyThumbs",
+			".empty()",
+			"destroyThumbs",
+			"getDish",
+			"loadedActiveDish",
+			"events[1]",
+			"activeDish",
+			"loadedPageDishData",
+			"activeDish",
+			"loadedActiveDishData",
+			"loadedPageDishData",
+			"loadingPage",
+			"thumb",
+			"price",
+			"addThumbs",
+			"bigoven",
+			"r.",
+			"getDish",
+			"table",
+			"sd",
+			"selectedList",
+			"mrow-template",
+			"template",
+			"menuRow",
+			"SelectedDishes",
+			"full",
+			"borders",
+			"showThumbList",
+			"function",
+			"script",
+			"\"></",
+			"images/meatballs.jpg",
+			"cinqueterre",
+			"Cinque Terre",
+			"responsive",
+			"TODO",
+			"filter",
+			"key",
+			"dishes",
+			"double",
+			"ytrans",
+			"xtrans",
+			"seg[HEIGHT]",
+			"seg[WIDTH]",
+			"seg[y]",
+			"seg[Y]",
+			"seg[X]",
+			"seq",
+			"y",
+			"x",
+			"c",
+			"unsigned char",
+			"color_global",
+			"color",
+			"y",
+			"x",
+			"y",
+			"x",
+			"unisgned",
+			"height",
+			"SEG_TAG",
+			"SEG_DATA_COUNT",
+			"tag",
+			"SEG_H",
+			"SEG_W",
+			"YOFF",
+			"XOFF",
+			"SEG_Y",
+			"SEG_X",
+			"n",
+			"N",
+			"scale",
+			"image",
+			"screen",
+			".",
+			"bound",
+			"c",
+			"hello_dep",
+			"hello",
+			"sqnorm",
+			"lengthsq"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": true,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "subarr.c",
+					"settings":
+					{
+						"buffer_size": 2343,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2343,
+								2343
+							]
+						],
+						"settings":
+						{
+							"auto_name": "#include <stdio.h>",
+							"syntax": "Packages/C++/C.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 785.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.astyle_error_message":
+	{
+		"height": 0.0
+	},
+	"output.exec":
+	{
+		"height": 100.0
+	},
+	"output.latex_log":
+	{
+		"height": 100.0
+	},
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true
+}
