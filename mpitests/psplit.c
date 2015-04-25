@@ -165,7 +165,9 @@ int main(int argc, char **argv)
 	MPI_Cart_coords(processMesh, meshRank, 2, meshCoords); 	// get my i,j coordinates in process grid
 
 	//printf("Rank: %d, meshRank: %d, i,j: %d,%d\n", rank, meshRank, meshCoords[0], meshCoords[1]);
-
+	int red = !(meshRank % 2);
+	if (red) printf("MeshRank %d is red.\n", meshRank);
+	else printf("MeshRank %d is black.\n", meshRank);
 
 	// get neighbours rank within mesh communicator
 	int hood[3][3];	// hood[i][j] = meshRank, hood[1][1] = meshRank
@@ -191,7 +193,6 @@ int main(int argc, char **argv)
 		       hood[1][0], hood[1][1], hood[1][2],
 		       hood[2][0], hood[2][1], hood[2][2]
 		      );
-		fflush(stdout);
 	}
 
 
@@ -214,51 +215,86 @@ int main(int argc, char **argv)
 		printf("MeshRank: %d, LocalData: \n", meshRank );
 		printarr(localData, n + 2, "LocalData before comm.");
 	}
-             
+
 	// send stuff to neighbours
 	int err = 0;
 	/*int MPI_Sendrecv(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
-                int dest, int sendtag,
-                void *recvbuf, int recvcount, MPI_Datatype recvtype,
-                int source, int recvtag,
-                MPI_Comm comm, MPI_Status *status)*/
-	
-	if(!(meshRank%2))
+	            int dest, int sendtag,
+	            void *recvbuf, int recvcount, MPI_Datatype recvtype,
+	            int source, int recvtag,
+	            MPI_Comm comm, MPI_Status *status)*/
+
+
+	if (meshRank == 0)
 	{
 		printf("MeshRank %d %d communicating with %d.\n", meshRank, RANK_CENTER, RANK_NORTH );
 		MPI_Sendrecv(	&(localData[0][0]),
-					n,
-					borders[NORTH],
-					RANK_NORTH,
-					666,
-					&(localData[0][0]),
-					n,
-					ghosts[NORTH],
-					RANK_NORTH,
-					777,
-					processMesh,
-					MPI_STATUS_IGNORE
-					);
-	}
-	// else
-	// {
-	// 	printf("MeshRank %d %d communicating with %d.\n", meshRank, RANK_CENTER, RANK_SOUTH );
-	// 	MPI_Sendrecv(	&(localData[0][0]),
-	// 				n,
-	// 				borders[SOUTH],
-	// 				RANK_SOUTH,
-	// 				666,
-	// 				&(localData[0][0]),
-	// 				n,
-	// 				ghosts[SOUTH],
-	// 				RANK_SOUTH,
-	// 				777,
-	// 				processMesh,
-	// 				MPI_STATUS_IGNORE
-	// 				);
-	// }
+		                n,
+		                borders[NORTH],
+		                RANK_NORTH,
+		                666,
+		                &(localData[0][0]),
+		                n,
+		                ghosts[NORTH],
+		                RANK_NORTH,
+		                666,
+		                processMesh,
+		                MPI_STATUS_IGNORE
+		            );
 
-	printf("Communication step done.\n");
+		printf("Communication step done.\n");
+	}
+	if (meshRank == 2)
+	{
+		printf("MeshRank %d %d communicating with %d.\n", meshRank, RANK_CENTER, RANK_SOUTH );
+		MPI_Sendrecv(	&(localData[0][0]),
+		                n,
+		                borders[SOUTH],
+		                RANK_SOUTH,
+		                666,
+		                &(localData[0][0]),
+		                n,
+		                ghosts[SOUTH],
+		                RANK_SOUTH,
+		                666,
+		                processMesh,
+		                MPI_STATUS_IGNORE
+		            );
+		printf("Communication step done.\n");
+	}
+
+	//=========================================================================
+	// Output
+	//=========================================================================
+
+	if (meshRank == 0) {
+		
+		printf("MeshRank %d reporting.\n", meshRank );
+		printarr(localData, n + 2, "LocalData after comm.");
+
+	} else {
+
+		int go;
+		MPI_Recv(	&go,
+		            1,
+		            MPI_INT,
+		            rank - 1,
+		            666,	// tag
+		            MPI_COMM_WORLD,
+		            MPI_STATUS_IGNORE);
+
+		printf("MeshRank %d reporting.\n", meshRank );
+		printarr(localData, n + 2, "LocalData after comm.");
+	}
+
+	if (rank < P - 1) {
+		MPI_Send(	&rank,	// send my rank to next process
+		            1,
+		            MPI_INT,
+		            rank + 1,
+		            666,
+		            MPI_COMM_WORLD);
+	}
 
 	//=========================================================================
 	// Cleanup
