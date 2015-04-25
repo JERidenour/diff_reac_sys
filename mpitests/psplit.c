@@ -6,15 +6,33 @@
 #define ndirs 8	// how many neighbours
 #define n_min 4	// minimum meaningful size of local subdomain
 
-#define RANK_NORTH hood[0][1]
-#define RANK_EAST hood[1][2]
-#define RANK_SOUTH hood[2][1]
-#define RANK_WEST hood[1][0]
-#define RANK_NORTHEAST hood[0][2]
-#define RANK_SOUTHEAST hood[2][2]
-#define RANK_SOUTHWEST hood[2][0]
-#define RANK_NORTHWEST hood[0][0]
-#define RANK_CENTER hood[1][1]
+#define NBR_NORTH hood[0][1]
+#define NBR_EAST hood[1][2]
+#define NBR_SOUTH hood[2][1]
+#define NBR_WEST hood[1][0]
+#define NBR_NORTHEAST hood[0][2]
+#define NBR_SOUTHEAST hood[2][2]
+#define NBR_SOUTHWEST hood[2][0]
+#define NBR_NORTHWEST hood[0][0]
+#define NBR_CENTER hood[1][1]
+
+#define DATA_BORDER_NORTH localData[1][1]			// 	north starts
+#define DATA_BORDER_EAST localData[1][n]			//	east starts
+#define DATA_BORDER_SOUTH localData[n][1]			// 	south starts
+#define DATA_BORDER_WEST localData[1][1]			//	west starts
+#define DATA_BORDER_NORTHEAST localData[1][n]			// 	NE starts
+#define DATA_BORDER_SOUTHEAST localData[n][n]		 	// 	SE starts
+#define DATA_BORDER_SOUTHWEST localData[n][1]			// 	SW starts
+#define DATA_BORDER_NORTHWEST localData[1][1]			// 	NW starts
+
+#define DATA_GHOST_NORTH localData[0][1]
+#define DATA_GHOST_EAST localData[1][n + 1]		//	east starts
+#define DATA_GHOST_SOUTH localData[n + 1][1]		// 	south starts
+#define DATA_GHOST_WEST localData[1][0]			//	west starts
+#define DATA_GHOST_NORTHEAST localData[0][n + 1]		// 	NE starts
+#define DATA_GHOST_SOUTHEAST localData[n + 1][n + 1] 	// 	SE starts
+#define DATA_GHOST_SOUTHWEST localData[n + 1][0]		// 	SW starts
+#define DATA_GHOST_NORTHWEST localData[0][0]			// 	NW starts
 
 #define NORTH 0
 #define EAST 1
@@ -54,12 +72,12 @@ int main(int argc, char **argv)
 		N = P * n_min;
 		if (!rank)
 		{
-			fprintf(stdout, "Setting N to minimum %d x %d.\n", P, n_min );
+			fprintf(stdout, "Setting N to minimum: %d x %d.\n", P, n_min );
 			fflush(stdout);
 		}
 	}
 	p = (int) sqrt(P);	// size of process grid
-	n = (int) N / P;	// size of subdomain
+	n = (int) N / p;	// size of subdomain
 
 	// check grid parameters
 	if (badGridParams(rank, P, p, N, n))
@@ -73,81 +91,6 @@ int main(int argc, char **argv)
 		fflush(stdout);
 	}
 
-	// if we get this far we are probably ok, allocate data space
-	// side of local 2D array is n+2 including ghost
-	double **localData = alloc2DArray((n + 2) * (n + 2));
-
-	//=========================================================================
-	// Submatrices for borders(outgoing) and ghosts(incoming)
-	//=========================================================================
-
-	// ghost borders and corners
-	//MPI_Datatype north, east, south, west;
-	//MPI_Datatype northEast, southEast, southWest, northWest;
-
-	// array of the ghost(incoming) submatrices numbered clockwise N E S W NE SE SW NW
-	MPI_Datatype ghosts[ndirs];
-
-	// list of coordinates for ghost parts
-	int gCoords[] = {	0, 1,			// 	north starts
-	                    1, n,			//	north size
-	                    1, n + 1,		//	east starts
-	                    n, 1,			// 	east size
-	                    n + 1, 1,		// 	south starts
-	                    1, n,			// 	south size
-	                    1, 0,			//	west starts
-	                    n, 1,			//  west size
-	                    0, n + 1,		// 	NE starts
-	                    1, 1,			//	NE size
-	                    n + 1, n + 1, 	// 	SE starts
-	                    1, 1,			// 	SE size
-	                    n + 1, 0,		// 	SW starts
-	                    1, 1,			//  SW size
-	                    0, 0,			// 	NW starts
-	                    1, 1			//  NW size
-	                };
-
-	// create the border subarrays
-	for (int i = 0; i < ndirs; ++i)
-	{
-		int totalDim[2]  = {n + 2, n + 2};	// dim of local data array
-		int starts[2] = {gCoords[i * 4], gCoords[(i * 4) + 1]};
-		int subsizes[2]  = {gCoords[(i * 4) + 2], gCoords[(i * 4) + 3]};
-		MPI_Type_create_subarray(2, totalDim, subsizes, starts, MPI_ORDER_C, MPI_DOUBLE, &ghosts[i]);
-		MPI_Type_commit(&ghosts[i]);
-	}
-
-	// array of the borders(outgoing) submatrices numbered clockwise N E S W NE SE SW NW
-	MPI_Datatype borders[ndirs];
-
-	// list of coordinates for border parts
-	int bCoords[] = {	1, 2,			// 	north starts
-	                    1, n - 2,			//	north size
-	                    2, n,			//	east starts
-	                    n - 2, 1,			// 	east size
-	                    n, 2,			// 	south starts
-	                    1, n - 2,			// 	south size
-	                    2, 1,			//	west starts
-	                    n - 2, 1,			//  west size
-	                    1, n,			// 	NE starts
-	                    1, 1,			//	NE size
-	                    n, n,		 	// 	SE starts
-	                    1, 1,			// 	SE size
-	                    n, 1,			// 	SW starts
-	                    1, 1,			//  SW size
-	                    1, 1,			// 	NW starts
-	                    1, 1			//  NW size
-	                };
-
-	// create the border subarrays
-	for (int i = 0; i < ndirs; ++i)
-	{
-		int totalDim[2]  = {n + 2, n + 2};	// dim of local data array
-		int starts[2] = {bCoords[i * 4], bCoords[(i * 4) + 1]};
-		int subsizes[2]  = {bCoords[(i * 4) + 2], bCoords[(i * 4) + 3]};
-		MPI_Type_create_subarray(2, totalDim, subsizes, starts, MPI_ORDER_C, MPI_DOUBLE, &borders[i]);
-		MPI_Type_commit(&borders[i]);
-	}
 
 	//=========================================================================
 	// MPI cartesian process mesh
@@ -166,8 +109,8 @@ int main(int argc, char **argv)
 
 	//printf("Rank: %d, meshRank: %d, i,j: %d,%d\n", rank, meshRank, meshCoords[0], meshCoords[1]);
 	int red = !(meshRank % 2);
-	if (red) printf("MeshRank %d is red.\n", meshRank);
-	else printf("MeshRank %d is black.\n", meshRank);
+	// if (red) printf("MeshRank %d is red.\n", meshRank);
+	// else printf("MeshRank %d is black.\n", meshRank);
 
 	// get neighbours rank within mesh communicator
 	int hood[3][3];	// hood[i][j] = meshRank, hood[1][1] = meshRank
@@ -185,15 +128,94 @@ int main(int argc, char **argv)
 		}
 	}
 
-	if (meshRank == 0)
+	// if (meshRank == 0)
+	// {
+	// 	printf("Rank: %d, meshRank: %d, i, j: %d,%d, hood: %d %d %d %d %d %d %d %d %d\n",
+	// 	       rank, meshRank, meshCoords[0], meshCoords[1],
+	// 	       hood[0][0], hood[0][1], hood[0][2],
+	// 	       hood[1][0], hood[1][1], hood[1][2],
+	// 	       hood[2][0], hood[2][1], hood[2][2]
+	// 	      );
+	// }
+
+	//=========================================================================
+	// Submatrices for border(outgoing) and ghost(incoming)
+	//=========================================================================
+
+	// ghost border and corners
+	//MPI_Datatype north, east, south, west;
+	//MPI_Datatype northEast, southEast, southWest, northWest;
+
+	// array of the ghost(incoming) submatrices numbered clockwise N E S W NE SE SW NW
+	MPI_Datatype ghost[ndirs];
+
+	// list of coordinates for ghost parts
+	int ghostSizes[] = {	1, n,			//	north size
+	                        n, 1,			// 	east size
+	                        1, n,			// 	south size
+	                        n, 1,			//  west size
+	                        1, 1,			//	NE size
+	                        1, 1,			// 	SE size
+	                        1, 1,			//  SW size
+	                        1, 1			//  NW size
+	                   };
+
+	/*int ghostStarts[] = {	0, 1,
+	                        1, n + 1,		//	east starts
+	                        n + 1, 1,		// 	south starts
+	                        1, 0,			//	west starts
+	                        0, n + 1,		// 	NE starts
+	                        n + 1, n + 1, 	// 	SE starts
+	                        n + 1, 0,		// 	SW starts
+	                        0, 0			// 	NW starts
+	                    };*/
+
+	// create the border subarrays
+	for (int i = 0; i < ndirs; ++i)
 	{
-		printf("Rank: %d, meshRank: %d, i, j: %d,%d, hood: %d %d %d %d %d %d %d %d %d\n",
-		       rank, meshRank, meshCoords[0], meshCoords[1],
-		       hood[0][0], hood[0][1], hood[0][2],
-		       hood[1][0], hood[1][1], hood[1][2],
-		       hood[2][0], hood[2][1], hood[2][2]
-		      );
+		int totalDim[2]  = {n + 2, n + 2};	// dim of local data array
+		int starts[2] = {0, 0};
+		int subsizes[2]  = {ghostSizes[(i * 2)], ghostSizes[(i * 2) + 1]};
+		MPI_Type_create_subarray(2, totalDim, subsizes, starts, MPI_ORDER_C, MPI_DOUBLE, &ghost[i]);
+		MPI_Type_commit(&ghost[i]);
 	}
+
+	// array of the border(outgoing) submatrices numbered clockwise N E S W NE SE SW NW
+	MPI_Datatype border[ndirs];
+
+	// list of coordinates for border parts
+	int borderSizes[] = {	1, n,			//	north size
+	                        n, 1,			// 	east size
+	                        1, n,			// 	south size
+	                        n, 1,			//  west size
+	                        1, 1,			//	NE size
+	                        1, 1,			// 	SE size
+	                        1, 1,			//  SW size
+	                        1, 1			//  NW size
+	                    };
+
+	/*int borderStarts[] = {	1, 1,			// 	north starts
+	                        1, n,			//	east starts
+	                        n, 1,			// 	south starts
+	                        1, 1,			//	west starts
+	                        1, n,			// 	NE starts
+	                        n, n,		 	// 	SE starts
+	                        n, 1,			// 	SW starts
+	                        1, 1,			// 	NW starts
+	                     };*/
+
+	// create the border subarrays
+	for (int i = 0; i < ndirs; ++i)
+	{
+		int sizes[2]  = {n + 2, n + 2};	// dim of local data array
+		int starts[2] = {0, 0};
+		int subsizes[2]  = {borderSizes[(i * 2)], borderSizes[(i * 2) + 1]};
+		MPI_Type_create_subarray(2, sizes, subsizes, starts, MPI_ORDER_C, MPI_DOUBLE, &border[i]);
+		MPI_Type_commit(&border[i]);
+	}
+
+
+
 
 
 	//=========================================================================
@@ -203,18 +225,15 @@ int main(int argc, char **argv)
 	// TODO: computation
 
 	// make test matrix
+	double **localData = alloc2DArray((n + 2) * (n + 2));
 	for (int i = 0; i < n + 2; ++i)
 	{
 		for (int j = 0; j < n + 2; ++j)
 		{
-			localData[i][j] = (i * (n + 2)) + j + 1 + meshRank * 100;
+			localData[i][j] = (i * (n + 2)) + j + 1 + rank * 100;
 		}
 	}
-	if (meshRank == 0)
-	{
-		printf("MeshRank: %d, LocalData: \n", meshRank );
-		printarr(localData, n + 2, "LocalData before comm.");
-	}
+
 
 	// send stuff to neighbours
 	int err = 0;
@@ -224,51 +243,68 @@ int main(int argc, char **argv)
 	            int source, int recvtag,
 	            MPI_Comm comm, MPI_Status *status)*/
 
+	MPI_Status status;
+	//int sizes[2]  = {n + 2, n + 2};	// dim of local data array
+	//MPI_Datatype border[NORTH];
+	//MPI_Datatype ghost[SOUTH];
 
-	if (meshRank == 0)
+	if (rank == 0)
 	{
-		printf("MeshRank %d %d communicating with %d.\n", meshRank, RANK_CENTER, RANK_NORTH );
-		MPI_Sendrecv(	&(localData[0][0]),
-		                n,
-		                borders[NORTH],
-		                RANK_NORTH,
-		                666,
-		                &(localData[0][0]),
-		                n,
-		                ghosts[NORTH],
-		                RANK_NORTH,
-		                666,
-		                processMesh,
-		                MPI_STATUS_IGNORE
-		            );
+		printf("rank %d sending to %d.\n", rank, 2 );
+		// err = MPI_Send(&(localData[0][1]), 1, border[NORTH], 2, 666, MPI_COMM_WORLD);
+		err = MPI_Send(&(DATA_BORDER_NORTH), 1, border[NORTH], NBR_NORTH, 666, MPI_COMM_WORLD);
+		err = MPI_Send(&(DATA_BORDER_EAST), n, border[EAST], NBR_NORTH, 666, MPI_COMM_WORLD);
+		err = MPI_Send(&(DATA_BORDER_SOUTH), 1, border[SOUTH], NBR_NORTH, 666, MPI_COMM_WORLD);
+		err = MPI_Send(&(DATA_BORDER_WEST), n, border[WEST], NBR_NORTH, 666, MPI_COMM_WORLD);
 
-		printf("Communication step done.\n");
+		err = MPI_Send(&(DATA_BORDER_NORTHEAST), 1, MPI_DOUBLE, NBR_NORTH, 666, MPI_COMM_WORLD);
+		err = MPI_Send(&(DATA_BORDER_SOUTHEAST), 1, MPI_DOUBLE, NBR_NORTH, 666, MPI_COMM_WORLD);
+		err = MPI_Send(&(DATA_BORDER_SOUTHWEST), 1, MPI_DOUBLE, NBR_NORTH, 666, MPI_COMM_WORLD);
+		err = MPI_Send(&(DATA_BORDER_NORTHWEST), 1, MPI_DOUBLE, NBR_NORTH, 666, MPI_COMM_WORLD);
+
+		// printf("Send step done, err: %d.\n", err);
+
+		// printf("cerr %d terr %d\n", cerr, terr);
 	}
-	if (meshRank == 2)
+	if (rank == 2)
 	{
-		printf("MeshRank %d %d communicating with %d.\n", meshRank, RANK_CENTER, RANK_SOUTH );
-		MPI_Sendrecv(	&(localData[0][0]),
-		                n,
-		                borders[SOUTH],
-		                RANK_SOUTH,
-		                666,
-		                &(localData[0][0]),
-		                n,
-		                ghosts[SOUTH],
-		                RANK_SOUTH,
-		                666,
-		                processMesh,
-		                MPI_STATUS_IGNORE
-		            );
-		printf("Communication step done.\n");
+
+		printf("MeshRank %d receiving from %d.\n", rank, 0 );
+
+		err = MPI_Recv(&(DATA_GHOST_SOUTH), 1, ghost[SOUTH], NBR_SOUTH, 666, MPI_COMM_WORLD, &status);
+		err = MPI_Recv(&(DATA_GHOST_WEST), n, ghost[WEST], NBR_SOUTH, 666, MPI_COMM_WORLD, &status);
+		err = MPI_Recv(&(DATA_GHOST_NORTH), 1, ghost[NORTH], NBR_SOUTH, 666, MPI_COMM_WORLD, &status);
+		err = MPI_Recv(&(DATA_GHOST_EAST), n, ghost[WEST], NBR_SOUTH, 666, MPI_COMM_WORLD, &status);
+		
+		err = MPI_Recv(&(DATA_GHOST_SOUTHWEST), n, MPI_DOUBLE, NBR_SOUTH, 666, MPI_COMM_WORLD, &status);
+		err = MPI_Recv(&(DATA_GHOST_NORTHWEST), n, MPI_DOUBLE, NBR_SOUTH, 666, MPI_COMM_WORLD, &status);
+		err = MPI_Recv(&(DATA_GHOST_NORTHEAST), n, MPI_DOUBLE, NBR_SOUTH, 666, MPI_COMM_WORLD, &status);
+		err = MPI_Recv(&(DATA_GHOST_SOUTHEAST), n, MPI_DOUBLE, NBR_SOUTH, 666, MPI_COMM_WORLD, &status);
+
+		// err = MPI_Recv(&(localData[0][1]), 1, ghost[SOUTH], 0, 666, MPI_COMM_WORLD, &status);
+
+		// printf("Receive step done, err: %d.\n", err);
+
+		int rcount;
+		MPI_Get_count(&status, ghost[SOUTH], &rcount);
+
+		printf("Received: %d.\n", rcount);
+		if (rank == 2) {
+
+			printf("rank %d reporting.\n", rank );
+			printarr(localData, n + 2, "LocalData after comm.");
+		}
+
 	}
 
 	//=========================================================================
 	// Output
 	//=========================================================================
 
-	if (meshRank == 0) {
-		
+
+
+	/*if (meshRank == 0) {
+
 		printf("MeshRank %d reporting.\n", meshRank );
 		printarr(localData, n + 2, "LocalData after comm.");
 
@@ -294,21 +330,21 @@ int main(int argc, char **argv)
 		            rank + 1,
 		            666,
 		            MPI_COMM_WORLD);
-	}
+	}*/
 
 	//=========================================================================
 	// Cleanup
 	//=========================================================================
 
 	// free the ghost spirits
-	for (int i = 0; i < ndirs; ++i)
-		MPI_Type_free(&ghosts[i]);
+	/*for (int i = 0; i < ndirs; ++i)
+		MPI_Type_free(&ghost[i]);*/
 
 	MPI_Finalize();
 
 	// free local array
-	free(localData[0]);
-	free(localData);
+	/*free(localData[0]);
+	free(localData);*/
 
 	return 0;
 }
@@ -327,9 +363,9 @@ int badGridParams(int rank, int P, int p, int N, int n)
 		}
 		return 1;
 	}
-	// n must be a square
-	int nsq = (int) sqrt(n);
-	if (nsq * nsq != n)
+	// N must be a square
+	int nsq = (int) sqrt(N);
+	if (nsq * nsq != N)
 	{
 		if (!rank)
 		{
@@ -338,12 +374,12 @@ int badGridParams(int rank, int P, int p, int N, int n)
 		return 1;
 	}
 	// check that N can be evenly distributed over the processes
-	if ( (n * P) != N)
+	if ( (n * p) != N)
 	{
 		if (!rank)
 		{
 			fprintf(stderr, "P: %d, n: %d, N: %d\n", P, n, N );
-			fprintf(stderr, "Can't compute, n*P must equal N. Exiting.\n");
+			fprintf(stderr, "Can't compute, n*p must equal N. Exiting.\n");
 		}
 		return 1;
 	}
