@@ -30,7 +30,8 @@ int main(int argc, char **argv)
 		N = P * n_min;
 		if (!rank)
 		{
-			fprintf(stderr, "Setting N to minimum %d x %d.\n", P, n_min );
+			fprintf(stdout, "Setting N to minimum %d x %d.\n", P, n_min );
+			fflush(stdout);
 		}
 	}
 	p = (int) sqrt(P);	// size of process grid
@@ -44,7 +45,8 @@ int main(int argc, char **argv)
 	}
 	else if (!rank)
 	{
-		fprintf(stderr, "P: %d, p: %d, N: %d, n: %d\n", P, p, N, n );
+		fprintf(stdout, "P: %d, p: %d, N: %d, n: %d\n", P, p, N, n );
+		fflush(stdout);
 	}
 
 	// if we get this far we are probably ok
@@ -88,23 +90,43 @@ int main(int argc, char **argv)
 		MPI_Type_commit(&ghosts[i]);
 	}
 
-	// my and neighbours rank within mesh communicator
-	int mCoords[2];	// my mesh coordinates
-	int mRank;		// my meshrank
-	int nRank, eRank, sRank, wRank, neRank, seRank, swRank, nwRank;
+	// create mpi process mesh
+	int meshCoords[2];	// my mesh coordinates
+	int meshRank;		// my meshRank
 	int dimensions[2] = {p, p}; // dimensions of mesh
 	int wraparound[2] = {1, 1}; // wraparound
 
-	// create grid mesh
 	MPI_Comm processMesh;
 	MPI_Cart_create(MPI_COMM_WORLD, 2, dimensions, wraparound, 1, &processMesh);
-	MPI_Comm_rank(processMesh, &mRank);	// get my mesh rank
-	MPI_Cart_coords(processMesh, mRank, 2, mCoords); 	// my i,j coordinates in process grid
-	printf("Rank: %d, mRank: %d, i,j: %d,%d\n", rank, mRank, mCoords[0], mCoords[1]);
+	MPI_Comm_rank(processMesh, &meshRank);	// get my mesh rank
+	MPI_Cart_coords(processMesh, meshRank, 2, meshCoords); 	// get my i,j coordinates in process grid
 
+	//printf("Rank: %d, meshRank: %d, i,j: %d,%d\n", rank, meshRank, meshCoords[0], meshCoords[1]);
+	
 
+	// get neighbours rank within mesh communicator
+	int hood[3][3];	// hood[i][j] = meshRank, hood[1][1] = meshRank
+	//int nRank, eRank, sRank, wRank, neRank, seRank, swRank, nwRank;
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = 0; j < 3; ++j)
+		{
+			int xof = meshCoords[0] - 1;
+			int yof = meshCoords[1] - 1;
+			int crd[2] = {xof + i, yof + j};
+			int rnk;
+			MPI_Cart_rank(processMesh, crd, &rnk); 	// get rank
+			hood[i][j] = rnk;
+		}
+	}
 
-
+	printf("Rank: %d, meshRank: %d, i, j: %d,%d, hood: %d %d %d %d %d %d %d %d %d\n",
+	       rank, meshRank, meshCoords[0], meshCoords[1],
+	       hood[0][0], hood[0][1], hood[0][2],
+	       hood[1][0], hood[1][1], hood[1][2],
+	       hood[2][0], hood[2][1], hood[2][2]
+	      );
+	fflush(stdout);
 
 
 
