@@ -8,16 +8,14 @@
 
 // numerical parameters
 #define Nglobal 81
-/*#define hx 1.0/(Nglobal-1)
-#define hx2 hx2*hx2*/
-#define ht 0.0001
+#define ht 0.025
 #define F 0.034
 #define K 0.063
 #define Du 2.0*1e-5
 #define Dv 1*1e-5
 #define u0 1.0
 #define v0 0.0
-#define MAXITER 2500
+#define MAXITER 5000
 
 
 int main(int argc, char *argv[])
@@ -53,7 +51,6 @@ int main(int argc, char *argv[])
 	csi N_inner = Nglobal / Psq;
 	csi n_inner = sqrt(N_inner);
 	csi n = n_inner;
-	//csi N = n * n;
 	csi N = N_inner;
 
 	double *u, *v, *unew, *vnew ;
@@ -66,20 +63,27 @@ int main(int argc, char *argv[])
 	}
 
 	// initial values
-	if (rank == 4) {
+	if (rank == 0) {
 		// int r = N / 2;
 		int m = n_inner;
 		// printf("rank = %d \n", rank);
 		// printf("r = %d, m = %d \n", r, m );
-		for (int i = 1; i < m; ++i) {
-			for (int j = 0; j < m; ++j) {
-				u[1 + j * m] = 0.5;
-				v[1 + j * m] = 1.25;
-				u[i + 0 * m] = 0.5;
-				v[i + 0 * m] = 1.25;
-			}
-		}
+		// for (int i = 1; i < m; ++i) {
+		// 	for (int j = 0; j < m; ++j) {
+		// 		u[1 + j * m] = 0.5;
+		// 		v[1 + j * m] = 1;
+		// 		u[i + 0 * m] = 0.5;
+		// 		v[i + 0 * m] = 1;
+		// 	}
+		// }
+		u[63] = 0.5;
+		v[63] = 1;
 	}
+
+	// for (int i = 0; i < N_inner; i++) {
+	// 	u[i] = i * rank;
+	// 	v[i] = 0;
+	// }
 
 	// allocate work vectors unew and vnew
 	unew = (double*) calloc( N , sizeof(double)) ;
@@ -116,19 +120,7 @@ int main(int argc, char *argv[])
 	double su = Du * ht / (hx2);
 	double sv = Dv * ht / (hx2);
 
-	    // create ImT
-
-	    int err = 0;	// should be 0 for no error
-
-	// T = cs_spalloc (N, N, nz, 1, 1) ;
-	// err = create_ImT(T, n, N, nz, Du, hx, ht);
-	// ImTu = cs_compress(T) ;
-	// cs_spfree (T) ;
-
-	// T = cs_spalloc (N, N, nz, 1, 1) ;
-	// err = create_ImT(T, n, N, nz, Dv, hx, ht);
-	// ImTv = cs_compress(T) ;
-	// cs_spfree (T) ;
+	int err = 0;	// should be 0 for no error
 
 	// create IpT
 
@@ -136,6 +128,8 @@ int main(int argc, char *argv[])
 	err = create_IpT(T, n, N, nz, Du, hx, ht);
 	IpTu = cs_compress(T) ;
 	cs_spfree (T) ;
+
+	//cs_print(IpTu, 0);
 
 	T = cs_spalloc (N, N, nz, 1, 1) ;
 	err = create_IpT(T, n, N, nz, Dv, hx, ht);
@@ -154,36 +148,37 @@ int main(int argc, char *argv[])
 		// Integration step
 		//==========================
 
-		// RHSu = sparse(IpTu*u + ht*(-u.*(v.^2) + F*(1-u)));
+		//  update step one
 		for (int i = 0; i < N; ++i) {
-			unew[i] = ht * ( (-u[i] * v[i] * v[i]) + (F * (1.0 - u[i])) ) ;	// RHSu part 1
+			unew[i] = ht * ( (-u[i] * v[i] * v[i]) + (F * (1.0 - u[i])) ) ;
 		}
-		//add boundary values to rhs
+		/// update step two
 		for (int i = 0; i < n_inner; i++) {
-			unew[i + (n_inner - 1)*n_inner] += bin_north[i];
-			unew[i] +=  bin_south[i];
-			unew[(i + 1)*n_inner - 1] += bin_east[i];
-			unew[i * n_inner] += bin_west[i];
+			unew[i + (n_inner - 1)*n_inner] += su*bin_east[i];
+			unew[i] +=  su*bin_west[i];
+			unew[(i + 1)*n_inner - 1] += su*bin_north[i];
+			unew[i * n_inner] += su*bin_south[i];
 		}
-		err = cs_gaxpy(IpTu, u, unew) ; // RHSu part 2
+		// update step three
+		err = cs_gaxpy(IpTu, u, unew) ;
+		//printf("iteration: %d, rank: %d, cs_gaxpy(IpTu, u, unew):  %d \n", i, rank, err);
 
-		// RHSv = sparse(IpTv*v + ht*(u.*(v.^2) - (F+k)*v));
+		//  update step one
 		for (int i = 0; i < N; ++i) {
-			vnew[i] = ht * ( (u[i] * v[i] * v[i]) - ((F + K) * v[i]) ) ;	// RHSv part 1
+			vnew[i] = ht * ( (u[i] * v[i] * v[i]) - ((F + K) * v[i]) ) ;
 		}
-		//add boundary values to rhs
+		// update step two
 		for (int i = 0; i < n_inner; i++) {
-			vnew[i + (n_inner - 1)*n_inner] += bin_north[i + n_inner];
-			vnew[i] += bin_south[i + n_inner];
-			vnew[(i + 1)*n_inner - 1] += bin_east[i + n_inner];
-			vnew[i * n_inner] += bin_west[i + n_inner];
+			vnew[i + (n_inner - 1)*n_inner] += sv*bin_east[i + n_inner];
+			vnew[i] += sv*bin_west[i + n_inner];
+			vnew[(i + 1)*n_inner - 1] += sv*bin_north[i + n_inner];
+			vnew[i * n_inner] += sv*bin_south[i + n_inner];
 		}
-		err = cs_gaxpy(IpTv, v, vnew) ;	// RHSv part 2
+		// update step three
+		err = cs_gaxpy(IpTv, v, vnew) ;	
+		//printf("iteration: %d, rank: %d, cs_gaxpy(IpTv, v, vnew):  %d \n", i, rank, err);
 
-		//solve linear system (backslash)
-		// err = cs_lusol(0, ImTu, unew, 0) ;
-		// err = cs_lusol(0, ImTv, vnew, 0) ;
-
+		// reset values
 		for (int i = 0; i < N; ++i) {
 			u[i] = unew[i];
 			v[i] = vnew[i];
@@ -193,19 +188,33 @@ int main(int argc, char *argv[])
 		// communication step
 		//==========================
 
+		// build boundary output data
 		for (int i = 0; i < n_inner; i++) {
-			bout_north[i] = -su * u[i + (n_inner - 1) * n_inner];
-			bout_north[i + n_inner] = -sv * v[i + (n_inner - 1) * n_inner];
+			bout_north[i] = u[i + (n_inner - 1) * n_inner];
+			bout_north[i + n_inner] = v[i + (n_inner - 1) * n_inner];
 
-			bout_south[i] = -su * u[i];
-			bout_south[i + n_inner] = -sv * v[i];
+			bout_south[i] = u[i];
+			bout_south[i + n_inner] = v[i];
 
-			bout_east[i] = -su * u[(i + 1) * n_inner - 1];
-			bout_east[i + n_inner] = -sv * v[(i + 1) * n_inner - 1];
+			bout_east[i] = u[(i + 1) * n_inner - 1];
+			bout_east[i + n_inner] = v[(i + 1) * n_inner - 1];
 
-			bout_west[i] = -su * u[i * n_inner];
-			bout_west[i + n_inner] = -sv * v[i * n_inner];
+			bout_west[i] = u[i * n_inner];
+			bout_west[i + n_inner] = v[i * n_inner];
 		}
+
+		// for (int i = 0; i < 2 * n_inner; i++) {
+		// 	printf("rank: %d, bout_north: %f \n", rank, bout_north[i]);
+		// }
+		// for (int i = 0; i < 2 * n_inner; i++) {
+		// 	printf("rank: %d, bout_south: %f \n", rank, bout_south[i]);
+		// }
+		// for (int i = 0; i < 2 * n_inner; i++) {
+		// 	printf("rank: %d, bout_east: %f \n", rank, bout_east[i]);
+		// }
+		// for (int i = 0; i < 2 * n_inner; i++) {
+		// 	printf("rank: %d, bout_west: %f \n", rank, bout_west[i]);
+		// }
 
 		// are we red? (if not, we are black)
 		bool red = (rank % 2) ? false : true;
@@ -272,35 +281,6 @@ int main(int argc, char *argv[])
 			    MPI_COMM_WORLD,
 			    MPI_STATUS_IGNORE);
 		} else {
-			MPI_Send(
-			    bout_north,
-			    n_inner,
-			    MPI_DOUBLE,
-			    target_north,
-			    0,
-			    MPI_COMM_WORLD);
-			MPI_Send(
-			    bout_south,
-			    n_inner,
-			    MPI_DOUBLE,
-			    target_south,
-			    0,
-			    MPI_COMM_WORLD);
-			MPI_Send(
-			    bout_east,
-			    n_inner,
-			    MPI_DOUBLE,
-			    target_east,
-			    0,
-			    MPI_COMM_WORLD);
-			MPI_Send(
-			    bout_west,
-			    n_inner,
-			    MPI_DOUBLE,
-			    target_west,
-			    0,
-			    MPI_COMM_WORLD);
-
 			MPI_Recv(
 			    bin_north,
 			    n_inner,
@@ -333,7 +313,49 @@ int main(int argc, char *argv[])
 			    0,
 			    MPI_COMM_WORLD,
 			    MPI_STATUS_IGNORE);
+
+			MPI_Send(
+			    bout_north,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_north,
+			    0,
+			    MPI_COMM_WORLD);
+			MPI_Send(
+			    bout_south,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_south,
+			    0,
+			    MPI_COMM_WORLD);
+			MPI_Send(
+			    bout_east,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_east,
+			    0,
+			    MPI_COMM_WORLD);
+			MPI_Send(
+			    bout_west,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_west,
+			    0,
+			    MPI_COMM_WORLD);
 		}
+
+		// for (int i = 0; i < 2 * n_inner; i++) {
+		// 	printf("rank: %d, bin_north: %f \n", rank, bin_north[i]);
+		// }
+		// for (int i = 0; i < 2 * n_inner; i++) {
+		// 	printf("rank: %d, bin_south: %f \n", rank, bin_south[i]);
+		// }
+		// for (int i = 0; i < 2 * n_inner; i++) {
+		// 	printf("rank: %d, bin_east: %f \n", rank, bin_east[i]);
+		// }
+		// for (int i = 0; i < 2 * n_inner; i++) {
+		// 	printf("rank: %d, bin_west: %f \n", rank, bin_west[i]);
+		// }
 
 		//==========================
 		// end iteration
@@ -377,13 +399,21 @@ int main(int argc, char *argv[])
 		            666,
 		            MPI_COMM_WORLD);
 	}
+	
+
+	// FILE *fp;
+	// if (rank == 0) {
+	// 	fp = fopen("u_vals_center.txt", "w");	// open new file to write
+	// 	for (int i = 0; i < N_inner; ++i) {
+	// 		fprintf(fp, "%f\n", u[i]);
+	// 	}
+	// 	fclose(fp);
+	// }
 
 	//==========================
 	// free resources
 	//==========================
 
-	// cs_spfree (ImTu) ;
-	// cs_spfree (ImTv) ;
 	cs_spfree (IpTu) ;
 	cs_spfree (IpTv) ;
 
