@@ -49,10 +49,10 @@
 #define NORTHWEST 7
 #define CENTER 8
 
-#define VERT 1
-#define HORZ 2
-#define DIAGUP 3
-#define DIAGDOWN 4
+#define VERTICAL 1
+#define HORIZONTAL 2
+#define DIAGONAL_UP 3
+#define DIAGONAL_DOWN 4
 
 typedef enum { false, true } bool;
 
@@ -118,11 +118,22 @@ int main(int argc, char **argv)
 	MPI_Cart_coords(processMesh, meshRank, 2, meshCoords); 	// get my i,j coordinates in process grid
 
 	//printf("Rank: %d, meshRank: %d, i,j: %d,%d\n", rank, meshRank, meshCoords[0], meshCoords[1]);
-	int red = !(meshRank % 2);
-	// if (red) printf("MeshRank %d is red.\n", meshRank);
-	// else printf("MeshRank %d is black.\n", meshRank);
 
-	// get neighbours rank within mesh communicator
+	// What color am I
+	// even row AND even process = red, even row AND odd process = black
+	// odd row AND even process = black, odd row AND odd prcocess = red
+	int red;
+	if ( (meshCoords[0] % 2) == 0 )	// even row
+	{
+		red = (meshRank % 2) ? 0 : 1;	// even process = red, else black
+	}
+	else	// odd row
+	{
+		red = (meshRank % 2) ? 1 : 0;	// even process = black, else red
+	}
+	// printf("MeshRank %d with coords [%d %d] is red? %d\n", meshRank, meshCoords[0], meshCoords[1], red);
+
+	// gfigure out my neighbourgood
 	int kernel[3][3];		// hood[i][j] = meshRank, hood[1][1] = my meshRank
 	int neighbour[ndirs];	// neighbour[DIRECTION] = rank of neighbour
 	//int nRank, eRank, sRank, wRank, neRank, seRank, swRank, nwRank;
@@ -141,11 +152,26 @@ int main(int argc, char **argv)
 	neighbour[NORTH] = kernel[0][1];
 	neighbour[EAST] = kernel[1][2];
 	neighbour[SOUTH] = kernel[2][1];
-	neighbour[WEST] = kernel[0][1];
+	neighbour[WEST] = kernel[1][0];
 	neighbour[NORTHEAST] = kernel[0][2];
 	neighbour[SOUTHEAST] = kernel[2][2];
 	neighbour[SOUTHWEST] = kernel[0][2];
 	neighbour[NORTHWEST] = kernel[0][0];
+
+	printf("MeshRank %d, red: %d with coords [%d %d] has hood N E S W NE SE SW NW [%d %d %d %d %d %d %d %d].\n",
+	       meshRank,
+	       red,
+	       meshCoords[0],
+	       meshCoords[1],
+	       neighbour[NORTH],
+	       neighbour[EAST],
+	       neighbour[SOUTH],
+	       neighbour[WEST],
+	       neighbour[NORTHEAST],
+	       neighbour[SOUTHEAST],
+	       neighbour[SOUTHWEST],
+	       neighbour[NORTHWEST]
+	      );
 
 	//=========================================================================
 	// Submatrices for border(outgoing) and ghost(incoming)
@@ -232,92 +258,79 @@ int main(int argc, char **argv)
 	//MPI_Datatype border[NORTH];
 	//MPI_Datatype ghost[SOUTH];
 
-	if (meshRank == 0)
+	if (red)
 	{
-		//printf("rank %d sending to %d.\n", rank, 2 );
-		
+		// talk to north
 		err = MPI_Sendrecv(	&(DATA_BORDER_NORTH),
-					1,
-					border[NORTH],
-					neighbour[NORTH],
-					666,
-					&(DATA_GHOST_NORTH),
-					1,
-					ghost[NORTH],
-					neighbour[NORTH],
-					666,
-					processMesh,
-					&status
-					);
+		                    1,
+		                    border[NORTH],
+		                    neighbour[NORTH],
+		                    VERTICAL,
+		                    &(DATA_GHOST_NORTH),
+		                    1,
+		                    ghost[NORTH],
+		                    neighbour[NORTH],
+		                    VERTICAL,
+		                    processMesh,
+		                    &status
+		                  );
 
-		MPI_Get_count(&status, ghost[NORTH], &rcount);
-		printf("0 received: %d from NORTH.\n", rcount);
+		// MPI_Get_count(&status, ghost[NORTH], &rcount);
+		// printf("%d received: %d from NORTH.\n", meshRank, rcount);
 
-		err = MPI_Sendrecv(	&(DATA_BORDER_EAST),
-					n,
-					border[EAST],
-					neighbour[EAST],
-					777,
-					&(DATA_GHOST_EAST),
-					n,
-					ghost[EAST],
-					neighbour[EAST],
-					777,
-					processMesh,
-					&status
-					);
-
-		MPI_Get_count(&status, ghost[EAST], &rcount);
-		printf("0 received: %d from EAST.\n", rcount);
-
-		// printf("Send step done, err: %d.\n", err);
-
-		// printf("cerr %d terr %d\n", cerr, terr);
-	}
-	if (meshRank == 2)
-	{
-
-		//printf("MeshRank %d receiving from %d.\n", rank, 0 );
-
+		// talk to south
 		err = MPI_Sendrecv(	&(DATA_BORDER_SOUTH),
-					1,
-					border[SOUTH],
-					neighbour[SOUTH],
-					666,
-					&(DATA_GHOST_SOUTH),
-					1,
-					ghost[SOUTH],
-					neighbour[SOUTH],
-					666,
-					processMesh,
-					&status
-					);
-
-		MPI_Get_count(&status, ghost[SOUTH], &rcount);
-		printf("2 received: %d from SOUTH.\n", rcount);
+		                    1,
+		                    border[SOUTH],
+		                    neighbour[SOUTH],
+		                    VERTICAL,
+		                    &(DATA_GHOST_SOUTH),
+		                    1,
+		                    ghost[SOUTH],
+		                    neighbour[SOUTH],
+		                    VERTICAL,
+		                    processMesh,
+		                    &status
+		                  );
 
 	}
-	if(meshRank == 1)
+	else	// black
 	{
-		err = MPI_Sendrecv(	&(DATA_BORDER_WEST),
-					n,
-					border[WEST],
-					0,
-					//neighbour[WEST],
-					777,
-					&(DATA_GHOST_WEST),
-					n,
-					ghost[WEST],
-					0,
-					//neighbour[WEST],
-					777,
-					processMesh,
-					&status
-					);
+		// talk to south
+		err = MPI_Sendrecv(	&(DATA_BORDER_SOUTH),
+		                    1,
+		                    border[SOUTH],
+		                    neighbour[SOUTH],
+		                    VERTICAL,
+		                    &(DATA_GHOST_SOUTH),
+		                    1,
+		                    ghost[SOUTH],
+		                    neighbour[SOUTH],
+		                    VERTICAL,
+		                    processMesh,
+		                    &status
+		                  );
 
-		MPI_Get_count(&status, ghost[WEST], &rcount);
-		printf("2 received: %d from WEST.\n", rcount);
+		// talk to north
+		err = MPI_Sendrecv(	&(DATA_BORDER_NORTH),
+		                    1,
+		                    border[NORTH],
+		                    neighbour[NORTH],
+		                    VERTICAL,
+		                    &(DATA_GHOST_NORTH),
+		                    1,
+		                    ghost[NORTH],
+		                    neighbour[NORTH],
+		                    VERTICAL,
+		                    processMesh,
+		                    &status
+		                  );
+
+		/*MPI_Get_count(&status, ghost[SOUTH], &rcount);
+		printf("%d received: %d from SOUTH.\n", meshRank, rcount);*/
+
 	}
+
 
 	//=========================================================================
 	// Output
