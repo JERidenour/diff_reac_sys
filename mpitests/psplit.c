@@ -4,7 +4,7 @@
 #include <mpi.h>
 
 #define ndirs 8	// how many neighbours
-#define n_min 4	// minimum meaningful size of local subdomain
+#define n_min 1	// minimum meaningful size of local subdomain
 
 /*#define NBR_NORTH hood[0][1]
 #define NBR_EAST hood[1][2]
@@ -155,7 +155,7 @@ int main(int argc, char **argv)
 	neighbour[WEST] = kernel[1][0];
 	neighbour[NORTHEAST] = kernel[0][2];
 	neighbour[SOUTHEAST] = kernel[2][2];
-	neighbour[SOUTHWEST] = kernel[0][2];
+	neighbour[SOUTHWEST] = kernel[2][0];
 	neighbour[NORTHWEST] = kernel[0][0];
 
 	printf("MeshRank %d, red: %d with coords [%d %d] has hood N E S W NE SE SW NW [%d %d %d %d %d %d %d %d].\n",
@@ -293,6 +293,36 @@ int main(int argc, char **argv)
 		                    &status
 		                  );
 
+		// talk to east
+		err = MPI_Sendrecv(	&(DATA_BORDER_EAST),
+		                    n,
+		                    border[EAST],
+		                    neighbour[EAST],
+		                    HORIZONTAL,
+		                    &(DATA_GHOST_EAST),
+		                    n,
+		                    ghost[EAST],
+		                    neighbour[EAST],
+		                    HORIZONTAL,
+		                    processMesh,
+		                    &status
+		                  );
+
+		// talk to west
+		err = MPI_Sendrecv(	&(DATA_BORDER_WEST),
+		                    n,
+		                    border[WEST],
+		                    neighbour[WEST],
+		                    HORIZONTAL,
+		                    &(DATA_GHOST_WEST),
+		                    n,
+		                    ghost[WEST],
+		                    neighbour[WEST],
+		                    HORIZONTAL,
+		                    processMesh,
+		                    &status
+		                  );
+
 	}
 	else	// black
 	{
@@ -326,6 +356,35 @@ int main(int argc, char **argv)
 		                    &status
 		                  );
 
+		// talk to west
+		err = MPI_Sendrecv(	&(DATA_BORDER_WEST),
+		                    n,
+		                    border[WEST],
+		                    neighbour[WEST],
+		                    HORIZONTAL,
+		                    &(DATA_GHOST_WEST),
+		                    n,
+		                    ghost[WEST],
+		                    neighbour[WEST],
+		                    HORIZONTAL,
+		                    processMesh,
+		                    &status
+		                  );
+
+		// talk to east
+		err = MPI_Sendrecv(	&(DATA_BORDER_EAST),
+		                    n,
+		                    border[EAST],
+		                    neighbour[EAST],
+		                    HORIZONTAL,
+		                    &(DATA_GHOST_EAST),
+		                    n,
+		                    ghost[EAST],
+		                    neighbour[EAST],
+		                    HORIZONTAL,
+		                    processMesh,
+		                    &status
+		                  );
 		/*MPI_Get_count(&status, ghost[SOUTH], &rcount);
 		printf("%d received: %d from SOUTH.\n", meshRank, rcount);*/
 
