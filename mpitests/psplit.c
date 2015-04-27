@@ -54,6 +54,9 @@
 #define DIAGONAL_UP 3
 #define DIAGONAL_DOWN 4
 
+#define I 0
+#define J 1
+
 typedef enum { false, true } bool;
 
 void printarr(double **data, int n, char *str);
@@ -123,7 +126,7 @@ int main(int argc, char **argv)
 	// even row AND even process = red, even row AND odd process = black
 	// odd row AND even process = black, odd row AND odd prcocess = red
 	int red;
-	if ( (meshCoords[0] % 2) == 0 )	// even row
+	if ( (meshCoords[I] % 2) == 0 )	// even row
 	{
 		red = (meshRank % 2) ? 0 : 1;	// even process = red, else black
 	}
@@ -141,8 +144,8 @@ int main(int argc, char **argv)
 	{
 		for (int j = 0; j < 3; ++j)
 		{
-			int xof = meshCoords[0] - 1;
-			int yof = meshCoords[1] - 1;
+			int xof = meshCoords[I] - 1;
+			int yof = meshCoords[J] - 1;
 			int crd[2] = {xof + i, yof + j};
 			int rnk;
 			MPI_Cart_rank(processMesh, crd, &rnk); 	// get rank
@@ -161,8 +164,8 @@ int main(int argc, char **argv)
 	printf("MeshRank %d, red: %d with coords [%d %d] has hood N E S W NE SE SW NW [%d %d %d %d %d %d %d %d].\n",
 	       meshRank,
 	       red,
-	       meshCoords[0],
-	       meshCoords[1],
+	       meshCoords[I],
+	       meshCoords[J],
 	       neighbour[NORTH],
 	       neighbour[EAST],
 	       neighbour[SOUTH],
@@ -392,7 +395,7 @@ int main(int argc, char **argv)
 
 
 	//=========================================================================
-	// Output
+	// Output to terminal
 	//=========================================================================
 
 	if (meshRank == 0) {
@@ -423,6 +426,30 @@ int main(int argc, char **argv)
 		            666,
 		            MPI_COMM_WORLD);
 	}
+
+	//=========================================================================
+	// Output to file
+	//=========================================================================
+
+	// int globalsizes[2] = {p*(n + 2), p*(n + 2)};	// dims of global array including ghosts
+	int globalsizes[2] = {p*n, p*n};	// dims of global array including ghosts
+	int localsizes[2] = {n, n};				// dims of local array ex ghosts
+	int globalstarts[2] = {meshCoords[I]*n, meshCoords[J]*n};
+
+	MPI_Datatype savedomain;
+	err = MPI_Type_create_subarray(2, globalsizes, localsizes,
+	                                 globalstarts, MPI_ORDER_C, MPI_DOUBLE, &savedomain);
+	MPI_Type_commit(&savedomain);
+
+	MPI_File mpifile;
+	err = MPI_File_open(processMesh, "out.dat",
+	                      MPI_MODE_WRONLY | MPI_MODE_CREATE,
+	                      MPI_INFO_NULL, &mpifile);
+	err = MPI_File_set_view(mpifile, 0, MPI_DOUBLE,
+	                          savedomain, "native", MPI_INFO_NULL);
+	err = MPI_File_write_all(mpifile, &(DATA_BORDER_NORTH),
+	                           6 * 8, MPI_DOUBLE, &status);
+	err = MPI_File_close(&mpifile);
 
 	//=========================================================================
 	// Cleanup
