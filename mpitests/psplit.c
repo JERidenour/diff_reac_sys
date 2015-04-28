@@ -431,6 +431,7 @@ int main(int argc, char **argv)
 	// Output to file
 	//=========================================================================
 
+	/*
 	// int globalsizes[2] = {p*(n + 2), p*(n + 2)};	// dims of global array including ghosts
 	int globalsizes[2] = {p*n, p*n};	// dims of global array including ghosts
 	int localsizes[2] = {n, n};				// dims of local array ex ghosts
@@ -450,6 +451,61 @@ int main(int argc, char **argv)
 	err = MPI_File_write_all(mpifile, &(DATA_BORDER_NORTH),
 	                           6 * 8, MPI_DOUBLE, &status);
 	err = MPI_File_close(&mpifile);
+	*/
+
+
+	FILE *fp;
+	//MPI_Status rstat;
+
+	if (meshRank == 0) {
+		fp = fopen("out.txt", "w");	// open new file to write
+		size_t firstelem = 1;
+		size_t lastelem = n;
+		for (int i = firstelem; i <= lastelem; ++i) {
+			for (int j = 1; j <= lastelem; ++j)
+			{
+				fprintf(fp, "%f ", localData[i][j]);
+			}
+			fprintf(fp, "\n");
+		}
+		fclose(fp);
+		printf("Master wrote [%d %d] elements.\n", n,n);
+		fp = fopen("pPnN.txt", "w");	// open new file to write
+		fprintf(fp, "%d %d %d %d\n", p, P, n, N);
+		fclose(fp);
+		printf("Master wrote pPnN.\n");
+	} else {
+		int go;
+		MPI_Recv(	&go,
+		            1,
+		            MPI_INT,
+		            meshRank - 1,
+		            666,	// tag
+		            MPI_COMM_WORLD,
+		            MPI_STATUS_IGNORE);
+
+		fp = fopen("out.txt", "a");	// open to append
+		size_t firstelem = 1;
+		size_t lastelem = n;
+		for (int i = firstelem; i <= lastelem; ++i) {
+			for (int j = 1; j <= lastelem; ++j)
+			{
+				fprintf(fp, "%f ", localData[i][j]);
+			}
+			fprintf(fp, "\n");
+		}
+		fclose(fp);
+		printf("Process %d appended [%d %d] elements.\n", meshRank, n,n);
+	}
+
+	if (meshRank < P - 1) {
+		MPI_Send(	&meshRank,	// send my meshRank to next process
+		            1,
+		            MPI_INT,
+		            meshRank + 1,
+		            666,
+		            MPI_COMM_WORLD);
+	}
 
 	//=========================================================================
 	// Cleanup
