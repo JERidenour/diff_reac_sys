@@ -1,12 +1,12 @@
 %% params
-%clear
+clear
 
 
 n = 64;
-hx = 1/(n-1);    % i,j = [1...n]
+hx = 1/(n-1)    % i,j = [1...n]
 hx2 = hx^2;
 
-ht = 0.025
+ht = 0.25
 
 Du = 2*1e-5;
 Dv = 1e-5;
@@ -123,7 +123,8 @@ v_new = v;
 
 %% Forward
 
-maxtime = 500000;
+%maxtime = 500000;
+maxtime = 10;
 
 for t = 1:maxtime
 
@@ -138,12 +139,25 @@ u = u_new;
 v = v_new;
 
 if mod(t,30)==0
-        
+        subplot 121
         contourf(reshape(u,[n n]))
+        axis equal
+        subplot 122
+        contourf(reshape(v,[n n]))
+        axis equal
         pause(0.001)
     end
 
 end
 
+%%
+figure(1)
+subplot 121
+contourf(reshape(u,[n n]))
+axis equal
+subplot 122
+contourf(reshape(v,[n n]))
+axis equal
+pause(0.001)
 
 
