@@ -57,6 +57,16 @@
 #define I 0
 #define J 1
 
+//=========================================================================
+// your computation defines
+//=========================================================================
+
+#define MAXITER 1
+
+//=========================================================================
+// declarations
+//=========================================================================
+
 typedef enum { false, true } bool;
 
 void printarr(double **data, int n, char *str);
@@ -235,164 +245,170 @@ int main(int argc, char **argv)
 	// Computation
 	//=========================================================================
 
-	// TODO: computation
 
-	// make test matrix
+	// allocate data vectors
 	double **localData = alloc2DArray((n + 2) * (n + 2));
-	for (int i = 0; i < n + 2; ++i)
+
+	for (int iter = 0; iter < MAXITER; ++iter)	// begin computation iterations
 	{
-		for (int j = 0; j < n + 2; ++j)
+		// Put your own stuff here
+
+		// make test matrix
+		for (int i = 0; i < n + 2; ++i)
 		{
-			localData[i][j] = (i * (n + 2)) + j + 1 + rank * 100;
+			for (int j = 0; j < n + 2; ++j)
+			{
+				localData[i][j] = (i * (n + 2)) + j + 1 + rank * 100;
+			}
 		}
-	}
 
-	// send stuff to neighbours
-	int err = 0;
-	/*int MPI_Sendrecv(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
-	            int dest, int sendtag,
-	            void *recvbuf, int recvcount, MPI_Datatype recvtype,
-	            int source, int recvtag,
-	            MPI_Comm comm, MPI_Status *status)*/
+		// send stuff to neighbours
+		int err = 0;
+		/*int MPI_Sendrecv(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
+		            int dest, int sendtag,
+		            void *recvbuf, int recvcount, MPI_Datatype recvtype,
+		            int source, int recvtag,
+		            MPI_Comm comm, MPI_Status *status)*/
 
-	MPI_Status status;
-	int rcount;
-	//int sizes[2]  = {n + 2, n + 2};	// dim of local data array
-	//MPI_Datatype border[NORTH];
-	//MPI_Datatype ghost[SOUTH];
+		MPI_Status status;
+		// int rcount;
+		//int sizes[2]  = {n + 2, n + 2};	// dim of local data array
+		//MPI_Datatype border[NORTH];
+		//MPI_Datatype ghost[SOUTH];
 
-	if (red)
-	{
-		// talk to north
-		err = MPI_Sendrecv(	&(DATA_BORDER_NORTH),
-		                    1,
-		                    border[NORTH],
-		                    neighbour[NORTH],
-		                    VERTICAL,
-		                    &(DATA_GHOST_NORTH),
-		                    1,
-		                    ghost[NORTH],
-		                    neighbour[NORTH],
-		                    VERTICAL,
-		                    processMesh,
-		                    &status
-		                  );
+		if (red)
+		{
+			// talk to north
+			err = MPI_Sendrecv(	&(DATA_BORDER_NORTH),
+			                    1,
+			                    border[NORTH],
+			                    neighbour[NORTH],
+			                    VERTICAL,
+			                    &(DATA_GHOST_NORTH),
+			                    1,
+			                    ghost[NORTH],
+			                    neighbour[NORTH],
+			                    VERTICAL,
+			                    processMesh,
+			                    &status
+			                  );
 
-		// MPI_Get_count(&status, ghost[NORTH], &rcount);
-		// printf("%d received: %d from NORTH.\n", meshRank, rcount);
+			// MPI_Get_count(&status, ghost[NORTH], &rcount);
+			// printf("%d received: %d from NORTH.\n", meshRank, rcount);
 
-		// talk to south
-		err = MPI_Sendrecv(	&(DATA_BORDER_SOUTH),
-		                    1,
-		                    border[SOUTH],
-		                    neighbour[SOUTH],
-		                    VERTICAL,
-		                    &(DATA_GHOST_SOUTH),
-		                    1,
-		                    ghost[SOUTH],
-		                    neighbour[SOUTH],
-		                    VERTICAL,
-		                    processMesh,
-		                    &status
-		                  );
+			// talk to south
+			err = MPI_Sendrecv(	&(DATA_BORDER_SOUTH),
+			                    1,
+			                    border[SOUTH],
+			                    neighbour[SOUTH],
+			                    VERTICAL,
+			                    &(DATA_GHOST_SOUTH),
+			                    1,
+			                    ghost[SOUTH],
+			                    neighbour[SOUTH],
+			                    VERTICAL,
+			                    processMesh,
+			                    &status
+			                  );
 
-		// talk to east
-		err = MPI_Sendrecv(	&(DATA_BORDER_EAST),
-		                    n,
-		                    border[EAST],
-		                    neighbour[EAST],
-		                    HORIZONTAL,
-		                    &(DATA_GHOST_EAST),
-		                    n,
-		                    ghost[EAST],
-		                    neighbour[EAST],
-		                    HORIZONTAL,
-		                    processMesh,
-		                    &status
-		                  );
+			// talk to east
+			err = MPI_Sendrecv(	&(DATA_BORDER_EAST),
+			                    n,
+			                    border[EAST],
+			                    neighbour[EAST],
+			                    HORIZONTAL,
+			                    &(DATA_GHOST_EAST),
+			                    n,
+			                    ghost[EAST],
+			                    neighbour[EAST],
+			                    HORIZONTAL,
+			                    processMesh,
+			                    &status
+			                  );
 
-		// talk to west
-		err = MPI_Sendrecv(	&(DATA_BORDER_WEST),
-		                    n,
-		                    border[WEST],
-		                    neighbour[WEST],
-		                    HORIZONTAL,
-		                    &(DATA_GHOST_WEST),
-		                    n,
-		                    ghost[WEST],
-		                    neighbour[WEST],
-		                    HORIZONTAL,
-		                    processMesh,
-		                    &status
-		                  );
+			// talk to west
+			err = MPI_Sendrecv(	&(DATA_BORDER_WEST),
+			                    n,
+			                    border[WEST],
+			                    neighbour[WEST],
+			                    HORIZONTAL,
+			                    &(DATA_GHOST_WEST),
+			                    n,
+			                    ghost[WEST],
+			                    neighbour[WEST],
+			                    HORIZONTAL,
+			                    processMesh,
+			                    &status
+			                  );
 
-	}
-	else	// black
-	{
-		// talk to south
-		err = MPI_Sendrecv(	&(DATA_BORDER_SOUTH),
-		                    1,
-		                    border[SOUTH],
-		                    neighbour[SOUTH],
-		                    VERTICAL,
-		                    &(DATA_GHOST_SOUTH),
-		                    1,
-		                    ghost[SOUTH],
-		                    neighbour[SOUTH],
-		                    VERTICAL,
-		                    processMesh,
-		                    &status
-		                  );
+		}
+		else	// black
+		{
+			// talk to south
+			err = MPI_Sendrecv(	&(DATA_BORDER_SOUTH),
+			                    1,
+			                    border[SOUTH],
+			                    neighbour[SOUTH],
+			                    VERTICAL,
+			                    &(DATA_GHOST_SOUTH),
+			                    1,
+			                    ghost[SOUTH],
+			                    neighbour[SOUTH],
+			                    VERTICAL,
+			                    processMesh,
+			                    &status
+			                  );
 
-		// talk to north
-		err = MPI_Sendrecv(	&(DATA_BORDER_NORTH),
-		                    1,
-		                    border[NORTH],
-		                    neighbour[NORTH],
-		                    VERTICAL,
-		                    &(DATA_GHOST_NORTH),
-		                    1,
-		                    ghost[NORTH],
-		                    neighbour[NORTH],
-		                    VERTICAL,
-		                    processMesh,
-		                    &status
-		                  );
+			// talk to north
+			err = MPI_Sendrecv(	&(DATA_BORDER_NORTH),
+			                    1,
+			                    border[NORTH],
+			                    neighbour[NORTH],
+			                    VERTICAL,
+			                    &(DATA_GHOST_NORTH),
+			                    1,
+			                    ghost[NORTH],
+			                    neighbour[NORTH],
+			                    VERTICAL,
+			                    processMesh,
+			                    &status
+			                  );
 
-		// talk to west
-		err = MPI_Sendrecv(	&(DATA_BORDER_WEST),
-		                    n,
-		                    border[WEST],
-		                    neighbour[WEST],
-		                    HORIZONTAL,
-		                    &(DATA_GHOST_WEST),
-		                    n,
-		                    ghost[WEST],
-		                    neighbour[WEST],
-		                    HORIZONTAL,
-		                    processMesh,
-		                    &status
-		                  );
+			// talk to west
+			err = MPI_Sendrecv(	&(DATA_BORDER_WEST),
+			                    n,
+			                    border[WEST],
+			                    neighbour[WEST],
+			                    HORIZONTAL,
+			                    &(DATA_GHOST_WEST),
+			                    n,
+			                    ghost[WEST],
+			                    neighbour[WEST],
+			                    HORIZONTAL,
+			                    processMesh,
+			                    &status
+			                  );
 
-		// talk to east
-		err = MPI_Sendrecv(	&(DATA_BORDER_EAST),
-		                    n,
-		                    border[EAST],
-		                    neighbour[EAST],
-		                    HORIZONTAL,
-		                    &(DATA_GHOST_EAST),
-		                    n,
-		                    ghost[EAST],
-		                    neighbour[EAST],
-		                    HORIZONTAL,
-		                    processMesh,
-		                    &status
-		                  );
-		/*MPI_Get_count(&status, ghost[SOUTH], &rcount);
-		printf("%d received: %d from SOUTH.\n", meshRank, rcount);*/
+			// talk to east
+			err = MPI_Sendrecv(	&(DATA_BORDER_EAST),
+			                    n,
+			                    border[EAST],
+			                    neighbour[EAST],
+			                    HORIZONTAL,
+			                    &(DATA_GHOST_EAST),
+			                    n,
+			                    ghost[EAST],
+			                    neighbour[EAST],
+			                    HORIZONTAL,
+			                    processMesh,
+			                    &status
+			                  );
+			/*MPI_Get_count(&status, ghost[SOUTH], &rcount);
+			printf("%d received: %d from SOUTH.\n", meshRank, rcount);*/
 
-	}
+		}
 
+	} // end computation iteration
 
 	//=========================================================================
 	// Output to terminal
@@ -469,7 +485,7 @@ int main(int argc, char **argv)
 			fprintf(fp, "\n");
 		}
 		fclose(fp);
-		printf("Master wrote [%d %d] elements.\n", n,n);
+		printf("Master wrote [%d %d] elements.\n", n, n);
 		fp = fopen("pPnN.txt", "w");	// open new file to write
 		fprintf(fp, "%d %d %d %d\n", p, P, n, N);
 		fclose(fp);
@@ -495,7 +511,7 @@ int main(int argc, char **argv)
 			fprintf(fp, "\n");
 		}
 		fclose(fp);
-		printf("Process %d appended [%d %d] elements.\n", meshRank, n,n);
+		printf("Process %d appended [%d %d] elements.\n", meshRank, n, n);
 	}
 
 	if (meshRank < P - 1) {
