@@ -6,21 +6,6 @@
 #define ndirs 8	// how many neighbours
 #define n_min 1	// minimum meaningful size of local subdomain
 
-/*#define NBR_NORTH hood[0][1]
-#define NBR_EAST hood[1][2]
-#define NBR_SOUTH hood[2][1]
-#define NBR_WEST hood[1][0]
-#define NBR_NORTHEAST hood[0][2]
-#define NBR_SOUTHEAST hood[2][2]
-#define NBR_SOUTHWEST hood[2][0]
-#define NBR_NORTHWEST hood[0][0]
-#define NBR_CENTER hood[1][1]*/
-
-/*#define BORDER_EAST_START {1,n}
-#define BORDER_EAST_SIZE {n,1}
-#define GHOST_EAST_START {1,n + 1}
-#define GHOST_EAST_SIZE {n,1}*/
-
 #define DATA_BORDER_NORTH localData[1][1]			// 	north starts
 #define DATA_BORDER_EAST localData[1][n]			//	east starts
 #define DATA_BORDER_SOUTH localData[n][1]			// 	south starts
@@ -60,6 +45,11 @@
 //=========================================================================
 // your computation defines
 //=========================================================================
+
+// run program like so:
+// mpirun -n <P processes> psplit <N size of global domain>
+// for example:
+// mpirun -n 16 psplit 16
 
 #define MAXITER 1
 
