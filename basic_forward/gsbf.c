@@ -39,7 +39,7 @@
 #define DIAGONAL_UP 3
 #define DIAGONAL_DOWN 4
 
-#define I 0
+#define I 0 	// matrix coordinate indexes
 #define J 1
 
 //=========================================================================
@@ -105,7 +105,7 @@ int main(int argc, char **argv)
 	n = (int) N / p;	// size of subdomain
 
 	// check grid parameters
-	if (badGridParams(rank, P, p, N, n))
+	if (badGridParams(rank, P, p, N, n))	// TODO: this function is just a hack
 	{
 		MPI_Finalize();
 		return 0;
@@ -569,7 +569,7 @@ int main(int argc, char **argv)
 		// compute
 		for (int i = 1; i <= n; ++i)
 		{
-			for (int j = 0; j <= n; ++j)
+			for (int j = 1; j <= n; ++j)
 			{
 				unew[i][j] = 	u[i][j] +
 				                ru * ( u[i - 1][j] - (4 * u[i][j]) + u[i + 1][j] + u[i][j - 1] + u[i][j + 1] ) +
