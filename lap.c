@@ -7,15 +7,15 @@
 #include "lap.h"
 
 // numerical parameters
-#define Nglobal 81
+#define Nglobal 4*64
 #define ht 0.025
-#define F 0.034
-#define K 0.063
+#define F 0.026
+#define K 0.057
 #define Du 2.0*1e-5
 #define Dv 1*1e-5
 #define u0 1.0
 #define v0 0.0
-#define MAXITER 5000
+#define MAXITER 1000
 
 
 int main(int argc, char *argv[])
@@ -31,6 +31,10 @@ int main(int argc, char *argv[])
 	rc = MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	if (Nglobal % Psq != 0) {
 		fprintf(stdout, "Psq must divide Nglobal...\n");
+		exit(1);
+	}
+	if (Psq % 2 != 0) {
+		fprintf(stdout, "Number of processes must be even...\n");
 		exit(1);
 	}
 
@@ -63,26 +67,15 @@ int main(int argc, char *argv[])
 	}
 
 	// initial values
-	if (rank == 0) {
-		// int r = N / 2;
-		int m = n_inner;
-		// printf("rank = %d \n", rank);
-		// printf("r = %d, m = %d \n", r, m );
-		// for (int i = 1; i < m; ++i) {
-		// 	for (int j = 0; j < m; ++j) {
-		// 		u[1 + j * m] = 0.5;
-		// 		v[1 + j * m] = 1;
-		// 		u[i + 0 * m] = 0.5;
-		// 		v[i + 0 * m] = 1;
-		// 	}
-		// }
-		u[63] = 0.5;
-		v[63] = 1;
+	if (rank == 0 || rank == 3 || rank == 2) {
+		int c = floor(N_inner / 2);
+		int r = floor(n_inner / 2);
+		u[c+r] = 0.5;
+		v[c+r] = 1;
 	}
 
-	// for (int i = 0; i < N_inner; i++) {
-	// 	u[i] = i * rank;
-	// 	v[i] = 0;
+	// for (int i = 0; i < N_inner; ++i) {
+	// 	u[i] = i;
 	// }
 
 	// allocate work vectors unew and vnew
@@ -107,7 +100,6 @@ int main(int argc, char *argv[])
 
 	// CSparse data
 	cs *T ;
-	//cs *ImTu, *ImTv, *IpTu, *IpTv ;
 	cs *IpTu, *IpTv ;
 
 	//==========================
@@ -136,6 +128,7 @@ int main(int argc, char *argv[])
 	IpTv = cs_compress(T) ;
 	cs_spfree (T) ;
 
+	//cs_print(IpTv, 0);
 
 
 	//==========================
@@ -154,10 +147,10 @@ int main(int argc, char *argv[])
 		}
 		/// update step two
 		for (int i = 0; i < n_inner; i++) {
-			unew[i + (n_inner - 1)*n_inner] += su*bin_east[i];
-			unew[i] +=  su*bin_west[i];
-			unew[(i + 1)*n_inner - 1] += su*bin_north[i];
-			unew[i * n_inner] += su*bin_south[i];
+			unew[i + (n_inner - 1)*n_inner] += su * bin_east[i];
+			unew[i] +=  su * bin_west[i];
+			unew[(i + 1)*n_inner - 1] += su * bin_north[i];
+			unew[i * n_inner] += su * bin_south[i];
 		}
 		// update step three
 		err = cs_gaxpy(IpTu, u, unew) ;
@@ -169,13 +162,13 @@ int main(int argc, char *argv[])
 		}
 		// update step two
 		for (int i = 0; i < n_inner; i++) {
-			vnew[i + (n_inner - 1)*n_inner] += sv*bin_east[i + n_inner];
-			vnew[i] += sv*bin_west[i + n_inner];
-			vnew[(i + 1)*n_inner - 1] += sv*bin_north[i + n_inner];
-			vnew[i * n_inner] += sv*bin_south[i + n_inner];
+			vnew[i + (n_inner - 1)*n_inner] += sv * bin_east[i + n_inner];
+			vnew[i] += sv * bin_west[i + n_inner];
+			vnew[(i + 1)*n_inner - 1] += sv * bin_north[i + n_inner];
+			vnew[i * n_inner] += sv * bin_south[i + n_inner];
 		}
 		// update step three
-		err = cs_gaxpy(IpTv, v, vnew) ;	
+		err = cs_gaxpy(IpTv, v, vnew) ;
 		//printf("iteration: %d, rank: %d, cs_gaxpy(IpTv, v, vnew):  %d \n", i, rank, err);
 
 		// reset values
@@ -226,6 +219,15 @@ int main(int argc, char *argv[])
 			    target_north,
 			    0,
 			    MPI_COMM_WORLD);
+			MPI_Recv(
+			    bin_south,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_south,
+			    0,
+			    MPI_COMM_WORLD,
+			    MPI_STATUS_IGNORE);
+
 			MPI_Send(
 			    bout_south,
 			    n_inner,
@@ -233,6 +235,15 @@ int main(int argc, char *argv[])
 			    target_south,
 			    0,
 			    MPI_COMM_WORLD);
+			MPI_Recv(
+			    bin_north,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_north,
+			    0,
+			    MPI_COMM_WORLD,
+			    MPI_STATUS_IGNORE);
+
 			MPI_Send(
 			    bout_east,
 			    n_inner,
@@ -240,6 +251,15 @@ int main(int argc, char *argv[])
 			    target_east,
 			    0,
 			    MPI_COMM_WORLD);
+			MPI_Recv(
+			    bin_west,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_west,
+			    0,
+			    MPI_COMM_WORLD,
+			    MPI_STATUS_IGNORE);
+
 			MPI_Send(
 			    bout_west,
 			    n_inner,
@@ -247,73 +267,15 @@ int main(int argc, char *argv[])
 			    target_west,
 			    0,
 			    MPI_COMM_WORLD);
-
-			MPI_Recv(
-			    bin_north,
-			    n_inner,
-			    MPI_DOUBLE,
-			    target_north,
-			    0,
-			    MPI_COMM_WORLD,
-			    MPI_STATUS_IGNORE);
-			MPI_Recv(
-			    bin_south,
-			    n_inner,
-			    MPI_DOUBLE,
-			    target_south,
-			    0,
-			    MPI_COMM_WORLD,
-			    MPI_STATUS_IGNORE);
 			MPI_Recv(
 			    bin_east,
 			    n_inner,
 			    MPI_DOUBLE,
 			    target_east,
-			    0,
-			    MPI_COMM_WORLD,
-			    MPI_STATUS_IGNORE);
-			MPI_Recv(
-			    bin_west,
-			    n_inner,
-			    MPI_DOUBLE,
-			    target_west,
 			    0,
 			    MPI_COMM_WORLD,
 			    MPI_STATUS_IGNORE);
 		} else {
-			MPI_Recv(
-			    bin_north,
-			    n_inner,
-			    MPI_DOUBLE,
-			    target_north,
-			    0,
-			    MPI_COMM_WORLD,
-			    MPI_STATUS_IGNORE);
-			MPI_Recv(
-			    bin_south,
-			    n_inner,
-			    MPI_DOUBLE,
-			    target_south,
-			    0,
-			    MPI_COMM_WORLD,
-			    MPI_STATUS_IGNORE);
-			MPI_Recv(
-			    bin_east,
-			    n_inner,
-			    MPI_DOUBLE,
-			    target_east,
-			    0,
-			    MPI_COMM_WORLD,
-			    MPI_STATUS_IGNORE);
-			MPI_Recv(
-			    bin_west,
-			    n_inner,
-			    MPI_DOUBLE,
-			    target_west,
-			    0,
-			    MPI_COMM_WORLD,
-			    MPI_STATUS_IGNORE);
-
 			MPI_Send(
 			    bout_north,
 			    n_inner,
@@ -321,6 +283,15 @@ int main(int argc, char *argv[])
 			    target_north,
 			    0,
 			    MPI_COMM_WORLD);
+			MPI_Recv(
+			    bin_south,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_south,
+			    0,
+			    MPI_COMM_WORLD,
+			    MPI_STATUS_IGNORE);
+
 			MPI_Send(
 			    bout_south,
 			    n_inner,
@@ -328,6 +299,15 @@ int main(int argc, char *argv[])
 			    target_south,
 			    0,
 			    MPI_COMM_WORLD);
+			MPI_Recv(
+			    bin_north,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_north,
+			    0,
+			    MPI_COMM_WORLD,
+			    MPI_STATUS_IGNORE);
+
 			MPI_Send(
 			    bout_east,
 			    n_inner,
@@ -335,6 +315,15 @@ int main(int argc, char *argv[])
 			    target_east,
 			    0,
 			    MPI_COMM_WORLD);
+			MPI_Recv(
+			    bin_west,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_west,
+			    0,
+			    MPI_COMM_WORLD,
+			    MPI_STATUS_IGNORE);
+
 			MPI_Send(
 			    bout_west,
 			    n_inner,
@@ -342,6 +331,14 @@ int main(int argc, char *argv[])
 			    target_west,
 			    0,
 			    MPI_COMM_WORLD);
+			MPI_Recv(
+			    bin_east,
+			    n_inner,
+			    MPI_DOUBLE,
+			    target_east,
+			    0,
+			    MPI_COMM_WORLD,
+			    MPI_STATUS_IGNORE);
 		}
 
 		// for (int i = 0; i < 2 * n_inner; i++) {
@@ -367,9 +364,24 @@ int main(int argc, char *argv[])
 
 	FILE *fp;
 	if (rank == 0) {
-		fp = fopen("u_vals.txt", "w");	// open new file to write
-		for (int i = 0; i < N_inner; ++i) {
-			fprintf(fp, "%f\n", u[i]);
+
+
+		char txt[50], rankstr[50], pro[50];
+		strcpy(txt, ".txt");
+		strcpy(pro, "pro_");
+		sprintf(rankstr, "%d", rank);
+		strcat(pro, rankstr);
+		strcat(pro, txt);
+		//printf("rank: %d, dest: %s\n",rank, dest);
+
+		fp = fopen(pro, "w");	// open new file to write
+
+		//TODO: make these print as matrices
+		for (int i = 0; i < n_inner; ++i) {
+			for (int j = 0; j < n_inner; j++) {
+				fprintf(fp, "%f     ", u[j+i*n_inner]);
+			}
+			fprintf(fp, "\n");
 		}
 		fclose(fp);
 
@@ -383,10 +395,21 @@ int main(int argc, char *argv[])
 		            MPI_COMM_WORLD,
 		            MPI_STATUS_IGNORE);
 
-		fp = fopen("u_vals.txt", "a");	// open to append
+		char txt[50], rankstr[50], pro[50];
+		strcpy(txt, ".txt");
+		strcpy(pro, "pro_");
+		sprintf(rankstr, "%d", rank);
+		strcat(pro, rankstr);
+		strcat(pro, txt);
+		//printf("rank: %d, dest: %s\n",rank, dest);
 
-		for (int i = 0; i < N_inner; ++i) {
-			fprintf(fp, "%f\n", u[i]);
+		fp = fopen(pro, "w");	// open new file to write
+
+		for (int i = 0; i < n_inner; ++i) {
+			for (int j = 0; j < n_inner; j++) {
+				fprintf(fp, "%f     ", u[j+i*n_inner]);
+			}
+			fprintf(fp, "\n");
 		}
 		fclose(fp);
 	}
@@ -399,7 +422,7 @@ int main(int argc, char *argv[])
 		            666,
 		            MPI_COMM_WORLD);
 	}
-	
+
 
 	// FILE *fp;
 	// if (rank == 0) {
