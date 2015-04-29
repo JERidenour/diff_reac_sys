@@ -51,10 +51,10 @@
 // for example:
 // mpirun -n 16 psplit 16
 
-#define MAXITER 10
+#define MAXITER 10000
 
 #define BLOPSIZE 4
-#define HT 0.25
+#define HT 0.25		// TODO: determine theroetically what we need
 
 #define DU 0.00002
 #define DV 0.00001
@@ -77,6 +77,10 @@ int main(int argc, char **argv)
 	//=========================================================================
 	// MPI and subdomain basic setup
 	//=========================================================================
+
+	// ###################################
+	// TODO: start timing INITIALIZATION
+	// ###################################
 
 	int rank, P, p;
 	int n, N;
@@ -111,6 +115,11 @@ int main(int argc, char **argv)
 		fprintf(stdout, "P: %d, p: %d, N: %d, n: %d\n", P, p, N, n );
 		fflush(stdout);
 	}
+
+	// TODO: add an ID argument so we can identify the particular run
+	// if no ID given, create an ID based on system time (timestamp)
+	// suggestion concatenate this ID to all filenames so we get
+	// filename_ID.txt
 
 
 	//=========================================================================
@@ -299,11 +308,16 @@ int main(int argc, char **argv)
 		}
 	}
 
-
+	// ###################################
+	// TODO: end timing initialization
+	// ###################################
 
 	for (int iter = 0; iter < MAXITER; ++iter)	// begin computation iterations
 	{
 
+		// ###################################
+		// TODO: start timing COMMUNICATION
+		// ###################################
 
 		// exchange data
 		int err = 0;
@@ -544,7 +558,13 @@ int main(int argc, char **argv)
 
 		} // end data exchange
 
+		// ###################################
+		// TODO: end timing COMMUNICATION
+		// ###################################
 
+		// ###################################
+		// TODO: start timing COMPUTATION
+		// ###################################
 
 		// compute
 		for (int i = 1; i <= n; ++i)
@@ -561,15 +581,6 @@ int main(int argc, char **argv)
 			}
 		}
 
-		/*for (int i = 1; i <= n; ++i)
-		{
-			for (int j = 1; j <= n; ++j)
-			{
-				u[i][j] = unew[i][j];
-				v[i][j] = vnew[i][j];
-			}
-		}*/
-
 		// swap pointers
 		double **tmpnew;
 
@@ -581,6 +592,10 @@ int main(int argc, char **argv)
 		vnew = v;
 		v = tmpnew;	// u = unew
 
+		// ###################################
+		// TODO: end timing COMPUTATION
+		// ###################################
+
 
 
 	} // end computation iteration
@@ -589,7 +604,7 @@ int main(int argc, char **argv)
 	// Output to file
 	//=========================================================================
 
-	FILE *fp;
+	FILE *fp;	// TODO: concatenate all filenames with a unique run ID
 
 	if (meshRank == 0) {
 
@@ -624,6 +639,8 @@ int main(int argc, char **argv)
 		fprintf(fp, "%d %d %d %d\n", p, P, n, N);
 		fclose(fp);
 		printf("Master wrote pPnN.\n");
+
+		// TODO: write timing info
 
 	} else {
 
@@ -661,6 +678,8 @@ int main(int argc, char **argv)
 		}
 		fclose(fp);
 		printf("Process %d appended [%d %d] elements.\n", meshRank, n, n);
+
+		// TODO: write timing info
 	}
 
 	if (meshRank < P - 1) {
@@ -675,6 +694,8 @@ int main(int argc, char **argv)
 	//=========================================================================
 	// Cleanup
 	//=========================================================================
+
+	// TODO: right now there is no proper cleanup, fix this
 
 	// free the ghost spirits
 	/*for (int i = 0; i < NDIRS; ++i)

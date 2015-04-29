@@ -124,7 +124,7 @@ v_new = v;
 %% Forward
 
 %maxtime = 500000;
-maxtime = 10;
+maxtime = 10000;
 
 for t = 1:maxtime
 
