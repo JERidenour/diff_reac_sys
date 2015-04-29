@@ -1,23 +1,34 @@
 ################################
 CXX = mpicc
 ################################
-CXXFLAGS = -std=c99 -Wall -ferror-limit=1 -O
+CXXFLAGS = -std=c99 -Wall -ferror-limit=1 -O2
 ################################
-I = -ICSparse/Include
-CS = CSparse/Lib/libcsparse.a
+# I = -ICSparse/Include
+# CS = CSparse/Lib/libcsparse.a
 ################################
 
-all: lib crank
+all: gs_seq
 
-lib:
-	( cd CSparse/Lib ; $(MAKE) )
+gs_seq_dep = gs_seq.o
+gs_seq: $(gs_seq_dep)
+	$(CXX) $(CXXFLAGS) $(gs_seq_dep) -o $@
 
-crank_dep = crank.o
-crank: lib $(crank_dep)
-	$(CXX) $(CXXFLAGS) $(I) $(crank_dep) $(CS) -o $@
+gs_seq.o: gs_seq.c
+	$(CXX) $(CXXFLAGS) -c -o $@ gs_seq.c
 
-crank.o: crank.c
-	$(CXX) $(CXXFLAGS) -c -o $@ crank.c
+
+
+# all: lib crank
+
+# lib:
+# 	( cd CSparse/Lib ; $(MAKE) )
+
+# crank_dep = crank.o
+# crank: lib $(crank_dep)
+# 	$(CXX) $(CXXFLAGS) $(I) $(crank_dep) $(CS) -o $@
+
+# crank.o: crank.c
+# 	$(CXX) $(CXXFLAGS) -c -o $@ crank.c
 
 # mtsort_dep = mtsort.o
 # mtsort: $(mtsort_dep)
