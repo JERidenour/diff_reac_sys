@@ -26,7 +26,7 @@
 
 \lhead{ridenour@kth.se \\ herczka@kth.se}
 \rhead{Parallel Programming for Large-Scale Problems SF2568}
-\title{ A Parallel Crank-Nicholson Solver for the Gray-Scott Reaction-Diffusion System\\ 
+\title{ An Explicit Parallel Solver for the Gray-Scott Reaction-Diffusion System\\ 
 \vspace{1.2cm}
 \large Parallel Programming for Large-Scale Problems SF2568 \\ 
 Teacher: Michael Hanke}
@@ -65,6 +65,23 @@ Mateusz Herczka, 700624-9234}
 The subject of this report is the numerical solution of a two-component reaction-diffusion system known as the Gray-Scott system \cite{Wang}. 
 \subsection*{mathematical formulation}
 \subsection*{numerical method}
+We proceed by means of a mixed implicit-explicit scheme combining the Crank-Nicolson and Adams-Bashforth methods, as is considered in \cite{Ruuth}.  The fully discretized system is written
+\ba{
+\frac{u_{i,j}^{n+1}-u_{i,j}^{n+1}}{dt} = & \ \frac{Du}{h^2}\bigg( u_{i-1,j}^{n+1} + u_{i+1,j}^{n+1} + u_{i,j-1}^{n+1}+ u_{i,j+1}^{n+1} - 4u_{i,j}^{n+1} \bigg) \\
++ & \ \frac{Du}{h^2}\bigg( u_{i-1,j}^{n} + u_{i+1,j}^{n} + u_{i,j-1}^{n}+ u_{i,j+1}^{n} - 4u_{i,j}^{n} \bigg) \\
++ & \ \frac{3}{2} \bigg( -u_{i,j}^{n} (v_{i,j}^{n})^2 + f(1-u_{i,j}^{n}) \bigg) \\
+- & \ \frac{1}{2} \bigg( -u_{i,j}^{n-1} (v_{i,j}^{n-1})^2 + f(1-u_{i,j}^{n-1}) \bigg), \\ \\
+\frac{v_{i,j}^{n+1}-v_{i,j}^{n+1}}{dt} = & \ \frac{Dv}{h^2}\bigg( v_{i-1,j}^{n+1} + v_{i+1,j}^{n+1} + v_{i,j-1}^{n+1}+ v_{i,j+1}^{n+1} - 4v_{i,j}^{n+1} \bigg) \\
++ & \ \frac{Dv}{h^2}\bigg( v_{i-1,j}^{n} + v_{i+1,j}^{n} + v_{i,j-1}^{n}+ v_{i,j+1}^{n} - 4v_{i,j}^{n} \bigg) \\
++ & \ \frac{3}{2} \bigg( -u_{i,j}^{n} (v_{i,j}^{n})^2 - (f+k)v_{i,j}^{n} \bigg) \\
+- & \ \frac{1}{2} \bigg( -u_{i,j}^{n-1} (v_{i,j}^{n-1})^2  - (f+k)v_{i,j}^{n-1} \bigg).
+}
+If we let $\sigma_u = D_u dt/h^2$ and $\sigma_v = D_v dt/h^2$ these equations can be rewritten
+\ba{
+-\sigma_u u_{i+1,j}^{n+1} - & \ \sigma_u u_{i-1,j}^{n+1} -\sigma_u u_{i,j+1}^{n+1} -\sigma_u u_{i,j-1}^{n+1} + (1+ 4 \sigma) u_{i,j}^{n+1}\\ 
+= & \ \sigma_u u_{i+1,j}^{n}+\sigma_u u_{i-1,j}^{n}+\sigma_u u_{i,j+1}^{n}+\sigma_u u_{i,j-1}^{n} + (1- 4 \sigma) u_{i,j}^{n+1}\\
++ & \ F,
+}
 \section*{Psuedo-code algorithm description}
 \section*{Theoretical performance evaluation}
 \section*{Implementation details}
@@ -72,7 +89,8 @@ The subject of this report is the numerical solution of a two-component reaction
 \section*{Experimental speedup investigation with meaningful data}
 
 \begin{thebibliography}{}
-\bibitem{Wang} Weiming Wang, Yezhi Lin, Feng Yang, Lei Zhang, Yongji Tan {\it Numerical study of pattern formation in an extended Gray–Scott model}, Communications in Nonlinear Science and Numerical Simulation, 16 (2011).
+\bibitem{Wang} Weiming Wang, Yezhi Lin, Feng Yang, Lei Zhang, Yongji Tan, {\it Numerical study of pattern formation in an extended Gray–Scott model}, Communications in Nonlinear Science and Numerical Simulation, 16 (2011).
+\bibitem{Ruuth} Steven J Ruuth, {\it Implicit-Explicit Methods for Reaction-Diffusion Problems in Pattern Formation}, Journal of Mathematical Biology 34 (2), 148-176. 
 %\bibitem{Wilkinson} Barry Wilkinson, Michael Allen {\it Parallel Programming, Techniques and Applications Using Networked Workstations and Parallel Computers}, 2005, Pearson Prentice Hall, pp 9.
 \end{thebibliography}
 
