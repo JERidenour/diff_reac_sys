@@ -160,8 +160,7 @@ int main(int argc, char *argv[])
 			bout_west[i + n_inner] = v[i * n_inner];
 		}
 
-
-		//bool red = ( (south && west) || (north && east) ) ? false : true;
+		// assign colors to processes
 		int red = 0;
 		for (int j = 0; j < P; j = j + 2) {
 			for (int i = 0; i < P; i = i + 2) {
@@ -351,6 +350,7 @@ int main(int argc, char *argv[])
 		// end iteration
 		//==========================
 	}
+	
 //==========================
 // print results
 //==========================
