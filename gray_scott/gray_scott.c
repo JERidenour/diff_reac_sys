@@ -16,7 +16,7 @@
 #define Dv 1*1e-5
 #define u0 1.0
 #define v0 0.0
-#define MAXITER 30000
+#define MAXITER 0
 
 int main(int argc, char *argv[])
 {
@@ -161,7 +161,23 @@ int main(int argc, char *argv[])
 		}
 
 
-		bool red = ( (south && west) || (north && east) ) ? false : true;
+		//bool red = ( (south && west) || (north && east) ) ? false : true;
+		int red = 0;
+		for (int j = 0; j < P; j = j + 2) {
+			for (int i = 0; i < P; i = i + 2) {
+				if (rank == i + j * P) {
+					red = 1;
+				}
+			}
+		}
+		for (int j = 1; j < P; j = j + 2) {
+			for (int i = 1; i < P; i = i + 2) {
+				if (rank == i + j * P) {
+					red = 1;
+				}
+			}
+		}
+
 		if (red) {
 			MPI_Send(
 			    bout_north,
@@ -335,9 +351,9 @@ int main(int argc, char *argv[])
 		// end iteration
 		//==========================
 	}
-	//==========================
-	// print results
-	//==========================
+//==========================
+// print results
+//==========================
 
 	FILE *fp;
 	if (rank == 0) {
@@ -402,9 +418,9 @@ int main(int argc, char *argv[])
 	time_spent = (double) (end - begin) / CLOCKS_PER_SEC;
 	printf("Process %d, time spent: %f \n", rank, time_spent);
 
-	//==========================
-	// free resources
-	//==========================
+//==========================
+// free resources
+//==========================
 
 	cs_spfree (IpTu) ;
 	cs_spfree (IpTv) ;
