@@ -16,7 +16,7 @@
 #define Dv 1*1e-5
 #define u0 1.0
 #define v0 0.0
-#define MAXITER 50000
+#define MAXITER 30000
 
 int main(int argc, char *argv[])
 {
@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 		}
 	}
 	if (rank == 1) {
-		int c = floor(2*n_inner / 3);
+		int c = floor(2 * n_inner / 3);
 		int r = floor(n_inner / 20);
 		for (int i = c - r ; i < c + r; i++) {
 			for (int j = c - r ; j < c + r; j++) {
@@ -123,32 +123,17 @@ int main(int argc, char *argv[])
 
 	int err = 0;	// should be 0 for no error
 
-	// create IpT
+	// create numerical operators
 
 	T = cs_spalloc (N, N, nz, 1, 1) ;
 	err = create_IpT(T, n, N, nz, Du, hx, ht);
 	IpTu = cs_compress(T) ;
 	cs_spfree (T) ;
 
-	// double ru = (Du / (hx * hx)) * ht;
-	// printf("ru = %f \n", ru);
-	// printf("Du = %f \n", Du);
-	// printf("hx = %f \n", hx);
-	// printf("ht = %f \n", ht);
-
-	// double rv = (Dv / (hx * hx)) * ht;
-	// printf("rv = %f \n", rv);
-	// printf("Dv = %f \n", Dv);
-
-	// cs_print(IpTu, 0);
-
 	T = cs_spalloc (N, N, nz, 1, 1) ;
 	err = create_IpT(T, n, N, nz, Dv, hx, ht);
 	IpTv = cs_compress(T) ;
 	cs_spfree (T) ;
-
-	// cs_print(IpTv, 0);
-
 
 	//==========================
 	// Begin iteration
@@ -175,24 +160,9 @@ int main(int argc, char *argv[])
 			bout_west[i + n_inner] = v[i * n_inner];
 		}
 
-		// for (int i = 0; i < 2 * n_inner; i++) {
-		// 	printf("rank: %d, bout_north: %f \n", rank, bout_north[i]);
-		// }
-		// for (int i = 0; i < 2 * n_inner; i++) {
-		// 	printf("rank: %d, bout_south: %f \n", rank, bout_south[i]);
-		// }
-		// for (int i = 0; i < 2 * n_inner; i++) {
-		// 	printf("rank: %d, bout_east: %f \n", rank, bout_east[i]);
-		// }
-		// for (int i = 0; i < 2 * n_inner; i++) {
-		// 	printf("rank: %d, bout_west: %f \n", rank, bout_west[i]);
-		// }
 
-		// *****************************
-		// SEND/RECV FROM 0
-
-		// send/recv 0 --> 2 (northward)
-		if (rank == 0) {
+		bool red = ( (south && west) || (north && east) ) ? false : true;
+		if (red) {
 			MPI_Send(
 			    bout_north,
 			    2 * n_inner,
@@ -200,8 +170,28 @@ int main(int argc, char *argv[])
 			    target_north,
 			    0,
 			    MPI_COMM_WORLD);
-		}
-		if (rank == 2) {
+			MPI_Send(
+			    bout_south,
+			    2 * n_inner,
+			    MPI_DOUBLE,
+			    target_south,
+			    0,
+			    MPI_COMM_WORLD);
+			MPI_Send(
+			    bout_east,
+			    2 * n_inner,
+			    MPI_DOUBLE,
+			    target_east,
+			    0,
+			    MPI_COMM_WORLD);
+			MPI_Send(
+			    bout_west,
+			    2 * n_inner,
+			    MPI_DOUBLE,
+			    target_west,
+			    0,
+			    MPI_COMM_WORLD);
+
 			MPI_Recv(
 			    bin_south,
 			    2 * n_inner,
@@ -210,19 +200,6 @@ int main(int argc, char *argv[])
 			    0,
 			    MPI_COMM_WORLD,
 			    MPI_STATUS_IGNORE);
-		}
-
-		// send/recv 0 --> 2 (southward)
-		if (rank == 0) {
-			MPI_Send(
-			    bout_south,
-			    2 * n_inner,
-			    MPI_DOUBLE,
-			    target_south,
-			    0,
-			    MPI_COMM_WORLD);
-		}
-		if (rank == 2) {
 			MPI_Recv(
 			    bin_north,
 			    2 * n_inner,
@@ -231,19 +208,6 @@ int main(int argc, char *argv[])
 			    0,
 			    MPI_COMM_WORLD,
 			    MPI_STATUS_IGNORE);
-		}
-
-		// send/recv 0 --> 1 (eastward)
-		if (rank == 0) {
-			MPI_Send(
-			    bout_east,
-			    2 * n_inner,
-			    MPI_DOUBLE,
-			    target_east,
-			    0,
-			    MPI_COMM_WORLD);
-		}
-		if (rank == 1) {
 			MPI_Recv(
 			    bin_west,
 			    2 * n_inner,
@@ -252,19 +216,6 @@ int main(int argc, char *argv[])
 			    0,
 			    MPI_COMM_WORLD,
 			    MPI_STATUS_IGNORE);
-		}
-
-		// send/recv 0 --> 1 (westward)
-		if (rank == 0) {
-			MPI_Send(
-			    bout_west,
-			    2 * n_inner,
-			    MPI_DOUBLE,
-			    target_west,
-			    0,
-			    MPI_COMM_WORLD);
-		}
-		if (rank == 1) {
 			MPI_Recv(
 			    bin_east,
 			    2 * n_inner,
@@ -273,22 +224,8 @@ int main(int argc, char *argv[])
 			    0,
 			    MPI_COMM_WORLD,
 			    MPI_STATUS_IGNORE);
-		}
+		} else {
 
-		// *****************************
-		// SEND/RECV FROM 1
-
-		// send/recv 1 --> 3 (northward)
-		if (rank == 1) {
-			MPI_Send(
-			    bout_north,
-			    2 * n_inner,
-			    MPI_DOUBLE,
-			    target_north,
-			    0,
-			    MPI_COMM_WORLD);
-		}
-		if (rank == 3) {
 			MPI_Recv(
 			    bin_south,
 			    2 * n_inner,
@@ -297,19 +234,6 @@ int main(int argc, char *argv[])
 			    0,
 			    MPI_COMM_WORLD,
 			    MPI_STATUS_IGNORE);
-		}
-
-		// send/recv 1 --> 3 (southward)
-		if (rank == 1) {
-			MPI_Send(
-			    bout_south,
-			    2 * n_inner,
-			    MPI_DOUBLE,
-			    target_south,
-			    0,
-			    MPI_COMM_WORLD);
-		}
-		if (rank == 3) {
 			MPI_Recv(
 			    bin_north,
 			    2 * n_inner,
@@ -318,19 +242,6 @@ int main(int argc, char *argv[])
 			    0,
 			    MPI_COMM_WORLD,
 			    MPI_STATUS_IGNORE);
-		}
-
-		// send/recv 1 --> 0 (eastward)
-		if (rank == 1) {
-			MPI_Send(
-			    bout_east,
-			    2 * n_inner,
-			    MPI_DOUBLE,
-			    target_east,
-			    0,
-			    MPI_COMM_WORLD);
-		}
-		if (rank == 0) {
 			MPI_Recv(
 			    bin_west,
 			    2 * n_inner,
@@ -339,19 +250,6 @@ int main(int argc, char *argv[])
 			    0,
 			    MPI_COMM_WORLD,
 			    MPI_STATUS_IGNORE);
-		}
-
-		// send/recv 1 --> 0 (westward)
-		if (rank == 1) {
-			MPI_Send(
-			    bout_west,
-			    2 * n_inner,
-			    MPI_DOUBLE,
-			    target_west,
-			    0,
-			    MPI_COMM_WORLD);
-		}
-		if (rank == 0) {
 			MPI_Recv(
 			    bin_east,
 			    2 * n_inner,
@@ -360,13 +258,7 @@ int main(int argc, char *argv[])
 			    0,
 			    MPI_COMM_WORLD,
 			    MPI_STATUS_IGNORE);
-		}
 
-		// *****************************
-		// SEND/RECV FROM 2
-
-		// send/recv 2 --> 0 (northward)
-		if (rank == 2) {
 			MPI_Send(
 			    bout_north,
 			    2 * n_inner,
@@ -374,20 +266,6 @@ int main(int argc, char *argv[])
 			    target_north,
 			    0,
 			    MPI_COMM_WORLD);
-		}
-		if (rank == 0) {
-			MPI_Recv(
-			    bin_south,
-			    2 * n_inner,
-			    MPI_DOUBLE,
-			    target_south,
-			    0,
-			    MPI_COMM_WORLD,
-			    MPI_STATUS_IGNORE);
-		}
-
-		// send/recv 2 --> 0 (southward)
-		if (rank == 2) {
 			MPI_Send(
 			    bout_south,
 			    2 * n_inner,
@@ -395,20 +273,6 @@ int main(int argc, char *argv[])
 			    target_south,
 			    0,
 			    MPI_COMM_WORLD);
-		}
-		if (rank == 0) {
-			MPI_Recv(
-			    bin_north,
-			    2 * n_inner,
-			    MPI_DOUBLE,
-			    target_north,
-			    0,
-			    MPI_COMM_WORLD,
-			    MPI_STATUS_IGNORE);
-		}
-
-		// send/recv 2 --> 3 (eastward)
-		if (rank == 2) {
 			MPI_Send(
 			    bout_east,
 			    2 * n_inner,
@@ -416,20 +280,6 @@ int main(int argc, char *argv[])
 			    target_east,
 			    0,
 			    MPI_COMM_WORLD);
-		}
-		if (rank == 3) {
-			MPI_Recv(
-			    bin_west,
-			    2 * n_inner,
-			    MPI_DOUBLE,
-			    target_west,
-			    0,
-			    MPI_COMM_WORLD,
-			    MPI_STATUS_IGNORE);
-		}
-
-		// send/recv 2 --> 3 (westward)
-		if (rank == 2) {
 			MPI_Send(
 			    bout_west,
 			    2 * n_inner,
@@ -437,103 +287,6 @@ int main(int argc, char *argv[])
 			    target_west,
 			    0,
 			    MPI_COMM_WORLD);
-		}
-		if (rank == 3) {
-			MPI_Recv(
-			    bin_east,
-			    2 * n_inner,
-			    MPI_DOUBLE,
-			    target_east,
-			    0,
-			    MPI_COMM_WORLD,
-			    MPI_STATUS_IGNORE);
-		}
-
-		// *****************************
-		// SEND/RECV FROM 3
-
-		// send/recv 3 --> 1 (northward)
-		if (rank == 3) {
-			MPI_Send(
-			    bout_north,
-			    2 * n_inner,
-			    MPI_DOUBLE,
-			    target_north,
-			    0,
-			    MPI_COMM_WORLD);
-		}
-		if (rank == 1) {
-			MPI_Recv(
-			    bin_south,
-			    2 * n_inner,
-			    MPI_DOUBLE,
-			    target_south,
-			    0,
-			    MPI_COMM_WORLD,
-			    MPI_STATUS_IGNORE);
-		}
-
-		// send/recv 3 --> 1 (southward)
-		if (rank == 3) {
-			MPI_Send(
-			    bout_south,
-			    2 * n_inner,
-			    MPI_DOUBLE,
-			    target_south,
-			    0,
-			    MPI_COMM_WORLD);
-		}
-		if (rank == 1) {
-			MPI_Recv(
-			    bin_north,
-			    2 * n_inner,
-			    MPI_DOUBLE,
-			    target_north,
-			    0,
-			    MPI_COMM_WORLD,
-			    MPI_STATUS_IGNORE);
-		}
-
-		// send/recv 3 --> 2 (eastward)
-		if (rank == 3) {
-			MPI_Send(
-			    bout_east,
-			    2 * n_inner,
-			    MPI_DOUBLE,
-			    target_east,
-			    0,
-			    MPI_COMM_WORLD);
-		}
-		if (rank == 2) {
-			MPI_Recv(
-			    bin_west,
-			    2 * n_inner,
-			    MPI_DOUBLE,
-			    target_west,
-			    0,
-			    MPI_COMM_WORLD,
-			    MPI_STATUS_IGNORE);
-		}
-
-		// send/recv 3 --> 2 (westward)
-		if (rank == 3) {
-			MPI_Send(
-			    bout_west,
-			    2 * n_inner,
-			    MPI_DOUBLE,
-			    target_west,
-			    0,
-			    MPI_COMM_WORLD);
-		}
-		if (rank == 2) {
-			MPI_Recv(
-			    bin_east,
-			    2 * n_inner,
-			    MPI_DOUBLE,
-			    target_east,
-			    0,
-			    MPI_COMM_WORLD,
-			    MPI_STATUS_IGNORE);
 		}
 
 		//==========================
@@ -578,17 +331,6 @@ int main(int argc, char *argv[])
 			v[i] = vnew[i];
 		}
 
-		for (int i = 0; i < 2 * n_inner; i++) {
-			bout_north[i] = 0;
-			bout_south[i] = 0;
-			bout_east[i] = 0;
-			bout_west[i] = 0;
-			bin_north[i] = 0;
-			bin_south[i] = 0;
-			bin_east[i] = 0;
-			bin_west[i] = 0;
-		}
-
 		//==========================
 		// end iteration
 		//==========================
@@ -607,11 +349,9 @@ int main(int argc, char *argv[])
 		sprintf(rankstr, "%d", rank);
 		strcat(pro, rankstr);
 		strcat(pro, txt);
-		//printf("rank: %d, dest: %s\n",rank, dest);
 
 		fp = fopen(pro, "w");	// open new file to write
 
-		//TODO: make these print as matrices
 		for (int i = 0; i < n_inner; ++i) {
 			for (int j = 0; j < n_inner; j++) {
 				fprintf(fp, "%f     ", u[j + i * n_inner]);
@@ -636,7 +376,6 @@ int main(int argc, char *argv[])
 		sprintf(rankstr, "%d", rank);
 		strcat(pro, rankstr);
 		strcat(pro, txt);
-		//printf("rank: %d, dest: %s\n",rank, dest);
 
 		fp = fopen(pro, "w");	// open new file to write
 
@@ -657,16 +396,6 @@ int main(int argc, char *argv[])
 		            666,
 		            MPI_COMM_WORLD);
 	}
-
-
-	// FILE *fp;
-	// if (rank == 0) {
-	// 	fp = fopen("u_vals_center.txt", "w");	// open new file to write
-	// 	for (int i = 0; i < N_inner; ++i) {
-	// 		fprintf(fp, "%f\n", u[i]);
-	// 	}
-	// 	fclose(fp);
-	// }
 
 	/* end cpu timing  */
 	end = clock();
