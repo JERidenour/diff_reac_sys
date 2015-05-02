@@ -11,6 +11,7 @@
 %\usepackage[]{mcode}
 \usepackage{pdfpages}
 \usepackage{caption} 
+\usepackage{mcode}
 \captionsetup[table]{skip=10pt}
 
  \newcommand{\ba}[1]{\begin{align*}    #1    \end{align*}}
@@ -37,7 +38,7 @@ Mateusz Herczka, 700624-9234}
 \maketitle
 \pagebreak
 \section*{Problem description}
-The subject of this report is the parallelization of a numerical method for a two-component reaction-diffusion system known as the Gray-Scott model.  Originally introduced by Gray and Scott \cite{Gray}, the model is a system of two partial differential equations for the concentration of two generic chemical species, which are reacting with each other as they diffuse through a medium.
+The subject of this report is the parallelization of a numerical method for a two-component reaction-diffusion system known as the Gray-Scott model.  Originally introduced by Gray and Scott \cite{Gray}, the model is a system of two partial differential equations for the concentration of two chemical species, which are reacting with each other as they diffuse through a medium.
 
 Pattern formation resulting from the Gray-Scott model is a rich area of research, with applications to a variety of physical, chemical, and biological phenomena, as well as cellular automata and the pattern formation of other partial differential equation systems \cite{Wang}.  We investigate a parallelization strategy for the two-dimensional case.  We make a series of trials, running the solver in parallel on 4, 16, 36, and 64 processes, and perform a speedup analysis using the results of these trials. Finally, we show a few of the various patterns that emerge from the Gray-Scott model with various input parameters.
 
@@ -47,7 +48,7 @@ The Gray-Scott model involves the reaction and diffusion of two generic chemical
 U + 2V \rightarrow  & \ 3V,\\
 V \rightarrow  & \ P,
 }
-where $P$ is an inert byproduct.  This system is governed by the following system of partial differential equations:
+where $P$ is an inert byproduct.  This system is governed by the following system of partial differential equations, known as the Gray-Scott equations:
 \begingroup
 \addtolength{\jot}{0.5 em}
 \ban{
@@ -89,9 +90,39 @@ Since the timestep also has a damping effect on the replenishment term and react
 }
 This is well within the stability bounds of $A$, and provides suitable damping on the replenishment and reaction rate terms for Gray-Scott pattern formation as studied in \cite{Wang}.
 
-\section*{Psuedo-code algorithm description}
+\section*{Algorithm Description}
+\subsection*{Implementation details}
+The computational domain is divided into subdomains, one for each process.  Each process is responsible for the update of it's local values.  Along the subdomain boundaries, neighbouring values are needed for the update; these are obtained by coordinated message passing.  The boundary data are communicated between processes by means of a red-black communication schedule.  When all necessary information is obtained, the local values are updated according to (\ref{eq:discrete_system}).
+
+\subsection*{Psuedo-code}
+\begin{lstlisting}
+MPI Initialize;
+Calculate mesh position and neighbouring ranks;
+Determine color according to rank;
+Set initial values according to rank;
+for Max iterations:
+	Build boundary output data;
+	if (red):
+		for each neighbour:
+			MPI send boundary data;
+		end
+		for each neighbour:
+			MPI receive boundary data;
+		end
+	else:
+		for each neighbour:
+			MPI receive boundary data;
+		end
+		for each neighbour:
+			MPI send boundary data;
+		end
+	end
+	Update values;
+end
+Print results;
+MPI Finalize;
+\end{lstlisting}
 \section*{Theoretical performance evaluation}
-\section*{Implementation details}
 \section*{Testing with different cases}
 \section*{Experimental speedup investigation with meaningful data}
 
