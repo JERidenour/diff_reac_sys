@@ -8,20 +8,21 @@
 #include <time.h>
 
 // Numerical and physical parameters
-#define Nglobal 256*256
+//#define Nglobal 400*400 // use with 1, 4, 16, 64 processes
+#define Nglobal 396*396 // use with 36 processes
 #define ht 0.19
 #define F 0.0375
 #define K 0.0634
-#define Du 2.0*1e-5
-#define Dv 1*1e-5
+#define Du 2.0*1e-6
+#define Dv 1*1e-6
 #define u0 1.0
 #define v0 0.0
-#define MAXITER 1
+#define MAXITER 100000
 
 int main(int argc, char *argv[])
 {
 
-	// Initialize cpu timing 
+	// Initialize cpu timing
 	clock_t begin, end;
 	double time_spent;
 	begin = clock();
@@ -30,7 +31,7 @@ int main(int argc, char *argv[])
 	int P, Psq, rank, rc;
 	int target_north, target_south, target_east, target_west;
 
-	// MPI
+	// Initialize MPI:
 	rc = MPI_Init(&argc, &argv);
 	rc = MPI_Comm_size(MPI_COMM_WORLD, &Psq);
 	rc = MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -52,6 +53,23 @@ int main(int argc, char *argv[])
 	target_east = (1 - east) * (rank + 1) + east * (rank - P + 1);
 	target_west = (1 - west) * (rank - 1) + west * (rank + P - 1);
 
+	// Assign color to processes (for communication):
+	int red = 0;
+	for (int j = 0; j < P; j = j + 2) {
+		for (int i = 0; i < P; i = i + 2) {
+			if (rank == i + j * P) {
+				red = 1;
+			}
+		}
+	}
+	for (int j = 1; j < P; j = j + 2) {
+		for (int i = 1; i < P; i = i + 2) {
+			if (rank == i + j * P) {
+				red = 1;
+			}
+		}
+	}
+
 	// Dimension sizes:
 	csi N_inner = Nglobal / Psq;
 	csi n_inner = sqrt(N_inner);
@@ -70,43 +88,182 @@ int main(int argc, char *argv[])
 	unew = (double*) calloc( N , sizeof(double)) ;
 	vnew = (double*) calloc( N , sizeof(double)) ;
 
+	//==========================
 	// Set initial values:
-	if (rank == 0 || rank == 3) {
-		int c = floor(n_inner / 2);
-		int r = floor(n_inner / 20);
-		for (int i = c - r ; i < c + r; i++) {
-			for (int j = c - r ; j < c + r; j++) {
-				u[i + j * n_inner] = 0.5;
-				v[i + j * n_inner] = 0.25;
-			}
-		}
-	}
-	if (rank == 2) {
-		int c = floor(n_inner / 5);
-		int r = floor(n_inner / 20);
-		for (int i = c - r ; i < c + r; i++) {
-			for (int j = c - r ; j < c + r; j++) {
-				u[i + j * n_inner] = 0.5;
-				v[i + j * n_inner] = 0.25;
-			}
-		}
-	}
-	if (rank == 1) {
-		int c = floor(2 * n_inner / 3);
-		int r = floor(n_inner / 20);
-		for (int i = c - r ; i < c + r; i++) {
-			for (int j = c - r ; j < c + r; j++) {
-				u[i + j * n_inner] = 0.5;
-				v[i + j * n_inner] = 0.25;
+	//==========================
+
+	// For one process:
+	if (Psq == 1) {
+
+		if (rank == 0) {
+			int c = floor(n_inner / 2);
+			int r = 50;
+			for (int i = c - r ; i < c + r; i++) {
+				for (int j = c - r ; j < c + r; j++) {
+					u[i + j * n_inner] = 0.5;
+					v[i + j * n_inner] = 0.25;
+				}
 			}
 		}
 	}
 
-	// Allocate vectors for receiving and recieving boudary data:
+	// For four processes:
+	if (Psq == 4) {
+
+		int r = 50;
+		if (rank == 0) {
+			for (int i = n_inner - r; i < n_inner; i++) {
+				for (int j = n_inner - r; j < n_inner; j++) {
+					u[i + j * n_inner] = 0.5;
+					v[i + j * n_inner] = 0.25;
+				}
+			}
+		}
+		if (rank == 1) {
+			for (int i = 0; i < r; i++) {
+				for (int j = n_inner - r; j < n_inner; j++) {
+					u[i + j * n_inner] = 0.5;
+					v[i + j * n_inner] = 0.25;
+				}
+			}
+		}
+		if (rank == 2) {
+			for (int i = n_inner - r; i < n_inner; i++) {
+				for (int j = 0; j < r; j++) {
+					u[i + j * n_inner] = 0.5;
+					v[i + j * n_inner] = 0.25;
+				}
+			}
+		}
+		if (rank == 3) {
+			for (int i = 0; i < r; i++) {
+				for (int j = 0; j < r; j++) {
+					u[i + j * n_inner] = 0.5;
+					v[i + j * n_inner] = 0.25;
+				}
+			}
+		}
+	}
+
+	// For sixteen processes:
+	if (Psq == 16) {
+
+		int r = 50;
+		if (rank == 5) {
+			for (int i = n_inner - r; i < n_inner; i++) {
+				for (int j = n_inner - r; j < n_inner; j++) {
+					u[i + j * n_inner] = 0.5;
+					v[i + j * n_inner] = 0.25;
+				}
+			}
+		}
+		if (rank == 6) {
+			for (int i = 0; i < r; i++) {
+				for (int j = n_inner - r; j < n_inner; j++) {
+					u[i + j * n_inner] = 0.5;
+					v[i + j * n_inner] = 0.25;
+				}
+			}
+		}
+		if (rank == 9) {
+			for (int i = n_inner - r; i < n_inner; i++) {
+				for (int j = 0; j < r; j++) {
+					u[i + j * n_inner] = 0.5;
+					v[i + j * n_inner] = 0.25;
+				}
+			}
+		}
+		if (rank == 10) {
+			for (int i = 0; i < r; i++) {
+				for (int j = 0; j < r; j++) {
+					u[i + j * n_inner] = 0.5;
+					v[i + j * n_inner] = 0.25;
+				}
+			}
+		}
+	}
+
+	// For thirty-six processes:
+	if (Psq == 36) {
+
+		int r = 50;
+		if (rank == 14) {
+			for (int i = n_inner - r; i < n_inner; i++) {
+				for (int j = n_inner - r; j < n_inner; j++) {
+					u[i + j * n_inner] = 0.5;
+					v[i + j * n_inner] = 0.25;
+				}
+			}
+		}
+		if (rank == 15) {
+			for (int i = 0; i < r; i++) {
+				for (int j = n_inner - r; j < n_inner; j++) {
+					u[i + j * n_inner] = 0.5;
+					v[i + j * n_inner] = 0.25;
+				}
+			}
+		}
+		if (rank == 20) {
+			for (int i = n_inner - r; i < n_inner; i++) {
+				for (int j = 0; j < r; j++) {
+					u[i + j * n_inner] = 0.5;
+					v[i + j * n_inner] = 0.25;
+				}
+			}
+		}
+		if (rank == 21) {
+			for (int i = 0; i < r; i++) {
+				for (int j = 0; j < r; j++) {
+					u[i + j * n_inner] = 0.5;
+					v[i + j * n_inner] = 0.25;
+				}
+			}
+		}
+	}
+
+	// For sixty-four processes
+	if (Psq == 64) {
+
+		int r = 50;
+		if (rank == 27) {
+			for (int i = n_inner - r; i < n_inner; i++) {
+				for (int j = n_inner - r; j < n_inner; j++) {
+					u[i + j * n_inner] = 0.5;
+					v[i + j * n_inner] = 0.25;
+				}
+			}
+		}
+		if (rank == 28) {
+			for (int i = 0; i < r; i++) {
+				for (int j = n_inner - r; j < n_inner; j++) {
+					u[i + j * n_inner] = 0.5;
+					v[i + j * n_inner] = 0.25;
+				}
+			}
+		}
+		if (rank == 35) {
+			for (int i = n_inner - r; i < n_inner; i++) {
+				for (int j = 0; j < r; j++) {
+					u[i + j * n_inner] = 0.5;
+					v[i + j * n_inner] = 0.25;
+				}
+			}
+		}
+		if (rank == 36) {
+			for (int i = 0; i < r; i++) {
+				for (int j = 0; j < r; j++) {
+					u[i + j * n_inner] = 0.5;
+					v[i + j * n_inner] = 0.25;
+				}
+			}
+		}
+	}
+
+	// Allocate vectors for sending receiving boudary data:
 	double bin_north[2 * n_inner], bin_south[2 * n_inner], \
-			bin_east[2 * n_inner], bin_west[2 * n_inner];
+	bin_east[2 * n_inner], bin_west[2 * n_inner];
 	double bout_north[2 * n_inner], bout_south[2 * n_inner], \
-			bout_east[2 * n_inner], bout_west[2 * n_inner];
+	bout_east[2 * n_inner], bout_west[2 * n_inner];
 
 	// Initialize sparse matrices:
 	cs *T ;
@@ -158,23 +315,6 @@ int main(int argc, char *argv[])
 
 			bout_west[i] = u[i * n_inner];
 			bout_west[i + n_inner] = v[i * n_inner];
-		}
-
-		// Assign colors to processes:
-		int red = 0;
-		for (int j = 0; j < P; j = j + 2) {
-			for (int i = 0; i < P; i = i + 2) {
-				if (rank == i + j * P) {
-					red = 1;
-				}
-			}
-		}
-		for (int j = 1; j < P; j = j + 2) {
-			for (int i = 1; i < P; i = i + 2) {
-				if (rank == i + j * P) {
-					red = 1;
-				}
-			}
 		}
 
 		// Share boundary data:
