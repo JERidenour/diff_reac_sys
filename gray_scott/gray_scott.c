@@ -7,7 +7,7 @@
 #include "gray_scott.h"
 #include <time.h>
 
-// numerical parameters
+// Numerical and physical parameters
 #define Nglobal 256*256
 #define ht 0.19
 #define F 0.0375
@@ -16,17 +16,17 @@
 #define Dv 1*1e-5
 #define u0 1.0
 #define v0 0.0
-#define MAXITER 0
+#define MAXITER 1
 
 int main(int argc, char *argv[])
 {
 
-	/* Initialize cpu timing */
+	// Initialize cpu timing 
 	clock_t begin, end;
 	double time_spent;
 	begin = clock();
 
-	//Psq is the number of processes, must be a square
+	// Psq is the number of processes, must be a square
 	int P, Psq, rank, rc;
 	int target_north, target_south, target_east, target_west;
 
@@ -39,38 +39,38 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
-	//determine position in process mesh:
+	// Determine position in process mesh:
 	P = sqrt(Psq);	//process mesh dimension
 	int north = rank > (P - 1) * P - 1;
 	int south = rank < P;
 	int east = (rank + 1) % P == 0;
 	int west = rank % P == 0;
 
-	//calculate rank of neighbors
+	// Calculate rank of neighbors:
 	target_north = (1 - north) * (rank + P) + north * (rank - (P - 1) * P);
 	target_south = (1 - south) * (rank - P) + south * (rank + (P - 1) * P);
 	target_east = (1 - east) * (rank + 1) + east * (rank - P + 1);
 	target_west = (1 - west) * (rank - 1) + west * (rank + P - 1);
 
-	//dimension sizes
+	// Dimension sizes:
 	csi N_inner = Nglobal / Psq;
 	csi n_inner = sqrt(N_inner);
 	csi n = n_inner;
 	csi N = N_inner;
 
+	// Allocate and initialize u and v:
 	double *u, *v, *unew, *vnew ;
-	// allocate and initialize u and v
 	u = (double*) calloc( N, sizeof(double)) ;
 	v = (double*) calloc( N, sizeof(double)) ;
 	for (int i = 0; i < N; ++i) {
 		u[i] = u0;
 		v[i] = v0;
 	}
-	// allocate work vectors unew and vnew
+	// Allocate work vectors unew and vnew:
 	unew = (double*) calloc( N , sizeof(double)) ;
 	vnew = (double*) calloc( N , sizeof(double)) ;
 
-	// initial values
+	// Set initial values:
 	if (rank == 0 || rank == 3) {
 		int c = floor(n_inner / 2);
 		int r = floor(n_inner / 20);
@@ -102,12 +102,13 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	//vectors receiving boudary data
-	double bin_north[2 * n_inner], bin_south[2 * n_inner], bin_east[2 * n_inner], bin_west[2 * n_inner];
-	//vectors sending boundary data
-	double bout_north[2 * n_inner], bout_south[2 * n_inner], bout_east[2 * n_inner], bout_west[2 * n_inner];
+	// Allocate vectors for receiving and recieving boudary data:
+	double bin_north[2 * n_inner], bin_south[2 * n_inner], \
+			bin_east[2 * n_inner], bin_west[2 * n_inner];
+	double bout_north[2 * n_inner], bout_south[2 * n_inner], \
+			bout_east[2 * n_inner], bout_west[2 * n_inner];
 
-	// CSparse data
+	// Initialize sparse matrices:
 	cs *T ;
 	cs *IpTu, *IpTv ;
 
@@ -123,8 +124,7 @@ int main(int argc, char *argv[])
 
 	int err = 0;	// should be 0 for no error
 
-	// create numerical operators
-
+	// Create numerical operators:
 	T = cs_spalloc (N, N, nz, 1, 1) ;
 	err = create_IpT(T, n, N, nz, Du, hx, ht);
 	IpTu = cs_compress(T) ;
@@ -145,7 +145,7 @@ int main(int argc, char *argv[])
 		// communication step
 		//==========================
 
-		// build boundary output data
+		// Build boundary output data:
 		for (int i = 0; i < n_inner; i++) {
 			bout_north[i] = u[i + (n_inner - 1) * n_inner];
 			bout_north[i + n_inner] = v[i + (n_inner - 1) * n_inner];
@@ -160,7 +160,7 @@ int main(int argc, char *argv[])
 			bout_west[i + n_inner] = v[i * n_inner];
 		}
 
-		// assign colors to processes
+		// Assign colors to processes:
 		int red = 0;
 		for (int j = 0; j < P; j = j + 2) {
 			for (int i = 0; i < P; i = i + 2) {
@@ -177,6 +177,7 @@ int main(int argc, char *argv[])
 			}
 		}
 
+		// Share boundary data:
 		if (red) {
 			MPI_Send(
 			    bout_north,
@@ -239,6 +240,7 @@ int main(int argc, char *argv[])
 			    0,
 			    MPI_COMM_WORLD,
 			    MPI_STATUS_IGNORE);
+
 		} else {
 
 			MPI_Recv(
@@ -308,15 +310,15 @@ int main(int argc, char *argv[])
 		// Update step
 		//==========================
 
-		//  update step one
+		//  Update step one:
 		for (int i = 0; i < N; ++i) {
 			unew[i] = u[i] + ht * ( (-u[i] * v[i] * v[i]) + (F * (1.0 - u[i])) ) ;
 		}
 
-		// update step two
+		// Update step two:
 		err = cs_gaxpy(IpTu, u, unew) ;
 
-		/// update step three
+		// Update step three
 		for (int i = 0; i < n_inner; i++) {
 			unew[i + (n_inner - 1)*n_inner] += su * bin_north[i];
 			unew[i] +=  su * bin_south[i];
@@ -324,15 +326,15 @@ int main(int argc, char *argv[])
 			unew[i * n_inner] += su * bin_west[i];
 		}
 
-		//  update step one
+		//  Update step one:
 		for (int i = 0; i < N; ++i) {
 			vnew[i] = v[i] + ht * ( (u[i] * v[i] * v[i]) - ((F + K) * v[i]) ) ;
 		}
 
-		// update step two
+		// Update step two:
 		err = cs_gaxpy(IpTv, v, vnew) ;
 
-		// update step three
+		// Update step three:
 		for (int i = 0; i < n_inner; i++) {
 			vnew[i + (n_inner - 1)*n_inner] += sv * bin_north[i + n_inner];
 			vnew[i] += sv * bin_south[i + n_inner];
@@ -340,7 +342,7 @@ int main(int argc, char *argv[])
 			vnew[i * n_inner] += sv * bin_west[i + n_inner];
 		}
 
-		// reset values
+		// Reset values:
 		for (int i = 0; i < N; ++i) {
 			u[i] = unew[i];
 			v[i] = vnew[i];
@@ -350,7 +352,7 @@ int main(int argc, char *argv[])
 		// end iteration
 		//==========================
 	}
-	
+
 //==========================
 // print results
 //==========================
@@ -413,7 +415,7 @@ int main(int argc, char *argv[])
 		            MPI_COMM_WORLD);
 	}
 
-	/* end cpu timing  */
+	// End cpu timing:
 	end = clock();
 	time_spent = (double) (end - begin) / CLOCKS_PER_SEC;
 	printf("Process %d, time spent: %f \n", rank, time_spent);
