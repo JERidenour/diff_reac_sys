@@ -26,7 +26,7 @@
 
 \lhead{ridenour@kth.se \\ herczka@kth.se}
 \rhead{Parallel Programming for Large-Scale Problems SF2568}
-\title{ An Explicit Parallel Solver for the Gray-Scott Reaction-Diffusion System\\ 
+\title{ Analysis of a Parallel Solver for the Gray-Scott Reaction-Diffusion System\\ 
 \vspace{1.2cm}
 \large Parallel Programming for Large-Scale Problems SF2568 \\ 
 Teacher: Michael Hanke}
@@ -34,54 +34,61 @@ Teacher: Michael Hanke}
 Mateusz Herczka, 700624-9234}
 
 \begin{document}
-%\lstdefinestyle{customc}{
-% backgroundcolor=\color{light-gray},
-%  belowcaptionskip=1\baselineskip,
-%  breaklines=true,
-%  frame=L,
-%  xleftmargin=\parindent,
-%  language=C,
-%  showstringspaces=false,
-%  basicstyle=\footnotesize\ttfamily,
-%  keywordstyle=\bfseries\color{green!40!black},
-%  commentstyle=\itshape\color{purple!40!black},
-%  identifierstyle=\color{blue},
-%  stringstyle=\color{orange},
-%}
-%
-%\lstdefinestyle{output}{
-% backgroundcolor=\color{light-gray},
-% language=bash,
-% xleftmargin=\parindent,
-% keywordstyle=\color{blue},
-% basicstyle=\ttfamily,
-% morekeywords={peter@kbpet},
-% %alsoletter={:~$},
-% morekeywords=[2]{peter@kbpet:},
-%}
 \maketitle
 \pagebreak
 \section*{Problem description}
-The subject of this report is the numerical solution of a two-component reaction-diffusion system known as the Gray-Scott system \cite{Wang}. 
-\subsection*{mathematical formulation}
-\subsection*{numerical method}
-We proceed by means of a mixed implicit-explicit scheme combining the Crank-Nicolson and Adams-Bashforth methods, as is considered in \cite{Ruuth}.  The fully discretized system is written
+The subject of this report is the parallelization of a numerical method for a two-component reaction-diffusion system known as the Gray-Scott model.  Originally introduced by Gray and Scott \cite{Gray}, the model is a system of two partial differential equations for the concentration of two generic chemical species, which are reacting with each other as they diffuse through a medium.
+
+Pattern formation resulting from the Gray-Scott model is a rich area of research, with applications to a variety of physical, chemical, and biological phenomena, as well as cellular automata and the pattern formation of other partial differential equation systems \cite{Wang}.  We investigate a parallelization strategy for the two-dimensional case.  We make a series of trials, running the solver in parallel on 4, 16, 36, and 64 processes, and perform a speedup analysis using the results of these trials. Finally, we show a few of the various patterns that emerge from the Gray-Scott model with various input parameters.
+
+\subsection*{Mathematical Formulation}
+The Gray-Scott model involves the reaction and diffusion of two generic chemical species, $U$ and $V$, whose concentrations are described by the functions $u(x, y, t)$ and $v(x,y,t)$, reacting according to the chemical equations
 \ba{
-\frac{u_{i,j}^{n+1}-u_{i,j}^{n+1}}{dt} = & \ \frac{Du}{h^2}\bigg( u_{i-1,j}^{n+1} + u_{i+1,j}^{n+1} + u_{i,j-1}^{n+1}+ u_{i,j+1}^{n+1} - 4u_{i,j}^{n+1} \bigg) \\
-+ & \ \frac{Du}{h^2}\bigg( u_{i-1,j}^{n} + u_{i+1,j}^{n} + u_{i,j-1}^{n}+ u_{i,j+1}^{n} - 4u_{i,j}^{n} \bigg) \\
-+ & \ \frac{3}{2} \bigg( -u_{i,j}^{n} (v_{i,j}^{n})^2 + f(1-u_{i,j}^{n}) \bigg) \\
-- & \ \frac{1}{2} \bigg( -u_{i,j}^{n-1} (v_{i,j}^{n-1})^2 + f(1-u_{i,j}^{n-1}) \bigg), \\ \\
-\frac{v_{i,j}^{n+1}-v_{i,j}^{n+1}}{dt} = & \ \frac{Dv}{h^2}\bigg( v_{i-1,j}^{n+1} + v_{i+1,j}^{n+1} + v_{i,j-1}^{n+1}+ v_{i,j+1}^{n+1} - 4v_{i,j}^{n+1} \bigg) \\
-+ & \ \frac{Dv}{h^2}\bigg( v_{i-1,j}^{n} + v_{i+1,j}^{n} + v_{i,j-1}^{n}+ v_{i,j+1}^{n} - 4v_{i,j}^{n} \bigg) \\
-+ & \ \frac{3}{2} \bigg( -u_{i,j}^{n} (v_{i,j}^{n})^2 - (f+k)v_{i,j}^{n} \bigg) \\
-- & \ \frac{1}{2} \bigg( -u_{i,j}^{n-1} (v_{i,j}^{n-1})^2  - (f+k)v_{i,j}^{n-1} \bigg).
+U + 2V \rightarrow  & \ 3V,\\
+V \rightarrow  & \ P,
 }
-If we let $\sigma_u = D_u dt/h^2$ and $\sigma_v = D_v dt/h^2$ these equations can be rewritten
+where $P$ is an inert byproduct.  This system is governed by the following system of partial differential equations:
+\begingroup
+\addtolength{\jot}{0.5 em}
+\ban{
+\label{eq:gsu}
+\frac{\partial u}{\partial t} = & \ D_u \nabla^2u - uv^2 + F(1-u),\\
+\label{eq:gsv}
+\frac{\partial v}{\partial t} = & \ D_v \nabla^2u + uv^2 - (F-K)v.
+}
+\endgroup
+Here, $D_u$ and $D_v$ are the diffusion constants for $u$ and $v$ respectively, and $F$ and $K$ are constants which govern the replenishment of the chemical species.
+
+\subsection*{Numerical Method}
+In order to discretize (\ref{eq:gsu}) and (\ref{eq:gsv}) we let....
+
+...thus we can write the fully discretized equations as
+\ban{
+\label{eq:discrete_system}
+\vec{u}^{n+1} = \vec{u}^{n} + \Delta t [A \vec{u}^{n} + f_u(\vec{u}^{n},\vec{v}^{n})],\\
+\vec{v}^{n+1} = \vec{v}^{n} + \Delta t [A \vec{v}^{n} + f_v(\vec{u}^{n},\vec{v}^{n})],
+}
+and we have an exact update formula for each time step.
+
+\subsubsection*{Stability Conditions}
+In order to ensure numerical stability for the differential operator $A$ in  (\ref{eq:discrete_system}), we must conform to the restriction
 \ba{
--\sigma_u u_{i+1,j}^{n+1} - & \ \sigma_u u_{i-1,j}^{n+1} -\sigma_u u_{i,j+1}^{n+1} -\sigma_u u_{i,j-1}^{n+1} + (1+ 4 \sigma) u_{i,j}^{n+1}\\ 
-= & \ \sigma_u u_{i+1,j}^{n}+\sigma_u u_{i-1,j}^{n}+\sigma_u u_{i,j+1}^{n}+\sigma_u u_{i,j-1}^{n} + (1- 4 \sigma) u_{i,j}^{n+1}\\
-+ & \ F,
+\Delta t \lambda_k \in \mathcal{S}, \ \forall k, \ k = \text{1, 2, . . . N},
 }
+where $\lambda_k$ is the $k$-th eigenvalue of $A$, and $\mathcal{S}$ is the stability region of the forward Euler method: a circle in the complex plane centered at $-1$ with unit radius \cite{Edsberg}.  The maximum eigenvalue, $\lambda_{max}$ for the chosen parameters has a strictly negative real value, and thus we must choose a timestep such that $\Delta t \cdot \lambda_{max}$ is at least -2.  The maximum eigenvalue is computed using Matlab as:
+\ba{
+\lambda_{max} = -2.547,
+}
+which provides the limitation on the timestep:
+\ba{
+\Delta t \le \frac{-2}{-2.547} = 0.7852.
+}
+Since the timestep also has a damping effect on the replenishment term and reaction rate, we must consider these as well when choosing the timestep.  We settle on 
+\ba{
+\Delta t = 0.25.
+}
+This is well within the stability bounds of $A$, and provides suitable damping on the replenishment and reaction rate terms for Gray-Scott pattern formation as studied in \cite{Wang}.
+
 \section*{Psuedo-code algorithm description}
 \section*{Theoretical performance evaluation}
 \section*{Implementation details}
@@ -89,8 +96,10 @@ If we let $\sigma_u = D_u dt/h^2$ and $\sigma_v = D_v dt/h^2$ these equations ca
 \section*{Experimental speedup investigation with meaningful data}
 
 \begin{thebibliography}{}
+\bibitem{Gray} Gray P, Scott SK. {\it Sustained oscillations and other exotic patterns of behavior in isothermal reactions}. J Phys Chem 1985;89:22–32.
 \bibitem{Wang} Weiming Wang, Yezhi Lin, Feng Yang, Lei Zhang, Yongji Tan, {\it Numerical study of pattern formation in an extended Gray–Scott model}, Communications in Nonlinear Science and Numerical Simulation, 16 (2011).
-\bibitem{Ruuth} Steven J Ruuth, {\it Implicit-Explicit Methods for Reaction-Diffusion Problems in Pattern Formation}, Journal of Mathematical Biology 34 (2), 148-176. 
+%\bibitem{Ruuth} Steven J Ruuth, {\it Implicit-Explicit Methods for Reaction-Diffusion Problems in Pattern Formation}, Journal of Mathematical Biology 34 (2), 148-176. 
+\bibitem{Edsberg} Lennart Edsberg {\it Introduction to Computation and Modelling for Differential Equations}, 2008, John Wiley and Sons, pp 50.
 %\bibitem{Wilkinson} Barry Wilkinson, Michael Allen {\it Parallel Programming, Techniques and Applications Using Networked Workstations and Parallel Computers}, 2005, Pearson Prentice Hall, pp 9.
 \end{thebibliography}
 
