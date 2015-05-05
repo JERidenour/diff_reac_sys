@@ -8,10 +8,10 @@
 \usepackage{geometry}
 \usepackage{multicol}
 \usepackage{amsmath}
-%\usepackage[]{mcode}
+\usepackage{amssymb}
+\usepackage[]{mcode}
 \usepackage{pdfpages}
 \usepackage{caption} 
-\usepackage{mcode}
 \captionsetup[table]{skip=10pt}
 
  \newcommand{\ba}[1]{\begin{align*}    #1    \end{align*}}
@@ -43,7 +43,7 @@ The subject of this report is the parallelization of a numerical method for a tw
 Pattern formation resulting from the Gray-Scott model is a rich area of research, with applications to a variety of physical, chemical, and biological phenomena, as well as cellular automata and the pattern formation of other partial differential equation systems \cite{Wang}.  We investigate a parallelization strategy for the two-dimensional case.  We make a series of trials, running the solver in parallel on 4, 16, 36, and 64 processes, and perform a speedup analysis using the results of these trials. Finally, we show a few of the various patterns that emerge from the Gray-Scott model with various input parameters.
 
 \subsection*{Mathematical Formulation}
-The Gray-Scott model involves the reaction and diffusion of two generic chemical species, $U$ and $V$, whose concentrations are described by the functions $u(x, y, t)$ and $v(x,y,t)$, reacting according to the chemical equations
+The Gray-Scott model involves the reaction and diffusion of two generic chemical species, $U$ and $V$, whose concentrations are described by the functions $u$ and $v$, reacting according to the chemical equations
 \ba{
 U + 2V \rightarrow  & \ 3V,\\
 V \rightarrow  & \ P,
@@ -53,24 +53,79 @@ where $P$ is an inert byproduct.  This system is governed by the following syste
 \addtolength{\jot}{0.5 em}
 \ban{
 \label{eq:gsu}
-\frac{\partial u}{\partial t} = & \ D_u \nabla^2u - uv^2 + F(1-u),\\
+\frac{\partial u}{\partial t} = & \ D_u \nabla^2u - uv^2 + F(1-u), & \ u,v: \Omega \rightarrow \mathbb{R}, \ t\ge 0,  \\
 \label{eq:gsv}
-\frac{\partial v}{\partial t} = & \ D_v \nabla^2u + uv^2 - (F-K)v.
+\frac{\partial v}{\partial t} = & \ D_v \nabla^2v + uv^2 - (F-K)v , & \ u,v: \Omega \rightarrow \mathbb{R}, t \ \ge 0.
 }
 \endgroup
-Here, $D_u$ and $D_v$ are the diffusion constants for $u$ and $v$ respectively, and $F$ and $K$ are constants which govern the replenishment of the chemical species.
+Here, $D_u$ and $D_v$ are the diffusion constants for $u$ and $v$ respectively, and $F$ and $K$ are constants which govern the replenishment of the chemical species.  The term $uv^2$ gives the reaction rate for the system.  We are concerned with solving the Gray-Scott equations on a two-dimensional domain $\Omega = [0,1]^2$.  Thus, $u = u(x,y,t)$ and $v = v(x,y,t)$, giving the laplacian as
+\ba{
+\nabla^2u = & \ \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2}, \\
+\nabla^2u = & \ \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2}.
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% describe typical values and characteristics of the constants
 
 \subsection*{Numerical Method}
-In order to discretize (\ref{eq:gsu}) and (\ref{eq:gsv}) we let....
-
-...thus we can write the fully discretized equations as
+We discretize $\Omega$ with the same stepsize in the $x$- and $y$-directions, $h$, corresponding to $N^2$ inner gridpoints equidistantly spread across the surface.  We let $h = 1/(N+1)$ such that $x_i = ih$, $i$ = 1, 2, . . . , $N$ and $y_j = jh$, $j$ = 1, 2, . . . , $N$.  Thus the function value $u(x,y,t)$ is approximated by $u(ih, jh, t) = u_{i,j}(t)$, $t\ge 0$. Using the traditional central difference formula for the discrete five-point laplacian with step length $h$, $\Delta_5^h$, the system (\ref{eq:gsu}) + (\ref{eq:gsv}) can be written in semi-discrete form as follows: 
+\begingroup
+\addtolength{\jot}{0.5 em}
+\ban{
+\label{eq:semiu}
+\frac{\partial u_{i,j}}{\partial t} = \frac{D_u}{h^2} \Delta_5^h u_{i,j} -u_{i,j} (v_{i,j})^2 + F(1-u_{i,j}), \\
+\label{eq:semiv}
+\frac{\partial v_{i,j}}{\partial t} = \frac{D_v}{h^2} \Delta_5^h v_{i,j} +u_{i,j} (v_{i,j})^2 - (F-K)v_{i,j}.
+}
+\endgroup
+We then discretize in time, with timestep $dt$, and approximate the time-derivative with the explicit Euler method.  Letting $t = k\cdot dt$ for $k$ = 1, 2, 3, . . . ., and $u_{i,j}(k\cdot dt) = u_{i,j}^k$, $v_{i,j}(k\cdot dt) = v_{i,j}^k$, the system (\ref{eq:semiu}) + (\ref{eq:semiv})  becomes
+\begingroup
+\addtolength{\jot}{0.5 em}
+\ban{
+\label{eq:difu}
+\frac{u_{i,j}^{k+1} - u_{i,j}^k}{dt} = \frac{D_u}{h^2} \Delta_5^h u_{i,j}^k -u_{i,j}^k (v_{i,j}^k)^2 + F(1-u_{i,j}^k), \\
+\label{eq:difv}
+\frac{v_{i,j}^{k+1} - v_{i,j}^k}{dt} = \frac{D_v}{h^2} \Delta_5^h v_{i,j}^k +u_{i,j}^k (v_{i,j}^k)^2 - (F-K)v_{i,j}^k.
+}
+\endgroup
+The difference equations (\ref{eq:difu}) and (\ref{eq:difv}) give a simple formula for the update of the function values at time $(k+1) \cdot dt$ given that values at time $k \cdot dt$.  We represent the discrete functions $u_{i,j}^k$ and  $v_{i,j}^k$ as long vectors $\vec{u}^k$ and $\vec{v}^k$ with the following enumeration:
+\ba{
+\vec{u}^k = & \ (u_{1,1}^k, \ u_{2,1}^k, \ \text{. . . }, \ u_{N,1}^k, \ u_{1,2}^k, \ u_{2,2}^k, \ \text{. . . }, \ u_{N,N}^k), \\
+\vec{v}^k = & \ (v_{1,1}^k, \ v_{2,1}^k, \ \text{. . . }, \ v_{N,1}^k, \ v_{1,2}^k, \ v_{2,2}^k, \ \text{. . . }, \ v_{N,N}^k).
+}
+Using the long vectors, we can write the numerical operator $\Delta_5^h$ as a sparse matrix multiplication as follows:
+\begingroup
+\addtolength{\jot}{0.5 em}
+\ba{
+\frac{D_u}{h^2} \Delta_5^h u_{i,j} = \vec{A}_u\vec{u}^n,\\
+\frac{D_v}{h^2} \Delta_5^h v_{i,j} = \vec{A}_v\vec{v}^n,
+}
+\endgroup
+where the matrices $\vec{A}_u$ and $\vec{A}_v$ are block tridiagonal:
+\ba{
+\vec{A}_u = & \ \text{tridiag}_N(-\vec{I}, \ \vec{T}_u, \ -\vec{I}), \\
+\vec{A}_v = & \ \text{tridiag}_N(-\vec{I}, \ \vec{T}_v, \ -\vec{I}),
+}
+where $\vec{I}$ is an identity matrix and the matrices $\vec{T}_u$ and $\vec{T}_v$ are tridiagonal of the form
+\ba{
+\vec{T}_u = & \ \text{tridiag}_N(\sigma_u, \ -4\sigma_u, \ \sigma_u), \\
+\vec{T}_v = & \ \text{tridiag}_N(\sigma_v, \ -4\sigma_v, \ \sigma_v),
+}
+where 
+\begingroup
+\addtolength{\jot}{0.5em}
+\ba{
+\sigma_u =& \ \frac{D_u}{h^2}, \\
+\sigma_v =& \ \frac{D_v}{h^2}.
+}
+\endgroup
+Thus we can write the fully discretized equations as
 \ban{
 \label{eq:discrete_system}
-\vec{u}^{n+1} = \vec{u}^{n} + \Delta t [A \vec{u}^{n} + f_u(\vec{u}^{n},\vec{v}^{n})],\\
-\vec{v}^{n+1} = \vec{v}^{n} + \Delta t [A \vec{v}^{n} + f_v(\vec{u}^{n},\vec{v}^{n})],
+\vec{u}^{n+1} = \vec{u}^{n} + dt [\vec{A}_u \vec{u}^{n} + f_u(\vec{u}^{n},\vec{v}^{n})],\\
+\vec{v}^{n+1} = \vec{v}^{n} + dt [\vec{A}_v \vec{v}^{n} + f_v(\vec{u}^{n},\vec{v}^{n})],
 }
 and we have an exact update formula for each time step.
-
+\subsubsection*{Initial and Boundary Conditions}
 \subsubsection*{Stability Conditions}
 In order to ensure numerical stability for the differential operator $A$ in  (\ref{eq:discrete_system}), we must conform to the restriction
 \ba{
@@ -94,6 +149,7 @@ This is well within the stability bounds of $A$, and provides suitable damping o
 \subsection*{Implementation details}
 The computational domain is divided into subdomains, one for each process.  Each process is responsible for the update of it's local values.  Along the subdomain boundaries, neighbouring values are needed for the update; these are obtained by coordinated message passing.  The boundary data are communicated between processes by means of a red-black communication schedule.  When all necessary information is obtained, the local values are updated according to (\ref{eq:discrete_system}).
 
+The update is accomplished 
 \subsection*{Psuedo-code}
 \begin{lstlisting}
 MPI Initialize;
