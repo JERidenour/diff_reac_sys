@@ -9,9 +9,9 @@
 \usepackage{multicol}
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage[]{mcode}
 \usepackage{pdfpages}
 \usepackage{caption} 
+\usepackage[]{algorithm2e}
 \captionsetup[table]{skip=10pt}
 
  \newcommand{\ba}[1]{\begin{align*}    #1    \end{align*}}
@@ -63,8 +63,23 @@ Here, $D_u$ and $D_v$ are the diffusion constants for $u$ and $v$ respectively, 
 \nabla^2u = & \ \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2}, \\
 \nabla^2u = & \ \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2}.
 }
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% describe typical values and characteristics of the constants
+
+As in \cite{Wang}, we use periodic boundary conditions for (\ref{eq:gsu}) and (\ref{eq:gsv}); thus, our simulation on $\Omega$ models a small surface surrounded by similar elements reacting identically. We choose the diffusion constants $D_u = 2 \cdot 10^{-6}$, $D_v = 1 \cdot 10^{-6}$, and let $F$ and $K$ take values according to $F \in [0.02, \ 0.08]$, $K \in [0.05,\ 0.07]$ in order to investigate the different types of patterns that arise from varying combinations of the two.
+
+The system is in a trivial state when $u = 1$ and $v=0$.  To initialize a reaction, we let the system assume this trivial state at time zero in all areas except a square in the middle of dimension one-sixth, where we set $u = 0.5$ and $v = 0.25$:
+\ban{
+\label{eq:icu}
+u(x,y,0) = \begin{cases}
+1/2, & \ 5/12 \ge x \ge 7/12, \ 5/12 \ge y \ge 7/12,\\
+1, & \ \text{otherwise},
+ \end{cases}\\
+ \label{eq:icv}
+ v(x,y,0) = \begin{cases}
+1/4, & \ 5/12 \ge x \ge 7/12, \ 5/12 \ge y \ge 7/12,\\
+0, & \ \text{otherwise}.
+ \end{cases}
+}
+The reaction then diffuses outward from the middle, leaving behind a characteristic pattern, until all $\Omega$ is filled.
 
 \subsection*{Numerical Method}
 We discretize $\Omega$ with the same stepsize in the $x$- and $y$-directions, $h$, corresponding to $N^2$ inner gridpoints equidistantly spread across the surface.  We let $h = 1/(N+1)$ such that $x_i = ih$, $i$ = 1, 2, . . . , $N$ and $y_j = jh$, $j$ = 1, 2, . . . , $N$.  Thus the function value $u(x,y,t)$ is approximated by $u(ih, jh, t) = u_{i,j}(t)$, $t\ge 0$. Using the traditional central difference formula for the discrete five-point laplacian with step length $h$, $\Delta_5^h$, the system (\ref{eq:gsu}) + (\ref{eq:gsv}) can be written in semi-discrete form as follows: 
@@ -100,12 +115,12 @@ Using the long vectors, we can write the numerical operator $\Delta_5^h$ as a sp
 \frac{D_v}{h^2} \Delta_5^h v_{i,j} = \vec{A}_v\vec{v}^n,
 }
 \endgroup
-where the matrices $\vec{A}_u$ and $\vec{A}_v$ are block tridiagonal:
+where the matrices $\vec{A}_u$ and $\vec{A}_v$ are of dimension $[N^2 \times N^2]$ with block tridiagonal form:
 \ba{
-\vec{A}_u = & \ \text{tridiag}_N(-\vec{I}, \ \vec{T}_u, \ -\vec{I}), \\
-\vec{A}_v = & \ \text{tridiag}_N(-\vec{I}, \ \vec{T}_v, \ -\vec{I}),
+\vec{A}_u = & \ \text{tridiag}_N(\sigma_u\vec{I}, \ \vec{T}_u, \ \sigma_u\vec{I}), \\
+\vec{A}_v = & \ \text{tridiag}_N(\sigma_v\vec{I}, \ \vec{T}_v, \ \sigma_v\vec{I}),
 }
-where $\vec{I}$ is an identity matrix and the matrices $\vec{T}_u$ and $\vec{T}_v$ are tridiagonal of the form
+where $\vec{I}$ is an identity matrix, multiplied by the constants $\sigma_u$ or $\sigma_v$, and the matrices $\vec{T}_u$ and $\vec{T}_v$ are tridiagonal of the form
 \ba{
 \vec{T}_u = & \ \text{tridiag}_N(\sigma_u, \ -4\sigma_u, \ \sigma_u), \\
 \vec{T}_v = & \ \text{tridiag}_N(\sigma_v, \ -4\sigma_v, \ \sigma_v),
@@ -118,66 +133,68 @@ where
 \sigma_v =& \ \frac{D_v}{h^2}.
 }
 \endgroup
-Thus we can write the fully discretized equations as
+If we let $f_u(\vec{u}^{k},\vec{v}^{k}) = -\vec{u}^k (\vec{v}^k)^2 + F(1-\vec{u}^k)$ and $ f_v(\vec{u}^{k},\vec{v}^{k}) = \vec{u}^k (\vec{v}^k)^2 - (F-k)\vec{v}^k$, we can compactly write the fully discretized equations as
 \ban{
-\label{eq:discrete_system}
-\vec{u}^{n+1} = \vec{u}^{n} + dt [\vec{A}_u \vec{u}^{n} + f_u(\vec{u}^{n},\vec{v}^{n})],\\
-\vec{v}^{n+1} = \vec{v}^{n} + dt [\vec{A}_v \vec{v}^{n} + f_v(\vec{u}^{n},\vec{v}^{n})],
+\label{eq:discu}
+\vec{u}^{k+1} = \vec{u}^{k} + dt [\vec{A}_u \vec{u}^{k} + f_u(\vec{u}^{k},\vec{v}^{k})],\\
+\label{eq:discv}
+\vec{v}^{k+1} = \vec{v}^{k} + dt [\vec{A}_v \vec{v}^{k} + f_v(\vec{u}^{k},\vec{v}^{k})],
 }
 and we have an exact update formula for each time step.
 \subsubsection*{Initial and Boundary Conditions}
-\subsubsection*{Stability Conditions}
-In order to ensure numerical stability for the differential operator $A$ in  (\ref{eq:discrete_system}), we must conform to the restriction
+The initial and boundary conditions are straightforward to implement numerically.  The initial state is completely known, so $\vec{u}^0$ and $\vec{v}^0$ are given.  To implement periodic boundary conditions we simply set
 \ba{
-\Delta t \lambda_k \in \mathcal{S}, \ \forall k, \ k = \text{1, 2, . . . N},
+u_{-1,j}^k = & \ u_{N-1,j}^k, \\
+u_{i,-1}^k =& \  u_{i,N-1}^k, \\
+u_{N,j}^k =& \  u_{0,j}^k,\\ 
+u_{i,N}^k = & \ u_{i,0}^k,\\ 
 }
-where $\lambda_k$ is the $k$-th eigenvalue of $A$, and $\mathcal{S}$ is the stability region of the forward Euler method: a circle in the complex plane centered at $-1$ with unit radius \cite{Edsberg}.  The maximum eigenvalue, $\lambda_{max}$ for the chosen parameters has a strictly negative real value, and thus we must choose a timestep such that $\Delta t \cdot \lambda_{max}$ is at least -2.  The maximum eigenvalue is computed using Matlab as:
+when updating the boundary points.  The formula is likewise for $v$.
+
+\subsubsection*{Stability Conditions}
+In order to ensure numerical stability for the differential operators $\vec{A}_u$ and $\vec{A}_v$ in  (\ref{eq:discu}) and (\ref{eq:discv}), we must conform to the restriction
 \ba{
-\lambda_{max} = -2.547,
+dt \cdot \lambda_{l,u} \in & \ \mathcal{S}, \ \forall  \ l, \ l = \text{1, 2, . . . $L_u$},\\
+dt \cdot \lambda_{l,v} \in & \ \mathcal{S}, \ \forall  \ l, \ l = \text{1, 2, . . . $L_v$},
+}
+where $\lambda_{l,u}$ and $\lambda_{l,v}$ are the $l$-th eigenvalues of $\vec{A}_u$ and $\vec{A}_v$ respectively,  and $\mathcal{S}$ is the stability region of the explicit Euler method: a circle in the complex plane centered at $-1$ with unit radius \cite{Edsberg}.  The number of unique eigenvalues possessed by each of the matrices is denoted by $L_u$ and $L_v$.   
+
+For the parallel speedup trials, we discretize $\Omega$ using $N = 300$.  Together with the chosen diffusion constants, the  maximum eigenvalue, $\lambda_{max}$, of $\vec{A}_u$ and $\vec{A}_v$ has a strictly negative real value, and thus we must choose a timestep such that $dt \cdot \lambda_{max}$ is at least $-2$.  The maximum eigenvalue is computed using Matlab as:
+\ba{
+\lambda_{max} = -1.4303,
 }
 which provides the limitation on the timestep:
 \ba{
-\Delta t \le \frac{-2}{-2.547} = 0.7852.
+dt \le \frac{-2}{-1.4303} = 1.3983.
 }
-Since the timestep also has a damping effect on the replenishment term and reaction rate, we must consider these as well when choosing the timestep.  We settle on 
+Since the timestep also has a damping effect on the replenishment term and reaction rate, we must consider these as well when choosing the timestep.  As in \cite{Wang}, we settle on 
 \ba{
-\Delta t = 0.25.
+dt = 1.
 }
-This is well within the stability bounds of $A$, and provides suitable damping on the replenishment and reaction rate terms for Gray-Scott pattern formation as studied in \cite{Wang}.
+This is well within the stability bounds of $A$, and provides suitable damping on the replenishment and reaction rate terms for the observation of the characteristic Gray-Scott pattern formation.
 
 \section*{Algorithm Description}
 \subsection*{Implementation details}
-The computational domain is divided into subdomains, one for each process.  Each process is responsible for the update of it's local values.  Along the subdomain boundaries, neighbouring values are needed for the update; these are obtained by coordinated message passing.  The boundary data are communicated between processes by means of a red-black communication schedule.  When all necessary information is obtained, the local values are updated according to (\ref{eq:discrete_system}).
+To implement the update formulae (\ref{eq:discu}) and (\ref{eq:discv}) in parallel, the computational domain is divided into subdomains, one for each process.  Each process is responsible for the update of it's local values.  Along the subdomain boundaries, neighbouring values are needed for the update; these are obtained by coordinated message-passing.  The boundary data are communicated between processes by means of a red-black communication schedule.  When all necessary information is obtained, the local values are updated according to (\ref{eq:discu}) and (\ref{eq:discv}), see Algorithm \ref{alg:coms}.
 
-The update is accomplished 
-\subsection*{Psuedo-code}
-\begin{lstlisting}
-MPI Initialize;
-Calculate mesh position and neighbouring ranks;
-Determine color according to rank;
-Set initial values according to rank;
-for Max iterations:
-	Build boundary output data;
-	if (red):
-		for each neighbour:
-			MPI send boundary data;
-		end
-		for each neighbour:
-			MPI receive boundary data;
-		end
-	else:
-		for each neighbour:
-			MPI receive boundary data;
-		end
-		for each neighbour:
-			MPI send boundary data;
-		end
-	end
-	Update values;
-end
-Print results;
-MPI Finalize;
-\end{lstlisting}
+\begin{algorithm}[H]
+\label{alg:coms}
+ \KwData{$dt$, $\vec{u}^k$, $\vec{v}^k$, $\vec{A}_u$, $\vec{A}_v$, red}
+ \KwResult{$\vec{u}^{k+1}$ and $\vec{v}^{k+1}$ }
+collect boundary data $\vec{b}_{out}$\;
+  \eIf{red}{
+send $\vec{b}_{out}$: north, south, east, west\;
+receive $\vec{b}_{in}$: south, north, west, east\;
+   }{
+receive $\vec{b}_{in}$: south, north, west, east\;
+send $\vec{b}_{out}$: north, south, east, west\;
+  }
+$\vec{u}^{k+1} = \vec{u}^k+ dt [\vec{A}_u \vec{u}^k +  f_u(\vec{u}^{k},\vec{v}^{k})] + \vec{b}_{in}$\;
+$\vec{v}^{k+1} = \vec{v}^k+ dt [\vec{A}_v \vec{v}^k +  f_v(\vec{u}^{k},\vec{v}^{k})] + \vec{b}_{in}$\;
+ \vspace{0.3 cm}
+\caption{Communication and local update.}
+\end{algorithm}
+
 \section*{Theoretical performance evaluation}
 \section*{Testing with different cases}
 \section*{Experimental speedup investigation with meaningful data}
