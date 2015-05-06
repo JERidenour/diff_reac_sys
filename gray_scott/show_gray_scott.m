@@ -3,7 +3,7 @@ clear all
 load pro_0.txt -ascii
 
 contourf(pro_0);
-title('400^2 points on 1 processes')
+title('256^2 points on 1 processes')
 
 %% four processes
 clear all
@@ -16,7 +16,7 @@ A=[pro_0 pro_1 ;...
    pro_2 pro_3];
 
 contourf(A)
-title('400^2 points on 4 processes')
+title('256^2 points on 4 processes')
 %% sixteen processes
 clear all
 load pro_0.txt -ascii
@@ -42,7 +42,7 @@ A=[pro_0  pro_1  pro_2  pro_3;...
    pro_12 pro_13 pro_14 pro_15];
 
 contourf(A)
-title('400^2 points on 16 processes')
+title('256^2 points on 16 processes')
 %% thirty-six processes
 clear all
 load pro_0.txt -ascii
@@ -168,7 +168,7 @@ A=[pro_0  pro_1  pro_2  pro_3  pro_4  pro_5  pro_6  pro_7;...
    pro_56 pro_57 pro_58 pro_59 pro_60 pro_61 pro_62 pro_63];
 
 contourf(A)
-title('400^2 points on 64 processes')
+title('256^2 points on 64 processes')
 %% speedup
 T1 = 342;
 T4 = 248;

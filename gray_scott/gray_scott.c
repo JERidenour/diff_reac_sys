@@ -8,16 +8,15 @@
 #include <time.h>
 
 // Numerical and physical parameters
-//#define Nglobal 400*400 // use with 1, 4, 16, 64 processes
-#define Nglobal 396*396 // use with 36 processes
-#define ht 0.19
+#define Nglobal 300*300
+#define ht 1
 #define F 0.0375
 #define K 0.0634
 #define Du 2.0*1e-6
 #define Dv 1*1e-6
 #define u0 1.0
 #define v0 0.0
-#define MAXITER 100000
+#define MAXITER 47000
 
 int main(int argc, char *argv[])
 {
@@ -174,44 +173,6 @@ int main(int argc, char *argv[])
 			}
 		}
 		if (rank == 10) {
-			for (int i = 0; i < r; i++) {
-				for (int j = 0; j < r; j++) {
-					u[i + j * n_inner] = 0.5;
-					v[i + j * n_inner] = 0.25;
-				}
-			}
-		}
-	}
-
-	// For thirty-six processes:
-	if (Psq == 36) {
-
-		int r = 50;
-		if (rank == 14) {
-			for (int i = n_inner - r; i < n_inner; i++) {
-				for (int j = n_inner - r; j < n_inner; j++) {
-					u[i + j * n_inner] = 0.5;
-					v[i + j * n_inner] = 0.25;
-				}
-			}
-		}
-		if (rank == 15) {
-			for (int i = 0; i < r; i++) {
-				for (int j = n_inner - r; j < n_inner; j++) {
-					u[i + j * n_inner] = 0.5;
-					v[i + j * n_inner] = 0.25;
-				}
-			}
-		}
-		if (rank == 20) {
-			for (int i = n_inner - r; i < n_inner; i++) {
-				for (int j = 0; j < r; j++) {
-					u[i + j * n_inner] = 0.5;
-					v[i + j * n_inner] = 0.25;
-				}
-			}
-		}
-		if (rank == 21) {
 			for (int i = 0; i < r; i++) {
 				for (int j = 0; j < r; j++) {
 					u[i + j * n_inner] = 0.5;
