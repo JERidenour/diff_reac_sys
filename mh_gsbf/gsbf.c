@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <mpi.h>
+#include <time.h>
 
 #define NDIRS 8	// how many neighbours
 #define N_MIN 1	// minimum meaningful size of local subdomain
@@ -47,19 +48,22 @@
 //=========================================================================
 
 // run program like so:
-// mpirun -n <P processes> psplit <N size of global domain>
+// mpirun -n <P processes> gsbf <N size of global domain> <id>
 // for example:
-// mpirun -n 16 psplit 16
+// mpirun -n 16 gsbf 16
 
-#define MAXITER 10000
+#define MAXITER 47000
 
-#define BLOPSIZE 4
-#define HT 0.25		// TODO: determine theroetically what we need
+//#define BLOPSIZE 4
 
-#define DU 0.00002
-#define DV 0.00001
-#define F 0.026
-#define K 0.0550
+// JR's values
+#define HT 1.0
+#define DU 2.0*1e-6
+#define DV 1.0*1e-6
+#define F 0.0375
+#define K 0.0634
+#define U0 0.5		// non-zero starting value at blob
+#define V0 0.25		// non-zero starting value at blob
 
 //=========================================================================
 // declarations
@@ -73,13 +77,21 @@ int badGridParams(int rank, int P, int p, int N, int n);
 
 int main(int argc, char **argv)
 {
+	// timing
+	double tInit = 0;
+	double tComm = 0;
+	double tCalc = 0;
+	double startTimeInit, endTimeInit;
+	double startTimeComm, endTimeComm;
+	double startTimeCalc, endTimeCalc;
 
 	//=========================================================================
 	// MPI and subdomain basic setup
 	//=========================================================================
 
 	// ###################################
-	// TODO: start timing INITIALIZATION
+	// Start timing INITIALIZATION
+	startTimeInit = MPI_Wtime();
 	// ###################################
 
 	int rank, P, p;
@@ -309,14 +321,17 @@ int main(int argc, char **argv)
 	}
 
 	// ###################################
-	// TODO: end timing initialization
+	// END timing INITIALIZATION
+	endTimeInit = MPI_Wtime();
+	tInit = endTimeInit - startTimeInit;
 	// ###################################
 
 	for (int iter = 0; iter < MAXITER; ++iter)	// begin computation iterations
 	{
 
 		// ###################################
-		// TODO: start timing COMMUNICATION
+		// START timing COMMUNICATION
+		startTimeComm = MPI_Wtime();
 		// ###################################
 
 		// exchange data
@@ -559,11 +574,14 @@ int main(int argc, char **argv)
 		} // end data exchange
 
 		// ###################################
-		// TODO: end timing COMMUNICATION
+		// END timing COMMUNICATION
+		endTimeComm = MPI_Wtime();
+		tComm += (endTimeComm - startTimeComm);	// add to total
 		// ###################################
 
 		// ###################################
-		// TODO: start timing COMPUTATION
+		// START timing CALCULATION
+		startTimeCalc = MPI_Wtime();
 		// ###################################
 
 		// compute
@@ -593,7 +611,9 @@ int main(int argc, char **argv)
 		v = tmpnew;	// u = unew
 
 		// ###################################
-		// TODO: end timing COMPUTATION
+		// END timing CALCULATION
+		endTimeCalc = MPI_Wtime();
+		tCalc += (endTimeCalc - startTimeCalc);
 		// ###################################
 
 
