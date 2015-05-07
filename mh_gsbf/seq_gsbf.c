@@ -7,7 +7,7 @@
 #define NDIRS 8	// how many neighbours
 #define N_MIN 1	// minimum meaningful size of local subdomain
 
-#define BORDER_NORTH [1][1]			// 	north starts
+/*#define BORDER_NORTH [1][1]			// 	north starts
 #define BORDER_EAST [1][n]			//	east starts
 #define BORDER_SOUTH [n][1]			// 	south starts
 #define BORDER_WEST [1][1]			//	west starts
@@ -38,7 +38,7 @@
 #define VERTICAL 1
 #define HORIZONTAL 2
 #define DIAGONAL_UP 3
-#define DIAGONAL_DOWN 4
+#define DIAGONAL_DOWN 4*/
 
 #define I 0 	// matrix coordinate indexes
 #define J 1
@@ -92,17 +92,17 @@ int main(int argc, char **argv)
 {
 	// timing
 	double tInit = 0;
-	double tComm = 0;
+	//double tComm = 0;
 	double tCalc = 0;
 	double startTimeInit, endTimeInit;
-	double startTimeComm, endTimeComm;
+	//double startTimeComm, endTimeComm;
 	double startTimeCalc, endTimeCalc;
 
 	//=========================================================================
 	// MPI and subdomain basic setup
 	//=========================================================================
 
-	int rank, P, p;
+	//int rank, P, p;
 	int n, N;
 
 	MPI_Init(&argc, &argv);
@@ -112,26 +112,32 @@ int main(int argc, char **argv)
 	startTimeInit = MPI_Wtime();
 	// ###################################
 
+	/*
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	MPI_Comm_size(MPI_COMM_WORLD, &P);
+	*/
 
 	// set size of global domain and grid
-	if (argc > 1 && atoi(argv[1]) > P * N_MIN )
+	if (argc > 1 && atoi(argv[1]) > 16 ) {
 		N = atoi(argv[1]);	// use argument if big enough
+		fprintf(stdout, "Setting N and n to: %d x %d.\n", N, N );
+	}
+
 	else
 	{
-		N = P * N_MIN;
-		if (!rank)
-		{
-			fprintf(stdout, "Setting N to minimum: %d x %d.\n", P, N_MIN );
-			fflush(stdout);
-		}
+		N = 16;
+
+		fprintf(stdout, "Setting N to minimum: %d x %d.\n", N, N );
+		fflush(stdout);
+
 	}
-	p = (int) sqrt(P);	// size of process grid
-	n = (int) N / p;	// size of subdomain
+	/*p = (int) sqrt(P);	// size of process grid
+	n = (int) N / p;	// size of subdomain*/
+
+	n = N; // size of subdomain
 
 	// check grid parameters
-	if (badGridParams(rank, P, p, N, n))	// TODO: this function is just a hack
+	/*if (badGridParams(rank, P, p, N, n))	// TODO: this function is just a hack
 	{
 		MPI_Finalize();
 		return 0;
@@ -140,7 +146,7 @@ int main(int argc, char **argv)
 	{
 		fprintf(stdout, "P: %d, p: %d, N: %d, n: %d\n", P, p, N, n );
 		fflush(stdout);
-	}
+	}*/
 
 	// TODO: add an ID argument so we can identify the particular run
 	// if no ID given, create an ID based on system time (timestamp)
@@ -151,7 +157,7 @@ int main(int argc, char **argv)
 	//=========================================================================
 	// MPI cartesian process mesh
 	//=========================================================================
-
+	/*
 	// create mpi process mesh
 	int meshCoords[2];	// my mesh coordinates
 	int meshRank;		// my meshRank
@@ -273,7 +279,7 @@ int main(int argc, char **argv)
 		MPI_Type_create_subarray(2, sizes, subsizes, starts, MPI_ORDER_C, MPI_DOUBLE, &border[i]);
 		MPI_Type_commit(&border[i]);
 	}
-
+	*/
 	//=========================================================================
 	// Computation
 	//=========================================================================
@@ -283,23 +289,23 @@ int main(int argc, char **argv)
 	double ru = (ht * DU) / (hx * hx);
 	double rv = (ht * DV) / (hx * hx);
 
-	if (meshRank == 0)
+	/*if (meshRank == 0)
 	{
 		printf("hx: %.15f, ht: %.15f, ru: %.15f, rv: %.15f\n", hx, ht, ru, rv );
-	}
+	}*/
 
 
 	// allocate data vectors
-	double **u = alloc2DArray((n + 2) * (n + 2));
-	double **unew = alloc2DArray((n + 2) * (n + 2));
+	double **u = alloc2DArray((n) * (n));
+	double **unew = alloc2DArray((n) * (n));
 
-	double **v = alloc2DArray((n + 2) * (n + 2));
-	double **vnew = alloc2DArray((n + 2) * (n + 2));
+	double **v = alloc2DArray((n) * (n));
+	double **vnew = alloc2DArray((n) * (n));
 
 	// init
-	for (int i = 0; i < n + 2; ++i)
+	for (int i = 0; i < n; ++i)
 	{
-		for (int j = 0; j < n + 2; ++j)
+		for (int j = 0; j < n; ++j)
 		{
 			u[i][j] = 1.0;
 			unew[i][j] = 1.0;
@@ -309,21 +315,19 @@ int main(int argc, char **argv)
 	}
 
 	// For one process:
-	/*if (Psq == 1) {
+	int c = floor(n / 2);
+	int cc = floor(n / 4);
 
-		if (rank == 0) {
-			int c = floor(n_inner / 2);
-			int r = 50;
-			for (int i = c - r ; i < c + r; i++) {
-				for (int j = c - r ; j < c + r; j++) {
-					u[i + j * n_inner] = 0.5;
-					v[i + j * n_inner] = 0.25;
-				}
-			}
+	for (int i = cc ; i < (c + cc); i++) {
+		for (int j = cc ; j < (c + cc); j++) {
+			u[i][j] = U0;
+			v[i][j] = V0;
 		}
-	}*/
+	}
 
-	// For four processes:
+
+
+// For four processes:
 	/*if (Psq == 4) {
 
 		int r = 50;
@@ -361,8 +365,8 @@ int main(int argc, char **argv)
 		}
 	}*/
 
-	// For sixteen processes:
-	if (P == 16) {
+// For sixteen processes:
+	/*if (P == 16) {
 
 		if(meshRank == 0) {
 			printf("Creating initial condition for 16 processes.\n");
@@ -377,33 +381,9 @@ int main(int argc, char **argv)
 				}
 			}
 		}
-		/*if (meshRank == 6) {
-			for (int i = 0; i < r; i++) {
-				for (int j = n - r; j < n; j++) {
-					u[i + j * n] = 0.5;
-					v[i + j * n] = 0.25;
-				}
-			}
-		}
-		if (meshRank == 9) {
-			for (int i = n - r; i < n; i++) {
-				for (int j = 0; j < r; j++) {
-					u[i + j * n] = 0.5;
-					v[i + j * n] = 0.25;
-				}
-			}
-		}
-		if (meshRank == 10) {
-			for (int i = 0; i < r; i++) {
-				for (int j = 0; j < r; j++) {
-					u[i + j * n] = 0.5;
-					v[i + j * n] = 0.25;
-				}
-			}
-		}*/
-	}
+	}*/
 
-	// For sixty-four processes
+// For sixty-four processes
 	/*if (Psq == 64) {
 
 		int r = 50;
@@ -467,15 +447,15 @@ int main(int argc, char **argv)
 		}
 	}*/
 
-	// ###################################
-	// END timing INITIALIZATION
+// ###################################
+// END timing INITIALIZATION
 	endTimeInit = MPI_Wtime();
 	tInit = endTimeInit - startTimeInit;
-	// ###################################
+// ###################################
 
 	for (int iter = 0; iter < MAXITER; ++iter)	// begin computation iterations
 	{
-
+		/*
 		// ###################################
 		// START timing COMMUNICATION
 		startTimeComm = MPI_Wtime();
@@ -514,8 +494,6 @@ int main(int argc, char **argv)
 			                    processMesh,
 			                    &status
 			                  );
-			// MPI_Get_count(&status, ghost[NORTH], &rcount);
-			// printf("%d received: %d from NORTH.\n", meshRank, rcount);
 
 			// talk to south
 			err = MPI_Sendrecv(	&(u BORDER_SOUTH),
@@ -715,8 +693,6 @@ int main(int argc, char **argv)
 			                    processMesh,
 			                    &status
 			                  );
-			/*MPI_Get_count(&status, ghost[SOUTH], &rcount);
-			printf("%d received: %d from SOUTH.\n", meshRank, rcount);*/
 
 		} // end data exchange
 
@@ -725,17 +701,20 @@ int main(int argc, char **argv)
 		endTimeComm = MPI_Wtime();
 		tComm += (endTimeComm - startTimeComm);	// add to total
 		// ###################################
-
+		*/
 		// ###################################
 		// START timing CALCULATION
 		startTimeCalc = MPI_Wtime();
 		// ###################################
 
-		// compute
-		for (int i = 1; i <= n; ++i)
+		/*int firstelem = 0;
+		int lastelem = n - 1;*/
+		// compute inner
+		for (int i = 1; i <= n - 2; ++i)
 		{
-			for (int j = 1; j <= n; ++j)
+			for (int j = 1; j <= n - 2; ++j)
 			{
+
 				unew[i][j] = 	u[i][j] +
 				                ru * ( u[i - 1][j] - (4 * u[i][j]) + u[i + 1][j] + u[i][j - 1] + u[i][j + 1] ) +
 				                ht * ( -u[i][j] * v[i][j] * v[i][j] + F * (1.0 - u[i][j])	 );
@@ -745,6 +724,105 @@ int main(int argc, char **argv)
 				                ht * ( u[i][j] * v[i][j] * v[i][j] - (F + K) * v[i][j] );
 			}
 		}
+
+		// compute non-corner top row: i = 0, i-1 = n-1
+		int topRow = 0;
+		int topRowWrap = n - 1;
+		for (int j = 1; j <= n - 2; ++j)
+		{
+
+			unew[topRow][j] = 	u[topRow][j] +
+			                    ru * ( u[topRowWrap][j] - (4 * u[topRow][j]) + u[topRow + 1][j] + u[topRow][j - 1] + u[topRow][j + 1] ) +
+			                    ht * ( -u[topRow][j] * v[topRow][j] * v[topRow][j] + F * (1.0 - u[topRow][j])	 );
+
+			vnew[topRow][j] = 	v[topRow][j] +
+			                    rv * ( v[topRowWrap][j] - (4 * v[topRow][j]) + v[topRow + 1][j] + v[topRow][j - 1] + v[topRow][j + 1] ) +
+			                    ht * ( u[topRow][j] * v[topRow][j] * v[topRow][j] - (F + K) * v[topRow][j] );
+		}
+
+		// compute non-corner bottom row: i = n-1, i+1 = 0
+		int botRow = n - 1;
+		int botRowWrap = 0;
+		for (int j = 1; j <= n - 2; ++j)
+		{
+			unew[botRow][j] = 	u[botRow][j] +
+			                    ru * ( u[botRow - 1][j] - (4 * u[botRow][j]) + u[botRowWrap][j] + u[botRow][j - 1] + u[botRow][j + 1] ) +
+			                    ht * ( -u[botRow][j] * v[botRow][j] * v[botRow][j] + F * (1.0 - u[botRow][j])	 );
+
+			vnew[botRow][j] = 	v[botRow][j] +
+			                    rv * ( v[botRow - 1][j] - (4 * v[botRow][j]) + v[botRowWrap][j] + v[botRow][j - 1] + v[botRow][j + 1] ) +
+			                    ht * ( u[botRow][j] * v[botRow][j] * v[botRow][j] - (F + K) * v[botRow][j] );
+		}
+
+		// compute non-corner left column: j = 0, j-1 = n-1
+		int leftCol = 0;
+		int leftColWrap = n - 1;
+		for (int i = 1; i <= n - 2; ++i)
+		{
+
+			unew[i][leftCol] = 	u[i][leftCol] +
+			                    ru * ( u[i - 1][leftCol] - (4 * u[i][leftCol]) + u[i + 1][leftCol] + u[i][leftColWrap] + u[i][leftCol + 1] ) +
+			                    ht * ( -u[i][leftCol] * v[i][leftCol] * v[i][leftCol] + F * (1.0 - u[i][leftCol])	 );
+
+			vnew[i][leftCol] = 	v[i][leftCol] +
+			                    rv * ( v[i - 1][leftCol] - (4 * v[i][leftCol]) + v[i + 1][leftCol] + v[i][leftColWrap] + v[i][leftCol + 1] ) +
+			                    ht * ( u[i][leftCol] * v[i][leftCol] * v[i][leftCol] - (F + K) * v[i][leftCol] );
+		}
+
+		// compute non-corner right column: j = n-1, j+1 = 0
+		int rightCol = n - 1;
+		int rightColWrap = 0;
+		for (int i = 1; i <= n - 2; ++i)
+		{
+
+			unew[i][rightCol] = 	u[i][rightCol] +
+			                        ru * ( u[i - 1][rightCol] - (4 * u[i][rightCol]) + u[i + 1][rightCol] + u[i][rightCol - 1] + u[i][rightColWrap] ) +
+			                        ht * ( -u[i][rightCol] * v[i][rightCol] * v[i][rightCol] + F * (1.0 - u[i][rightCol])	 );
+
+			vnew[i][rightCol] = 	v[i][rightCol] +
+			                        rv * ( v[i - 1][rightCol] - (4 * v[i][rightCol]) + v[i + 1][rightCol] + v[i][rightCol - 1] + v[i][rightColWrap] ) +
+			                        ht * ( u[i][rightCol] * v[i][rightCol] * v[i][rightCol] - (F + K) * v[i][rightCol] );
+		}
+
+		// compute upper left corner
+		// i = 0, j = 0, i-1 = n-1, j-1 = n-1
+		unew[0][0] = 	u[0][0] +
+		                ru * ( u[n - 1][0] - (4 * u[0][0]) + u[0 + 1][0] + u[0][n - 1] + u[0][0 + 1] ) +
+		                ht * ( -u[0][0] * v[0][0] * v[0][0] + F * (1.0 - u[0][0])	 );
+
+		vnew[0][0] = 	v[0][0] +
+		                rv * ( v[n - 1][0] - (4 * v[0][0]) + v[0 + 1][0] + v[0][n - 1] + v[0][0 + 1] ) +
+		                ht * ( u[0][0] * v[0][0] * v[0][0] - (F + K) * v[0][0] );
+
+		// compute upper right corner
+		// i = 0, j = n-1, i-1 = n-1, j+1 = 0
+		unew[0][rightCol] = 	u[0][rightCol] +
+		                        ru * ( u[n - 1][rightCol] - (4 * u[0][rightCol]) + u[0 + 1][rightCol] + u[0][rightCol - 1] + u[0][0] ) +
+		                        ht * ( -u[0][rightCol] * v[0][rightCol] * v[0][rightCol] + F * (1.0 - u[0][rightCol])	 );
+
+		vnew[0][rightCol] = 	v[0][rightCol] +
+		                        rv * ( v[n - 1][rightCol] - (4 * v[0][rightCol]) + v[0 + 1][rightCol] + v[0][rightCol - 1] + v[0][0] ) +
+		                        ht * ( u[0][rightCol] * v[0][rightCol] * v[0][rightCol] - (F + K) * v[0][rightCol] );
+
+		// compute lower right corner
+		// i = n-1, i+1 = 0, j = n-1, j+1 = 0
+		unew[botRow][rightCol] = 	u[botRow][rightCol] +
+		                            ru * ( u[botRow - 1][rightCol] - (4 * u[botRow][rightCol]) + u[0][rightCol] + u[botRow][rightCol - 1] + u[botRow][0] ) +
+		                            ht * ( -u[botRow][rightCol] * v[botRow][rightCol] * v[botRow][rightCol] + F * (1.0 - u[botRow][rightCol])	 );
+
+		vnew[botRow][rightCol] = 	v[botRow][rightCol] +
+		                            rv * ( v[botRow - 1][rightCol] - (4 * v[botRow][rightCol]) + v[0][rightCol] + v[botRow][rightCol - 1] + v[botRow][0] ) +
+		                            ht * ( u[botRow][rightCol] * v[botRow][rightCol] * v[botRow][rightCol] - (F + K) * v[botRow][rightCol] );
+
+		// compute lower left corner
+		// i = n-1, i+1 = 0, j = 0, j-1 = n-1
+		unew[botRow][0] = 	u[botRow][0] +
+		                    ru * ( u[botRow - 1][0] - (4 * u[botRow][0]) + u[0][0] + u[botRow][0 - 1] + u[botRow][n - 1] ) +
+		                    ht * ( -u[botRow][0] * v[botRow][0] * v[botRow][0] + F * (1.0 - u[botRow][0])	 );
+
+		vnew[botRow][0] = 	v[botRow][0] +
+		                    rv * ( v[botRow - 1][0] - (4 * v[botRow][0]) + v[0][0] + v[botRow][0 - 1] + v[botRow][n - 1] ) +
+		                    ht * ( u[botRow][0] * v[botRow][0] * v[botRow][0] - (F + K) * v[botRow][0] );
 
 		// swap pointers
 		double **tmpnew;
@@ -767,113 +845,56 @@ int main(int argc, char **argv)
 
 	} // end computation iteration
 
-	
-	printf("Process %d, t_init: %f, t_comm: %f, t_calc: %f.\n", rank, tInit, tComm, tCalc);
-	
-	//=========================================================================
-	// Output to file
-	//=========================================================================
+
+	printf("Sequential t_init: %f, t_comm: %f, t_calc: %f.\n", tInit, 0.0, tCalc);
+
+//=========================================================================
+// Output to file
+//=========================================================================
 
 	FILE *fp;	// TODO: concatenate all filenames with a unique run ID
 
-	if (meshRank == 0) {
+	size_t firstelem = 0;	// we use all domain, no ghosts
+	size_t lastelem = n - 1;
 
-		size_t firstelem = 1;
-		size_t lastelem = n;
-
-		// write u
-		fp = fopen("u.txt", "w");	// open new file to write
-		for (int i = firstelem; i <= lastelem; ++i) {
-			for (int j = 1; j <= lastelem; ++j)
-			{
-				fprintf(fp, "%.15f ", u[i][j]);
-			}
-			fprintf(fp, "\n");
+	// write u
+	fp = fopen("u_seq.txt", "w");	// open new file to write
+	for (int i = firstelem; i <= lastelem; ++i) {
+		for (int j = firstelem; j <= lastelem; ++j)
+		{
+			fprintf(fp, "%.15f ", u[i][j]);
 		}
-		fclose(fp);
-
-		// write v
-		fp = fopen("v.txt", "w");	// open new file to write
-		for (int i = firstelem; i <= lastelem; ++i) {
-			for (int j = 1; j <= lastelem; ++j)
-			{
-				fprintf(fp, "%.15f ", v[i][j]);
-			}
-			fprintf(fp, "\n");
-		}
-		fclose(fp);
-		printf("Master wrote [%d %d] elements.\n", n, n);
-
-		// write info
-		fp = fopen("pPnN.txt", "w");	// open new file to write
-		fprintf(fp, "%d %d %d %d\n", p, P, n, N);
-		fclose(fp);
-		printf("Master wrote pPnN.\n");
-
-		// TODO: write timing info
-
-	} else {
-
-		int go;
-		MPI_Recv(	&go,
-		            1,
-		            MPI_INT,
-		            meshRank - 1,
-		            666,	// tag
-		            MPI_COMM_WORLD,
-		            MPI_STATUS_IGNORE);
-
-		size_t firstelem = 1;
-		size_t lastelem = n;
-
-		// write u
-		fp = fopen("u.txt", "a");	// open to append
-		for (int i = firstelem; i <= lastelem; ++i) {
-			for (int j = 1; j <= lastelem; ++j)
-			{
-				fprintf(fp, "%.15f ", u[i][j]);
-			}
-			fprintf(fp, "\n");
-		}
-		fclose(fp);
-
-		// write v
-		fp = fopen("v.txt", "a");	// open to append
-		for (int i = firstelem; i <= lastelem; ++i) {
-			for (int j = 1; j <= lastelem; ++j)
-			{
-				fprintf(fp, "%.15f ", v[i][j]);
-			}
-			fprintf(fp, "\n");
-		}
-		fclose(fp);
-		printf("Process %d appended [%d %d] elements.\n", meshRank, n, n);
-
-		// TODO: write timing info
+		fprintf(fp, "\n");
 	}
+	fclose(fp);
 
-	if (meshRank < P - 1) {
-		MPI_Send(	&meshRank,	// send my meshRank to next process
-		            1,
-		            MPI_INT,
-		            meshRank + 1,
-		            666,
-		            MPI_COMM_WORLD);
+	// write v
+	fp = fopen("v_seq.txt", "w");	// open new file to write
+	for (int i = firstelem; i <= lastelem; ++i) {
+		for (int j = firstelem; j <= lastelem; ++j)
+		{
+			fprintf(fp, "%.15f ", v[i][j]);
+		}
+		fprintf(fp, "\n");
 	}
+	fclose(fp);
+	printf("Seq wrote [%d %d] elements.\n", n, n);
 
-	//=========================================================================
-	// Cleanup
-	//=========================================================================
+	// TODO: write timing info
 
-	// TODO: right now there is no proper cleanup, fix this
+//=========================================================================
+// Cleanup
+//=========================================================================
 
-	// free the ghost spirits
+// TODO: right now there is no proper cleanup, fix this
+
+// free the ghost spirits
 	/*for (int i = 0; i < NDIRS; ++i)
 		MPI_Type_free(&ghost[i]);*/
 
-	MPI_Finalize();
+	//MPI_Finalize();
 
-	// free local array
+// free local array
 	/*free(u[0]);
 	free(u);*/
 
