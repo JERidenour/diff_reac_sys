@@ -69,7 +69,8 @@
 #define K 0.0550*/
 
 // JR's values
-#define HT 0.19
+// #define HT 0.19
+#define HT 0.019
 #define DU 2.0*1e-6
 #define DV 1.0*1e-6
 #define F 0.0375
