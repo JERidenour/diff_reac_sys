@@ -40,7 +40,7 @@ Mateusz Herczka, 700624-9234}
 \section*{Problem description}
 The subject of this report is the parallelization of a numerical method for a two-component reaction-diffusion system known as the Gray-Scott model.  Originally introduced by Gray and Scott \cite{Gray}, the model is a system of two partial differential equations for the concentration of two chemical species, which are reacting with each other as they diffuse through a medium.
 
-Pattern formation resulting from the Gray-Scott model is a rich area of research, with applications to a variety of physical, chemical, and biological phenomena, as well as cellular automata and the pattern formation of other partial differential equation systems \cite{Wang}.  We investigate a parallelization strategy for the two-dimensional case.  We make a series of trials, running the solver in parallel on 4, 16, 36, and 64 processes, and perform a speedup analysis using the results of these trials. Finally, we show a few of the various patterns that emerge from the Gray-Scott model with various input parameters.
+Pattern formation resulting from the Gray-Scott model is a rich area of research, with applications to a variety of physical, chemical, and biological phenomena, as well as cellular automata and the pattern formation of other partial differential equation systems \cite{Wang}.  We investigate a parallelization strategy for the two-dimensional case.  We make a series of trials, running the solver in parallel on 4, 16, 64, and 100 processes, and perform a speedup analysis using the results of these trials. Finally, we show a few of the various patterns that emerge from the Gray-Scott model with various input parameters.
 
 \subsection*{Mathematical Formulation}
 The Gray-Scott model involves the reaction and diffusion of two generic chemical species, $U$ and $V$, whose concentrations are described by the functions $u$ and $v$, reacting according to the chemical equations
@@ -159,17 +159,17 @@ dt \cdot \lambda_{l,v} \in & \ \mathcal{S}, \ \forall  \ l, \ l = \text{1, 2, . 
 }
 where $\lambda_{l,u}$ and $\lambda_{l,v}$ are the $l$-th eigenvalues of $\vec{A}_u$ and $\vec{A}_v$ respectively,  and $\mathcal{S}$ is the stability region of the explicit Euler method: a circle in the complex plane centered at $-1$ with unit radius \cite{Edsberg}.  The number of unique eigenvalues possessed by each of the matrices is denoted by $L_u$ and $L_v$.   
 
-For the parallel speedup trials, we discretize $\Omega$ using $N = 300$.  Together with the chosen diffusion constants, the  maximum eigenvalue, $\lambda_{max}$, of $\vec{A}_u$ and $\vec{A}_v$ has a strictly negative real value, and thus we must choose a timestep such that $dt \cdot \lambda_{max}$ is at least $-2$.  The maximum eigenvalue is computed using Matlab as:
+For the parallel speedup trials, we discretize $\Omega$ using $N = 400$.  Together with the chosen diffusion constants, the  maximum eigenvalue, $\lambda_{max}$, of $\vec{A}_u$ and $\vec{A}_v$ has a strictly negative real value, and thus we must choose a timestep such that $dt \cdot \lambda_{max}$ is at least $-2$.  The maximum eigenvalue is computed using Matlab as:
 \ba{
-\lambda_{max} = -1.4303,
+\lambda_{max} = -1.2735,
 }
 which provides the limitation on the timestep:
 \ba{
-dt \le \frac{-2}{-1.4303} = 1.3983.
+dt \le \frac{-2}{-1.2735} = 1.5704.
 }
-Since the timestep also has a damping effect on the replenishment term and reaction rate, we must consider these as well when choosing the timestep.  As in \cite{Wang}, we settle on 
+Since the timestep also has a damping effect on the replenishment term and reaction rate, we must consider these as well when choosing the timestep.  As in \cite{Wang}, we settle on a value which is comfortably beneath the max:
 \ba{
-dt = 1.
+dt = 0.75.
 }
 This is well within the stability bounds imposed by $\vec{A}_u$ and $\vec{A}_v$; it also provides suitable damping on the replenishment and reaction rate terms for the observation of the characteristic Gray-Scott pattern formation.
 
