@@ -199,10 +199,61 @@ $\vec{v}^{k+1} = \vec{v}^k+ dt [\vec{A}_v \vec{v}^k +  f_v(\vec{u}^{k},\vec{v}^{
 \end{algorithm}
 \vspace{0.7 cm}
 
-\section*{Theoretical performance evaluation}
-\section*{Testing with different cases}
-\section*{Experimental speedup investigation with meaningful data}
+\section*{Performance evaluation}
+\subsection*{Extrapolated speedup}
+\subsection*{Experimental speedup}
+\begin{table}[h]
+\def\arraystretch{1.2}
+\begin{center}
+\caption{Max time (seconds) measurements, kernel method.}
+\label{tab:kernal}
+\vspace{0.3cm}
+\begin{tabular}{| c | c | c | c | c |}
+\hline
+$P$ & $t_{init}$ & $t_{comm}$ & $t_{calc}$ & $t_{tot}$ \\
+\hline
+1 & 0.0046 & 0.0000 &113.0 &\\
+\hline
+4 & 0.0051& 3.157 & 91.37 &\\
+\hline
+16 & 0.1540 & 3.115 & 6.559 &\\
+\hline
+64 & 0.1845 & 2.410 &1.683 &\\
+\hline
+100 & & &  &\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
 
+\section*{Patterns}
+\section*{Conclusions}
+
+\begin{table}[h]
+\def\arraystretch{1.2}
+\begin{center}
+\caption{Max time (seconds) measurements, sparse matrix method.}
+\label{tab:matrix}
+\vspace{0.3cm}
+\begin{tabular}{| c | c | c | c | c |}
+\hline
+$P$ & $t_{init}$ & $t_{comm}$ & $t_{calc}$ & $t_{tot}$ \\
+\hline
+1 & 0.1437 &  0.000 & 793.0 & 703.14\\
+\hline
+4 & 0.05663 & 36.48 & 301.8 & 304.4\\
+\hline
+16 & 0.008907 & 8.786 & 38.42 & 40.87\\
+\hline
+64 & 0.009324 & 2.8460 & 7.391 & 9.603\\
+\hline
+100 & 0.001253 & 3.206 & 4.287 & 7.419\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\clearpage
 \begin{thebibliography}{}
 \bibitem{Gray} Gray P, Scott SK. {\it Sustained oscillations and other exotic patterns of behavior in isothermal reactions}. J Phys Chem 1985;89:22–32.
 \bibitem{Wang} Weiming Wang, Yezhi Lin, Feng Yang, Lei Zhang, Yongji Tan, {\it Numerical study of pattern formation in an extended Gray–Scott model}, Communications in Nonlinear Science and Numerical Simulation, 16 (2011).
