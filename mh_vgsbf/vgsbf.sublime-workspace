@@ -4,8 +4,56 @@
 		"selected_items":
 		[
 			[
+				"vE",
+				"vEastGhost"
+			],
+			[
+				"u",
+				"uEastGhost"
+			],
+			[
+				"uEas",
+				"uEastBorder"
+			],
+			[
+				"vW",
+				"vWestBorder"
+			],
+			[
+				"uWe",
+				"uWestGhost"
+			],
+			[
+				"vWe",
+				"vWestGhost"
+			],
+			[
+				"vEast",
+				"vEastGhost"
+			],
+			[
+				"vEa",
+				"vEastBorder"
+			],
+			[
+				"uEast",
+				"uEastGhost"
+			],
+			[
 				"n",
 				"n"
+			],
+			[
+				"uW",
+				"uWestBorder"
+			],
+			[
+				"E",
+				"EAST"
+			],
+			[
+				"MPI",
+				"MPI_DOUBLE"
 			],
 			[
 				"start",
@@ -94,10 +142,6 @@
 			[
 				"process",
 				"processMesh"
-			],
-			[
-				"MPI",
-				"MPI_Datatype"
 			],
 			[
 				"I",
@@ -411,6 +455,14 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "vgsbf.c",
+			"settings":
+			{
+				"buffer_size": 30464,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -508,13 +560,13 @@
 	},
 	"file_history":
 	[
+		"/Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/basic_forward/gsbf.c",
 		"/Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/gray_scott/gray_scott.h",
 		"/Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/gray_scott/gray_scott.c",
 		"/Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/mh_gsbf/timing1000x1000p16laptop.txt",
 		"/Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/mh_gsbf/gsbf.c",
 		"/Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/mh_gsbf/seq_gsbf.c",
 		"/Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/mh_gsbf/timing400x400p16laptop.txt",
-		"/Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/basic_forward/gsbf.c",
 		"/Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/gray_scott/Makefile",
 		"/Users/mh/Documents/Git/Opsys15/lab/Interpreter.c",
 		"/Users/mh/Documents/Git/Opsys15/lab/sigtest_snippets.c",
@@ -656,6 +708,11 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"new",
+			"West",
+			"Border",
+			"ghost",
+			"MPI_DOUBLE",
 			"j",
 			"i",
 			"j + 1",
@@ -778,12 +835,7 @@
 			"rank",
 			"i",
 			"new_type",
-			"error",
-			"MPI_FLOAT",
-			"mpi_fh",
-			"MPI_COMM_WORLD",
-			"WEST",
-			"EAST"
+			"error"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -802,13 +854,81 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "vgsbf.c",
+					"settings":
+					{
+						"buffer_size": 30464,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								14502,
+								14502
+							],
+							[
+								14533,
+								14533
+							],
+							[
+								14564,
+								14564
+							],
+							[
+								14595,
+								14595
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 8547.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		},
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "vgsbf.c",
+					"settings":
+					{
+						"buffer_size": 30464,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1614,
+								1614
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 382.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -840,7 +960,7 @@
 		"cols":
 		[
 			0.0,
-			0.701226380814,
+			0.548897771318,
 			1.0
 		],
 		"rows":

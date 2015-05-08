@@ -43,6 +43,8 @@
 #define I 0 	// matrix coordinate indexes
 #define J 1
 
+#define DOMAINSIZE 400
+
 //=========================================================================
 // your computation defines
 //=========================================================================
@@ -54,7 +56,7 @@
 // for example:
 // mpirun -n 16 gsbf 16
 
-#define MAXITER 50000
+#define MAXITER 56000
 
 //#define BLOPSIZE 4
 
@@ -119,16 +121,16 @@ int main(int argc, char **argv)
 	*/
 
 	// set size of global domain and grid
-	if (argc > 1 && atoi(argv[1]) > 16 ) {
+	if (argc > 1 && atoi(argv[1]) > DOMAINSIZE ) {
 		N = atoi(argv[1]);	// use argument if big enough
 		fprintf(stdout, "Setting N and n to: %d x %d.\n", N, N );
 	}
 
 	else
 	{
-		N = 16;
+		N = DOMAINSIZE;
 
-		fprintf(stdout, "Setting N to minimum: %d x %d.\n", N, N );
+		fprintf(stdout, "Setting N to DOMAINSIZE: %d x %d.\n", N, N );
 		fflush(stdout);
 
 	}
@@ -297,11 +299,13 @@ int main(int argc, char **argv)
 
 
 	// allocate data vectors
-	double **u = alloc2DArray((n) * (n));
-	double **unew = alloc2DArray((n) * (n));
+	double **u = alloc2DArray(n);
+	double **unew = alloc2DArray(n);
 
-	double **v = alloc2DArray((n) * (n));
-	double **vnew = alloc2DArray((n) * (n));
+	double **v = alloc2DArray(n);
+	double **vnew = alloc2DArray(n);
+
+	// fprintf(stdout, "Starting init.\n" );
 
 	// init
 	for (int i = 0; i < n; ++i)
@@ -315,6 +319,8 @@ int main(int argc, char **argv)
 		}
 	}
 
+	// fprintf(stdout, "Starting initial blob.\n" );
+
 	// For one process:
 	int c = floor(n / 2);
 	int cc = floor(n / 4);
@@ -326,6 +332,7 @@ int main(int argc, char **argv)
 		}
 	}
 
+	// fprintf(stdout, "Done init.\n" );
 
 
 // For four processes:
@@ -453,6 +460,8 @@ int main(int argc, char **argv)
 	endTimeInit = MPI_Wtime();
 	tInit = endTimeInit - startTimeInit;
 // ###################################
+
+	// fprintf(stdout, "Starting iteration.\n" );
 
 	for (int iter = 0; iter < MAXITER; ++iter)	// begin computation iterations
 	{
@@ -893,7 +902,7 @@ int main(int argc, char **argv)
 	/*for (int i = 0; i < NDIRS; ++i)
 		MPI_Type_free(&ghost[i]);*/
 
-	//MPI_Finalize();
+	MPI_Finalize();
 
 // free local array
 	/*free(u[0]);
@@ -953,10 +962,17 @@ void printarr(double **data, int n, char *str) {
 }
 
 double **alloc2DArray(int n) {
-	double *data = malloc(n * n * sizeof(double));
-	double **arr = malloc(n * sizeof(double *));
+	double *data = (double*) malloc(n * n * sizeof(double));
+	double **arr = (double**) malloc(n * sizeof(double *));
 	for (int i = 0; i < n; i++)
 		arr[i] = &(data[i * n]);
+
+	/*double **arr = (double**) malloc(n * sizeof(double *));
+	arr[0] = (double*) malloc(n * n * sizeof(double));
+	for (int i = 0; i < n; ++i)
+	{
+		arr[i] = arr[0] + (i * n);
+	}*/
 
 	return arr;
 }

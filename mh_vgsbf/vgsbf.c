@@ -54,32 +54,34 @@
 // for example:
 // mpirun -n 16 gsbf 16
 
-#define MAXITER 10000
+#define MAXITER 56000
 
-#define BLOPSIZE 4
+#define BLOPSIZE 30
 
 // my testcase
 
-#define HT 0.25
+/*#define HT 0.25
 #define DU 0.00002
 #define DV 0.00001
 //#define DU 2.0*1e-5
 //#define DV 1.0*1e-5
 #define F 0.026
-#define K 0.0550
+#define K 0.0550*/
 
-/*
+
 // JR's values
 // #define HT 0.19
-#define HT 0.019	// for 1000x1000
+#define HT 0.75
 #define DU 2.0*1e-6
 #define DV 1.0*1e-6
 #define F 0.0375
 #define K 0.0634
-*/
+
 
 #define U0 0.5		// non-zero starting value at blob
 #define V0 0.25		// non-zero starting value at blob
+
+#define DOMAINSIZE 400
 
 //=========================================================================
 // declarations
@@ -119,14 +121,14 @@ int main(int argc, char **argv)
 	MPI_Comm_size(MPI_COMM_WORLD, &P);
 
 	// set size of global domain and grid
-	if (argc > 1 && atoi(argv[1]) > P * N_MIN )
+	if (argc > 1 && atoi(argv[1]) > DOMAINSIZE )
 		N = atoi(argv[1]);	// use argument if big enough
 	else
 	{
-		N = P * N_MIN;
+		N = DOMAINSIZE;
 		if (!rank)
 		{
-			fprintf(stdout, "Setting N to minimum: %d x %d.\n", P, N_MIN );
+			fprintf(stdout, "Setting N to DOMAINSIZE: %d x %d.\n", N, N );
 			fflush(stdout);
 		}
 	}
@@ -236,16 +238,16 @@ int main(int argc, char **argv)
 	MPI_Type_commit(&ghost[SOUTH]);*/
 
 	// create vector datatypes for east and west
-	/*MPI_Type_vector(n, 1, n + 2, MPI_DOUBLE, &ghost[EAST]);
+	MPI_Type_vector(n, 1, n + 2, MPI_DOUBLE, &ghost[EAST]);
 	MPI_Type_commit(&ghost[EAST]);
 	MPI_Type_vector(n, 1, n + 2, MPI_DOUBLE, &ghost[WEST]);
-	MPI_Type_commit(&ghost[WEST]);*/
+	MPI_Type_commit(&ghost[WEST]);
 
 	// TODO: create contiguous datatypes for corners
 	// WARNING: the corners are not implemented in this program!
 
 	// list of coordinates for ghost parts
-	int ghostSizes[] = {	1, n,			//	north size
+	/*int ghostSizes[] = {	1, n,			//	north size
 	                        n, 1,			// 	east size
 	                        1, n,			// 	south size
 	                        n, 1,			//  west size
@@ -253,19 +255,19 @@ int main(int argc, char **argv)
 	                        1, 1,			// 	SE size
 	                        1, 1,			//  SW size
 	                        1, 1			//  NW size
-	                   };
+	                   };*/
 
 
 
 	// create the border subarrays
-	for (int i = 0; i < NDIRS; ++i)
+	/*for (int i = 0; i < NDIRS; ++i)
 	{
 		int totalDim[2]  = {n + 2, n + 2};	// dim of local data array
 		int starts[2] = {0, 0};
 		int subsizes[2]  = {ghostSizes[(i * 2)], ghostSizes[(i * 2) + 1]};
 		MPI_Type_create_subarray(2, totalDim, subsizes, starts, MPI_ORDER_C, MPI_DOUBLE, &ghost[i]);
 		MPI_Type_commit(&ghost[i]);
-	}
+	}*/
 
 	// array of the border(outgoing) submatrices numbered clockwise N E S W NE SE SW NW
 	MPI_Datatype border[NDIRS];
@@ -277,10 +279,10 @@ int main(int argc, char **argv)
 	MPI_Type_commit(&border[SOUTH]);*/
 
 	// create vector datatypes for east and west
-	/*MPI_Type_vector(n, 1, n + 2, MPI_DOUBLE, &border[EAST]);
+	MPI_Type_vector(n, 1, n + 2, MPI_DOUBLE, &border[EAST]);
 	MPI_Type_commit(&border[EAST]);
 	MPI_Type_vector(n, 1, n + 2, MPI_DOUBLE, &border[WEST]);
-	MPI_Type_commit(&border[WEST]);*/
+	MPI_Type_commit(&border[WEST]);
 
 	MPI_Datatype mpiColumn;
 	MPI_Type_vector(n, 1, n + 2 , MPI_DOUBLE, &mpiColumn);
@@ -290,7 +292,7 @@ int main(int argc, char **argv)
 	// WARNING: corners not implemented in this program!
 
 	// list of coordinates for border parts
-	int borderSizes[] = {	1, n,			//	north size
+	/*int borderSizes[] = {	1, n,			//	north size
 	                        n, 1,			// 	east size
 	                        1, n,			// 	south size
 	                        n, 1,			//  west size
@@ -298,17 +300,17 @@ int main(int argc, char **argv)
 	                        1, 1,			// 	SE size
 	                        1, 1,			//  SW size
 	                        1, 1			//  NW size
-	                    };
+	                    };*/
 
 	// create the border subarrays
-	for (int i = 0; i < NDIRS; ++i)
+	/*for (int i = 0; i < NDIRS; ++i)
 	{
 		int sizes[2]  = {n + 2, n + 2};	// dim of local data array
 		int starts[2] = {0, 0};
 		int subsizes[2]  = {borderSizes[(i * 2)], borderSizes[(i * 2) + 1]};
 		MPI_Type_create_subarray(2, sizes, subsizes, starts, MPI_ORDER_C, MPI_DOUBLE, &border[i]);
 		MPI_Type_commit(&border[i]);
-	}
+	}*/
 
 	//=========================================================================
 	// Computation
@@ -326,13 +328,13 @@ int main(int argc, char **argv)
 
 
 	// allocate data vectors
-	double **u = alloc2DArray((n + 2) * (n + 2));
-	double **unew = alloc2DArray((n + 2) * (n + 2));
+	double **u = alloc2DArray(n + 2);
+	double **unew = alloc2DArray(n + 2);
 
-	double **v = alloc2DArray((n + 2) * (n + 2));
-	double **vnew = alloc2DArray((n + 2) * (n + 2));
+	double **v = alloc2DArray(n + 2);
+	double **vnew = alloc2DArray(n + 2);
 
-	double *uWestBorder = (double*) malloc(n * sizeof(double));
+	/*double *uWestBorder = (double*) malloc(n * sizeof(double));
 	double *uEastBorder = (double*) malloc(n * sizeof(double));
 	double *vWestBorder = (double*) malloc(n * sizeof(double));
 	double *vEastBorder = (double*) malloc(n * sizeof(double));
@@ -340,7 +342,7 @@ int main(int argc, char **argv)
 	double *uWestGhost = (double*) malloc(n * sizeof(double));
 	double *uEastGhost = (double*) malloc(n * sizeof(double));
 	double *vWestGhost = (double*) malloc(n * sizeof(double));
-	double *vEastGhost = (double*) malloc(n * sizeof(double));
+	double *vEastGhost = (double*) malloc(n * sizeof(double));*/
 
 	// init
 	for (int i = 0; i < n + 2; ++i)
@@ -355,7 +357,7 @@ int main(int argc, char **argv)
 	}
 
 	// inital blobs for testcase
-	if (meshRank == 0) {
+	/*if (meshRank == 0) {
 		for (int i = 1; i <= BLOPSIZE; ++i)
 		{
 			for (int j = 1; j <= BLOPSIZE; ++j)
@@ -378,7 +380,7 @@ int main(int argc, char **argv)
 				//vnew[i][j] = 0.25;
 			}
 		}
-	}
+	}*/
 
 	/*if (red) {
 		for (int i = 1; i <= n; ++i)
@@ -442,8 +444,46 @@ int main(int argc, char **argv)
 		}
 	}*/
 
-	/*// For sixteen processes:
-	if (P == 16) {
+	// For sixteen processes:
+	/*if (P == 16) {
+
+		int r = 50;
+		if (rank == 5) {
+			for (int i = n - r; i < n; i++) {
+				for (int j = n - r; j < n; j++) {
+					u[i][j] = 0.5;
+					v[i][j] = 0.25;
+				}
+			}
+		}
+		if (rank == 6) {
+			for (int i = 0; i < r; i++) {
+				for (int j = n - r; j < n; j++) {
+					u[i][j] = 0.5;
+					v[i][j] = 0.25;
+				}
+			}
+		}
+		if (rank == 9) {
+			for (int i = n - r; i < n; i++) {
+				for (int j = 0; j < r; j++) {
+					u[i][j] = 0.5;
+					v[i][j] = 0.25;
+				}
+			}
+		}
+		if (rank == 10) {
+			for (int i = 0; i < r; i++) {
+				for (int j = 0; j < r; j++) {
+					u[i][j] = 0.5;
+					v[i][j] = 0.25;
+				}
+			}
+		}
+	}*/
+
+	// For sixteen processes:
+	/*if (P == 16) {
 
 		if (meshRank == 0) {
 			printf("Creating initial condition for 16 processes.\n");
@@ -498,7 +538,7 @@ int main(int argc, char **argv)
 		}
 	}*/
 
-	/*// inital blobs
+	// inital blobs
 	if (meshRank == 0) {
 		for (int i = 1; i <= BLOPSIZE; ++i)
 		{
@@ -512,9 +552,9 @@ int main(int argc, char **argv)
 		}
 	}
 	if (meshRank == P - 1) {
-		for (int i = 1; i <= BLOPSIZE; ++i)
+		for (int i = (n - BLOPSIZE) + 1; i <= n; ++i)
 		{
-			for (int j = 1; j <= BLOPSIZE; ++j)
+			for (int j = (n - BLOPSIZE) + 1; j <= n; ++j)
 			{
 				u[i][j] = 0.5;
 				v[i][j] = 0.25;
@@ -522,7 +562,7 @@ int main(int argc, char **argv)
 				vnew[i][j] = 0.25;
 			}
 		}
-	}*/
+	}
 
 	// ###################################
 	// END timing INITIALIZATION
@@ -540,13 +580,13 @@ int main(int argc, char **argv)
 
 
 		// copy borders
-		for (int i = 0; i < n; ++i)
+		/*for (int i = 0; i < n; ++i)
 		{
-			uWestBorder[i] = u[i+1][1];
-			uEastBorder[i] = u[i+1][n];
-			vWestBorder[i] = v[i+1][1];
-			vEastBorder[i] = v[i+1][n];
-		}
+			uWestBorder[i] = u[i + 1][1];
+			uEastBorder[i] = u[i + 1][n];
+			vWestBorder[i] = v[i + 1][1];
+			vEastBorder[i] = v[i + 1][n];
+		}*/
 
 		// exchange data
 		int err = 0;
@@ -629,92 +669,92 @@ int main(int argc, char **argv)
 			                  );
 
 			// talk to east
-			err = MPI_Sendrecv(	uEastBorder,
-								n,
-								MPI_DOUBLE,
-								/*&(u BORDER_EAST),
-			                    1,
-			                    border[EAST],*/
-			                    // mpiColumn,
-			                    neighbour[EAST],
-			                    HORIZONTAL,
-			                    uEastGhost,
+			err = MPI_Sendrecv(	/*uEastBorder,
 			                    n,
-			                    MPI_DOUBLE,
-			                    /*&(u GHOST_EAST),
-			                    1,
-			                    ghost[EAST],
-			                    // mpiColumn,*/
-			                    neighbour[EAST],
-			                    HORIZONTAL,
-			                    processMesh,
-			                    &status
-			                  );
-			err = MPI_Sendrecv(	vEastBorder,
-								n,
-								MPI_DOUBLE,
-								/*&(v BORDER_EAST),
-			                    1,
-			                    border[EAST],
-			                    // mpiColumn,*/
-			                    neighbour[EAST],
-			                    HORIZONTAL,
-			                    vEastGhost,
+			                    MPI_DOUBLE,*/
+			          & (u BORDER_EAST),
+			          1,
+			          border[EAST],
+			          // mpiColumn,
+			          neighbour[EAST],
+			          HORIZONTAL,
+			          /*uEastGhost,
+			          n,
+			          MPI_DOUBLE,*/
+			          & (u GHOST_EAST),
+			          1,
+			          ghost[EAST],
+			          // mpiColumn,
+			          neighbour[EAST],
+			          HORIZONTAL,
+			          processMesh,
+			          &status
+			      );
+			err = MPI_Sendrecv(	/*vEastBorder,
 			                    n,
-			                    MPI_DOUBLE,
-			                    /*&(v GHOST_EAST),
-			                    1,
-			                    ghost[EAST],
-			                    // mpiColumn,*/
-			                    neighbour[EAST],
-			                    HORIZONTAL,
-			                    processMesh,
-			                    &status
-			                  );
+			                    MPI_DOUBLE,*/
+			          & (v BORDER_EAST),
+			          1,
+			          border[EAST],
+			          // mpiColumn,
+			          neighbour[EAST],
+			          HORIZONTAL,
+			          /*vEastGhost,
+			          n,
+			          MPI_DOUBLE,*/
+			          & (v GHOST_EAST),
+			          1,
+			          ghost[EAST],
+			          // mpiColumn,
+			          neighbour[EAST],
+			          HORIZONTAL,
+			          processMesh,
+			          &status
+			      );
 
 			// talk to west
-			err = MPI_Sendrecv(	uWestBorder,
-								n,
-								MPI_DOUBLE,
-								/*&(u BORDER_WEST),
-			                    1,
-			                    border[WEST],
-			                    // mpiColumn,*/
-			                    neighbour[WEST],
-			                    HORIZONTAL,
-			                    uWestGhost,
+			err = MPI_Sendrecv(	/*uWestBorder,
 			                    n,
-			                    MPI_DOUBLE,
-			                    /*&(u GHOST_WEST),
-			                    1,
-			                    ghost[WEST],
-			                    // mpiColumn,*/
-			                    neighbour[WEST],
-			                    HORIZONTAL,
-			                    processMesh,
-			                    &status
-			                  );
-			err = MPI_Sendrecv(	vWestBorder,
-								n,
-								MPI_DOUBLE,
-								/*&(v BORDER_WEST),
-			                    1,
-			                    border[WEST],
-			                    // mpiColumn,*/
-			                    neighbour[WEST],
-			                    HORIZONTAL,
-			                    vWestGhost,
+			                    MPI_DOUBLE,*/
+			          & (u BORDER_WEST),
+			          1,
+			          border[WEST],
+			          // mpiColumn,
+			          neighbour[WEST],
+			          HORIZONTAL,
+			          /*uWestGhost,
+			          n,
+			          MPI_DOUBLE,*/
+			          & (u GHOST_WEST),
+			          1,
+			          ghost[WEST],
+			          // mpiColumn,
+			          neighbour[WEST],
+			          HORIZONTAL,
+			          processMesh,
+			          &status
+			      );
+			err = MPI_Sendrecv(	/*vWestBorder,
 			                    n,
-			                    MPI_DOUBLE,
-			                    /*&(v GHOST_WEST),
-			                    1,
-			                    ghost[WEST],
-			                    // mpiColumn,*/
-			                    neighbour[WEST],
-			                    HORIZONTAL,
-			                    processMesh,
-			                    &status
-			                  );
+			                    MPI_DOUBLE,*/
+			          & (v BORDER_WEST),
+			          1,
+			          border[WEST],
+			          // mpiColumn,
+			          neighbour[WEST],
+			          HORIZONTAL,
+			          /*vWestGhost,
+			          n,
+			          MPI_DOUBLE,*/
+			          & (v GHOST_WEST),
+			          1,
+			          ghost[WEST],
+			          // mpiColumn,
+			          neighbour[WEST],
+			          HORIZONTAL,
+			          processMesh,
+			          &status
+			      );
 
 		}
 		else	// black
@@ -792,92 +832,92 @@ int main(int argc, char **argv)
 			                  );
 
 			// talk to west
-			err = MPI_Sendrecv(	uWestBorder,
-								n,
-								MPI_DOUBLE,	
-								/*&(u BORDER_WEST),
-			                    1,
-			                    border[WEST],
-			                    // mpiColumn,*/
-			                    neighbour[WEST],
-			                    HORIZONTAL,
-			                    uWestGhost,
+			err = MPI_Sendrecv(	/*uWestBorder,
 			                    n,
-			                    MPI_DOUBLE,
-			                    /*&(u GHOST_WEST),
-			                    1,
-			                    ghost[WEST],
-			                    // mpiColumn,*/
-			                    neighbour[WEST],
-			                    HORIZONTAL,
-			                    processMesh,
-			                    &status
-			                  );
-			err = MPI_Sendrecv(	vWestBorder,
-								n,
-								MPI_DOUBLE,
-								/*&(v BORDER_WEST),
-			                    1,
-			                    border[WEST],
-			                    // mpiColumn,*/
-			                    neighbour[WEST],
-			                    HORIZONTAL,
-			                    vWestGhost,
+			                    MPI_DOUBLE,*/
+			          & (u BORDER_WEST),
+			          1,
+			          border[WEST],
+			          // mpiColumn,
+			          neighbour[WEST],
+			          HORIZONTAL,
+			          /*uWestGhost,
+			          n,
+			          MPI_DOUBLE,*/
+			          & (u GHOST_WEST),
+			          1,
+			          ghost[WEST],
+			          // mpiColumn,
+			          neighbour[WEST],
+			          HORIZONTAL,
+			          processMesh,
+			          &status
+			      );
+			err = MPI_Sendrecv(	/*vWestBorder,
 			                    n,
-			                    MPI_DOUBLE,
-			                    /*&(v GHOST_WEST),
-			                    1,
-			                    ghost[WEST],
-			                    // mpiColumn,*/
-			                    neighbour[WEST],
-			                    HORIZONTAL,
-			                    processMesh,
-			                    &status
-			                  );
+			                    MPI_DOUBLE,*/
+			          & (v BORDER_WEST),
+			          1,
+			          border[WEST],
+			          // mpiColumn,
+			          neighbour[WEST],
+			          HORIZONTAL,
+			          /*vWestGhost,
+			          n,
+			          MPI_DOUBLE,*/
+			          & (v GHOST_WEST),
+			          1,
+			          ghost[WEST],
+			          // mpiColumn,
+			          neighbour[WEST],
+			          HORIZONTAL,
+			          processMesh,
+			          &status
+			      );
 
 			// talk to east
-			err = MPI_Sendrecv(	uEastBorder,
-								n,
-								MPI_DOUBLE,
-								/*&(u BORDER_EAST),
-			                    1,
-			                    border[EAST],
-			                    // mpiColumn,*/
-			                    neighbour[EAST],
-			                    HORIZONTAL,
-			                    uEastGhost,
+			err = MPI_Sendrecv(	/*uEastBorder,
 			                    n,
-			                    MPI_DOUBLE,
-			                    /*&(u GHOST_EAST),
-			                    1,
-			                    ghost[EAST],
-			                    // mpiColumn,*/
-			                    neighbour[EAST],
-			                    HORIZONTAL,
-			                    processMesh,
-			                    &status
-			                  );
-			err = MPI_Sendrecv(	vEastBorder,
-								n,
-								MPI_DOUBLE,
-								/*&(v BORDER_EAST),
-			                    1,
-			                    border[EAST],
-			                    // mpiColumn,*/
-			                    neighbour[EAST],
-			                    HORIZONTAL,
-			                    vEastGhost,
+			                    MPI_DOUBLE,*/
+			          & (u BORDER_EAST),
+			          1,
+			          border[EAST],
+			          // mpiColumn,
+			          neighbour[EAST],
+			          HORIZONTAL,
+			          /*uEastGhost,
+			          n,
+			          MPI_DOUBLE,*/
+			          & (u GHOST_EAST),
+			          1,
+			          ghost[EAST],
+			          // mpiColumn,
+			          neighbour[EAST],
+			          HORIZONTAL,
+			          processMesh,
+			          &status
+			      );
+			err = MPI_Sendrecv(	/*vEastBorder,
 			                    n,
-			                    MPI_DOUBLE,
-			                    /*&(v GHOST_EAST),
-			                    1,
-			                    ghost[EAST],
-			                    // mpiColumn,*/
-			                    neighbour[EAST],
-			                    HORIZONTAL,
-			                    processMesh,
-			                    &status
-			                  );
+			                    MPI_DOUBLE,*/
+			          & (v BORDER_EAST),
+			          1,
+			          border[EAST],
+			          // mpiColumn,
+			          neighbour[EAST],
+			          HORIZONTAL,
+			          /*vEastGhost,
+			          n,
+			          MPI_DOUBLE,*/
+			          & (v GHOST_EAST),
+			          1,
+			          ghost[EAST],
+			          // mpiColumn,
+			          neighbour[EAST],
+			          HORIZONTAL,
+			          processMesh,
+			          &status
+			      );
 			/*MPI_Get_count(&status, ghost[SOUTH], &rcount);
 			printf("%d received: %d from SOUTH.\n", meshRank, rcount);*/
 
@@ -894,14 +934,14 @@ int main(int argc, char **argv)
 		startTimeCalc = MPI_Wtime();
 		// ###################################
 
-		// copy ghosts
+		/*// copy ghosts
 		for (int i = 0; i < n; ++i)
 		{
-			u[i+1][0] = uWestGhost[i];
-			u[i+1][n+1] = uEastGhost[i];
-			v[i+1][0] = vWestGhost[i];
-			v[i+1][n+1] = vEastGhost[i];
-		}
+			u[i + 1][0] = uWestGhost[i];
+			u[i + 1][n + 1] = uEastGhost[i];
+			v[i + 1][0] = vWestGhost[i];
+			v[i + 1][n + 1] = vEastGhost[i];
+		}*/
 
 		// compute
 		for (int i = 1; i <= n; ++i)
@@ -917,8 +957,8 @@ int main(int argc, char **argv)
 				                ht * ( u[i][j] * v[i][j] * v[i][j] - (F + K) * v[i][j] );
 			}
 		}
-		
-		
+
+
 
 		// swap pointers
 		double **tmpnew;
