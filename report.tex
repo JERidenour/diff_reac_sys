@@ -53,9 +53,9 @@ where $P$ is an inert byproduct.  This system is governed by the following syste
 \addtolength{\jot}{0.5 em}
 \ban{
 \label{eq:gsu}
-\frac{\partial u}{\partial t} = & \ D_u \nabla^2u - uv^2 + F(1-u), & \ u,v: \Omega \rightarrow \mathbb{R}, \ t\ge 0,  \\
+\frac{\partial u}{\partial t} = & \ D_u \nabla^2u - uv^2 + F(1-u), & \ u,v: \Omega \mapsto \mathbb{R}, \ t\ge 0,  \\
 \label{eq:gsv}
-\frac{\partial v}{\partial t} = & \ D_v \nabla^2v + uv^2 - (F-K)v , & \ u,v: \Omega \rightarrow \mathbb{R}, t \ \ge 0.
+\frac{\partial v}{\partial t} = & \ D_v \nabla^2v + uv^2 - (F-K)v , & \ u,v: \Omega \mapsto \mathbb{R}, t \ \ge 0.
 }
 \endgroup
 Here, $D_u$ and $D_v$ are the diffusion constants for $u$ and $v$ respectively, and $F$ and $K$ are constants which govern the replenishment of the chemical species.  The term $uv^2$ gives the reaction rate for the system.  We are concerned with solving the Gray-Scott equations on a two-dimensional domain $\Omega = [0,1]^2$.  Thus, $u = u(x,y,t)$ and $v = v(x,y,t)$, giving the laplacian as
@@ -177,6 +177,9 @@ This is well within the stability bounds imposed by $\vec{A}_u$ and $\vec{A}_v$;
 \subsection*{Implementation details}
 To implement the update formulae (\ref{eq:discu}) and (\ref{eq:discv}) in parallel, the computational domain is divided into subdomains, one for each process.  Each process is responsible for the update of it's local values.  Along the subdomain boundaries, neighbouring values are needed for the update; these are obtained by coordinated message-passing.  The boundary data are communicated between processes by means of a red-black communication schedule.  When all necessary information is obtained, the local values are updated according to (\ref{eq:discu}) and (\ref{eq:discv}), see Algorithm \ref{alg:coms}.
 
+For a domain size of $400 \times 400$, the global update boils down to two matrix multiplications, one using $\vec{A}_u$, one using $\vec{A}_v$, each of which contains $400^4$ elements, most of which are zero.  This can be accomplished by means of a sparse matrix multiplication method, or .... fill in your part here!
+
+\vspace{0.7 cm}
 \begin{algorithm}[H]
 \label{alg:coms}
  \KwData{$dt$, $\vec{u}^k$, $\vec{v}^k$, $\vec{A}_u$, $\vec{A}_v$, red}
@@ -194,6 +197,7 @@ $\vec{v}^{k+1} = \vec{v}^k+ dt [\vec{A}_v \vec{v}^k +  f_v(\vec{u}^{k},\vec{v}^{
  \vspace{0.3 cm}
 \caption{Communication and local update.}
 \end{algorithm}
+\vspace{0.7 cm}
 
 \section*{Theoretical performance evaluation}
 \section*{Testing with different cases}
