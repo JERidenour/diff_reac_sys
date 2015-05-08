@@ -54,7 +54,7 @@
 // for example:
 // mpirun -n 16 gsbf 16
 
-#define MAXITER 50000
+#define MAXITER 56000
 
 //#define BLOPSIZE 4
 
