@@ -38,9 +38,9 @@ Mateusz Herczka, 700624-9234}
 \maketitle
 \pagebreak
 \section*{Problem description}
-The subject of this report is the parallelization of a numerical method for a two-component reaction-diffusion system known as the Gray-Scott model.  Originally introduced by Gray and Scott \cite{Gray}, the model is a system of two partial differential equations for the concentration of two chemical species, which are reacting with each other as they diffuse through a medium.
+The subject of this report is the parallelisation of a numerical method for a two-component reaction-diffusion system known as the Gray-Scott model.  Originally introduced by Gray and Scott \cite{Gray}, the model is a system of two partial differential equations for the concentration of two chemical species, which are reacting with each other as they diffuse through a medium.
 
-Pattern formation resulting from the Gray-Scott model is a rich area of research, with applications to a variety of physical, chemical, and biological phenomena, as well as cellular automata and the pattern formation of other partial differential equation systems \cite{Wang}.  We investigate a parallelization strategy for the two-dimensional case.  We make a series of trials, running the solver in parallel on 4, 16, 64, and 100 processes, and perform a speedup analysis using the results of these trials. Finally, we show a few of the various patterns that emerge from the Gray-Scott model with various input parameters.
+Pattern formation resulting from the Gray-Scott model is a rich area of research, with applications to a variety of physical, chemical, and biological phenomena, as well as cellular automata and the pattern formation of other partial differential equation systems \cite{Wang}.  We investigate a parallelisation strategy for the two-dimensional case.  We make a series of trials, running the solver in parallel on 4, 16, 64, and 100 processes, and perform a speedup analysis using the results of these trials. Finally, we show a few of the various patterns that emerge from the Gray-Scott model with various input parameters.
 
 \subsection*{Mathematical Formulation}
 The Gray-Scott model involves the reaction and diffusion of two generic chemical species, $U$ and $V$, whose concentrations are described by the functions $u$ and $v$, reacting according to the chemical equations
@@ -199,42 +199,49 @@ $\vec{v}^{k+1} = \vec{v}^k+ dt [\vec{A}_v \vec{v}^k +  f_v(\vec{u}^{k},\vec{v}^{
 \end{algorithm}
 \vspace{0.7 cm}
 
-\section*{Performance evaluation}
-\subsection*{Extrapolated speedup}
-\subsection*{Experimental speedup}
+\section*{Performance Evaluation}
+\subsection*{Extrapolated Speedup}
+In an attempt to predict the parallel speedup we can expect to achieve as we increase the number of processes, we perform an initial run on 1 and 4 processes, compute the speedup $S_4$, and extrapolate to $S_P$ using Amdahl's Law.  For the test case employing sparse matrix multiplication, we get an run time of 793.15 s on one process, and 304.39 s on 4 processes.  This gives the initial speedup:
+\ba{
+S_4 = \frac{T_1}{T_4} = 2.606.
+}
+Using Amdahl's Law we can solve for $f$, the fraction of the computation which cannot be divided into parallel tasks:
+\ba{
+S_4 = \frac{4}{1+3f} \Rightarrow f = \frac{4-S_4}{3S_4} = 0.1783.
+}
+Applying this same analysis to the kernel method, we get the following calculation:
+\ba{
+S_4 = \frac{T_1}{T_4} = \frac{113.0}{94.26} =  1.199 \Rightarrow f = \frac{4-S_4}{3S_4} = 0.7789.
+}
+Table \ref{tab:S_extrap} shows the extrapolated speedup that these values for $f$ indicate for 16, 64, and 100 processes.  This method is obviously a poor predictor for both the parallelisation strategies we employ.  Indeed, our experimental speedup trials indicate that the problem scales very well on increased numbers of processes, see figures \ref{fig:sparse} and \ref{fig:kernel}.
+
 \begin{table}[h]
 \def\arraystretch{1.2}
 \begin{center}
-\caption{Max time (seconds) measurements, kernel method.}
-\label{tab:kernal}
-\vspace{0.3cm}
-\begin{tabular}{| c | c | c | c | c |}
+\caption{Extrapolated speedup given by Amdahl's Law.}
+\label{tab:S_extrap}
+%\vspace{0.1cm}
+\begin{tabular}{| l | c | c | c | c | c |}
 \hline
-$P$ & $t_{init}$ & $t_{comm}$ & $t_{calc}$ & $t_{tot}$ \\
+&$P$ & 4 & 16 & 64 & 100 \\
 \hline
-1 & 0.0046 & 0.0000 &113.0 &\\
+Sparse matrix method & $S_P $& 2.6 & 4.3 & 5.2 & 5.4\\
 \hline
-4 & 0.0051& 3.157 & 91.37 &\\
-\hline
-16 & 0.1540 & 3.115 & 6.559 &\\
-\hline
-64 & 0.1845 & 2.410 &1.683 &\\
-\hline
-100 & & &  &\\
+Kernal method & $S_P $& 1.2 & 1.3 & 1.3 & 1.3\\
 \hline
 \end{tabular}
 \end{center}
 \end{table}
 
-\section*{Patterns}
-\section*{Conclusions}
+\subsection*{Experimental Speedup}
+We run a series of trials on Ferlin and record the initialisation time, $t_{init}$, the communication time, $t_{comm}$, the calculation time, $t_{calc}$, and the total run time $t_{tot}$.  Tables \ref{tab:matrix} and \ref{tab:kernal} show the maximum of these values for each of the trials at 1, 4, 16, 64, and 100 processes.  The values of $t_{tot}$ are used to compute the experimental speedup, shown in figures \ref{fig:sparse} and \ref{fig:kernel}.
 
 \begin{table}[h]
 \def\arraystretch{1.2}
 \begin{center}
 \caption{Max time (seconds) measurements, sparse matrix method.}
 \label{tab:matrix}
-\vspace{0.3cm}
+%\vspace{0.3cm}
 \begin{tabular}{| c | c | c | c | c |}
 \hline
 $P$ & $t_{init}$ & $t_{comm}$ & $t_{calc}$ & $t_{tot}$ \\
@@ -252,6 +259,50 @@ $P$ & $t_{init}$ & $t_{comm}$ & $t_{calc}$ & $t_{tot}$ \\
 \end{tabular}
 \end{center}
 \end{table}
+
+\begin{table}[h]
+\def\arraystretch{1.2}
+\begin{center}
+\caption{Max time (seconds) measurements, kernel method.}
+\label{tab:kernal}
+%\vspace{0.3cm}
+\begin{tabular}{| c | c | c | c | c |}
+\hline
+$P$ & $t_{init}$ & $t_{comm}$ & $t_{calc}$ & $t_{tot}$ \\
+\hline
+1 & 0.0046 & 0.0000 &113.0 &113.0\\
+\hline
+4 & 0.0051& 3.157 & 91.37 & 94.26\\
+\hline
+16 & 0.1540 & 3.115 & 6.559 & 9.778\\
+\hline
+64 & 0.1845 & 2.410 &1.683 &4.248 \\
+\hline
+100 &1.197 & 3.293 & 1.081 & 5.556 \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.6]{sparse}
+    \caption{Experimental speedup, sparse matrix multiplication method.}
+    \label{fig:sparse}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.6]{kernel}
+    \caption{Experimental speedup, kernel method.}
+    \label{fig:kernel}
+\end{figure}
+
+\subsection*{Speedup Analysis}
+There are a few reasons why the extrapolation of Amdahl's Law does not provide an accurate predictor for the parallel speedup.  The most obvious reason is that $f$, the fraction of the computation which cannot be divided into parallel tasks, does not in itself account for an upper bound on the speedup.  In fact, our best measure of $f$ is $t_{init}$ and, as can be seen in tables \ref{tab:matrix} and \ref{tab:kernal}, this accounts for only a minuscule portion of the total runtime.  It is more likely that the speedup can be explained by the memory hierarchies employed by Ferlin.  When the number of processes is low, so is the available cache.  As the number of processes increases, more of the working set, and at some point the entire working set, can fit into the available caches, allowing for a quicker memory access time.  
+
+\section*{Patterns}
+\section*{Conclusions}
 
 \clearpage
 \begin{thebibliography}{}
