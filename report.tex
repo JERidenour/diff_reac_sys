@@ -177,7 +177,91 @@ This is well within the stability bounds imposed by $\vec{A}_u$ and $\vec{A}_v$;
 \subsection*{Implementation details}
 To implement the update formulae (\ref{eq:discu}) and (\ref{eq:discv}) in parallel, the computational domain is divided into subdomains, one for each process.  Each process is responsible for the update of it's local values.  Along the subdomain boundaries, neighbouring values are needed for the update; these are obtained by coordinated message-passing.  The boundary data are communicated between processes by means of a red-black communication schedule.  When all necessary information is obtained, the local values are updated according to (\ref{eq:discu}) and (\ref{eq:discv}), see Algorithm \ref{alg:coms}.
 
-For a domain size of $400 \times 400$, the global update boils down to two matrix multiplications, one using $\vec{A}_u$, one using $\vec{A}_v$, each of which contains $400^4$ elements, most of which are zero.  This can be accomplished by means of a sparse matrix multiplication method, or .... fill in your part here!
+For a domain size of $400 \times 400$, the global update boils down to two matrix multiplications, one using $\vec{A}_u$, one using $\vec{A}_v$, each of which contains $400^4$ elements, most of which are zero.  This can be accomplished by means of a sparse matrix multiplication method, or direct kernel computations. We call these two implementations "matrix" and "kernel" respectively. First we describe their common structure.
+
+The 5-point computation molecule is dependent on four neighbours labeled NORTH, EAST, SOUTH and WEST. We define a 2D cartesian mesh of pxp processes, where p = sqrt(P). The NxN domain is decomposed into P square subdomains, each with dimension nxn elements, where n = sqrt(N). The challenge becomes to communicate the domain borders between neighbours, and synchronize this with computation of the domain interior. We implement a red-black scheme as follows:
+
+if (even row AND even process) OR (odd row AND odd process)
+  color = red
+else if (even row AND odd process) OR (odd row AND even process)
+  color = black
+
+The 2D process grid is thus colored in a checkerboard pattern. Since we use periodic boundary conditions, we assume even p to ensure red-black neighbours when wrapping around the boundaries of the grid.
+
+Because the subdomain borders are shared between neighbours, we implement overlap by introducing a ghost "frame" surrounding the subdomain, labeled GHOST_NORTH, GHOST_EAST, GHOST_SOUTH and GHOST_WEST, which give each subdomain a total dimension of (n+2)x(n+2). In addition, we define four borders of the inner nxn domain, labeled BORDER_NORTH, BORDER_EAST etc. The values in the borders are recalculated every iteration, then sent to the corresponding neighbour. The values in the ghosts are used when the computation molecule centers on an element at a border. They are received from a neighbour every iteration before the computation phase starts.
+
+Each computation iteration is preceded by a communication phase arranged in four parts to avoid deadlock. Each sendreceive is done once for u and once for v. We also show the timing calls:
+
+while(iter < maxiter)
+
+  start timing communication
+
+  if red
+    // (sendbuffer, receivebuffer, neighbour)
+    sendreceive(BORDER_NORTH, GHOST_NORTH, neighbour[NORTH])  
+    sendreceive(BORDER_SOUTH, GHOST_SOUTH, neighbour[SOUTH])
+    sendreceive(BORDER_EAST, GHOST_EAST, neighbour[EAST]) 
+    sendreceive(BORDER_WEST, GHOST_WEST, neighbour[WEST]) 
+  else
+    // we are black
+    sendreceive(BORDER_SOUTH, GHOST_SOUTH, neighbour[SOUTH])
+    sendreceive(BORDER_NORTH, GHOST_NORTH, neighbour[NORTH])  
+    sendreceive(BORDER_WEST, GHOST_WEST, neighbour[WEST])
+    sendreceive(BORDER_EAST, GHOST_EAST, neighbour[EAST])
+        
+  end timing communication
+  t_comm += end-start
+
+  start timing calculation    
+
+  calculate_domain();
+
+  end timing calculation
+  t_calc += end-start
+
+  iter++
+
+end while
+
+We now describe the specifics our two implementations, which differ mainly in the calculate_domain() procedure. 
+
+The matrix version uses a small sparse matrix library called CSparse, which accompanies "Direct Methods for Sparse Linear Systems" [#reference#]. The author, who has contributed to several matrix routines in MATLAB as well as NVIDIA, describes CSparse as "for educational use". While fast, it's not fully competitive with professional libraries. Yet the code is very readable and enables us to formulate concise code similar to formulas (9) and (10). We show only the expressions for u, with v being analogous:
+
+def calculate_domain():
+
+  // Au is a constant, sparse matrix, defined in CSparse format
+
+  for each i in u
+    unew[i] = u[i] + ht * ( (-u[i] * v[i]^2) + (F * (1.0 - u[i])) )
+  end for
+
+  cs_gaxpy(IpTu, u, unew)   // CSparse call eqv to unew = Au*v + unew
+
+  unew[boundaries] += sigma * ghost
+
+end
+
+The east and west borders/ghosts are columns and thus non-contiguous in memory. This version maintains two work buffers for this data, which is arranged sequentially and copied into these buffers before IO.
+
+The kernel version computes the 5-point molecule for each domain element with a direct expression:
+
+def calculate_domain():
+
+  ru = (ht * DU) / hx^2
+
+  for each i,j in domain
+
+    unew[i][j] = u[i][j] + ru * (u[i - 1][j] - (4 * u[i][j]) + u[i + 1][j] + u[i][j - 1] + u[i][j + 1]) + ht * (-u[i][j] * v[i][j] * v[i][j] + F * (1.0 - u[i][j]))
+
+  end for
+
+end
+
+Also, in the kernel implementation we make use of more mpi routines. We use MPI_Cart functions to set up an mpi process mesh. This allows for defining arrays of neighbour coordinates, including diagonals for future use with a 9-point kernel. This setup is also easy to extend into 3D. For the east and west column borders, we define MPI_Type_vector's which omit the buffer copying.
+
+Finally, our programs save the domains as matrix blocks which are automatically assembled and plotted in MATLAB.
+
+
 
 \vspace{0.7 cm}
 \begin{algorithm}[H]

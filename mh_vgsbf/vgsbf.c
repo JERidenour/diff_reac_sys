@@ -54,9 +54,10 @@
 // for example:
 // mpirun -n 16 gsbf 16
 
-#define MAXITER 56000
+#define MAXITER 20000
 
-#define BLOPSIZE 30
+// #define BLOPSIZE 30
+#define BLOPSIZE 20
 
 // my testcase
 
@@ -67,21 +68,23 @@
 //#define DV 1.0*1e-5
 #define F 0.026
 #define K 0.0550*/
-
+#define F 0.026
+#define K 0.0550
 
 // JR's values
-// #define HT 0.19
-#define HT 0.75
+#define HT 0.075
+//#define HT 0.75
 #define DU 2.0*1e-6
 #define DV 1.0*1e-6
-#define F 0.0375
-#define K 0.0634
+/*#define F 0.0375
+#define K 0.0634*/
 
 
 #define U0 0.5		// non-zero starting value at blob
 #define V0 0.25		// non-zero starting value at blob
 
-#define DOMAINSIZE 400
+#define DOMAINSIZE 1000
+// #define DOMAINSIZE 400
 
 //=========================================================================
 // declarations
@@ -540,9 +543,9 @@ int main(int argc, char **argv)
 
 	// inital blobs
 	if (meshRank == 0) {
-		for (int i = 1; i <= BLOPSIZE; ++i)
+		for (int i = 1; i <= n; ++i)
 		{
-			for (int j = 1; j <= BLOPSIZE; ++j)
+			for (int j = 1; j <= n; ++j)
 			{
 				u[i][j] = 0.5;
 				v[i][j] = 0.25;
@@ -552,9 +555,9 @@ int main(int argc, char **argv)
 		}
 	}
 	if (meshRank == P - 1) {
-		for (int i = (n - BLOPSIZE) + 1; i <= n; ++i)
+		for (int i = 1; i <= n; ++i)
 		{
-			for (int j = (n - BLOPSIZE) + 1; j <= n; ++j)
+			for (int j = 1; j <= n; ++j)
 			{
 				u[i][j] = 0.5;
 				v[i][j] = 0.25;
@@ -563,6 +566,29 @@ int main(int argc, char **argv)
 			}
 		}
 	}
+
+	// initial blobs in every subdom
+/*	for (int i = 1; i <= BLOPSIZE; ++i)
+	{
+		for (int j = 1; j <= BLOPSIZE; ++j)
+		{
+			u[i][j] = 0.5;
+			v[i][j] = 0.25;
+			unew[i][j] = 0.5;
+			vnew[i][j] = 0.25;
+		}
+	}
+	for (int i = (n - BLOPSIZE) + 1; i <= n; ++i)
+	{
+		for (int j = (n - BLOPSIZE) + 1; j <= n; ++j)
+		{
+			u[i][j] = 0.5;
+			v[i][j] = 0.25;
+			unew[i][j] = 0.5;
+			vnew[i][j] = 0.25;
+		}
+	}*/
+
 
 	// ###################################
 	// END timing INITIALIZATION
