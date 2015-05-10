@@ -43,7 +43,7 @@
 #define I 0 	// matrix coordinate indexes
 #define J 1
 
-#define DOMAINSIZE 400
+#define DOMAINSIZE 1000
 
 //=========================================================================
 // your computation defines

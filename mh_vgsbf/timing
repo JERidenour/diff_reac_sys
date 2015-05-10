@@ -1,0 +1,419 @@
+=================================================================
+
+vgsbf.c 
+400x400
+56000 iterationer
+
+#define HT 0.75
+#define DU 2.0*1e-6
+#define DV 1.0*1e-6
+#define F 0.0375
+#define K 0.0634
+#define U0 0.5		// non-zero starting value at blob
+#define V0 0.25		// non-zero starting value at blob
+
+=================================================================
+
+
+Sequential: 
+t_init: 0.004643, t_comm: 0.000000, t_calc: 113.013249.
+
+4 processes:
+Process 0, t_init: 0.004100, t_comm: 2.962600, t_calc: 91.288492.
+Process 1, t_init: 0.005725, t_comm: 2.879567, t_calc: 91.373810.
+Process 2, t_init: 0.000919, t_comm: 3.051706, t_calc: 91.202212.
+Process 3, t_init: 0.005081, t_comm: 3.156613, t_calc: 91.096518.
+
+16 processes:
+Process 14, t_init: 0.153970, t_comm: 3.110658, t_calc: 6.512425.
+Process 10, t_init: 0.154370, t_comm: 3.091896, t_calc: 6.531540.
+Process 12, t_init: 0.155198, t_comm: 3.106314, t_calc: 6.516915.
+Process 2, t_init: 0.154071, t_comm: 3.110508, t_calc: 6.512874.
+Process 4, t_init: 0.152971, t_comm: 3.112580, t_calc: 6.511185.
+Process 8, t_init: 0.153016, t_comm: 3.074487, t_calc: 6.548741.
+Process 0, t_init: 0.155165, t_comm: 3.114736, t_calc: 6.508494.
+Process 6, t_init: 0.154101, t_comm: 3.070977, t_calc: 6.552162.
+Process 13, t_init: 0.153796, t_comm: 3.106428, t_calc: 6.517077.
+Process 9, t_init: 0.154308, t_comm: 3.063936, t_calc: 6.559245.
+Process 7, t_init: 0.153554, t_comm: 3.109502, t_calc: 6.513685.
+Process 1, t_init: 0.153858, t_comm: 3.110398, t_calc: 6.513110.
+Process 15, t_init: 0.152484, t_comm: 3.085361, t_calc: 6.538342.
+Process 5, t_init: 0.153467, t_comm: 3.089704, t_calc: 6.533346.
+Process 3, t_init: 0.152492, t_comm: 3.112946, t_calc: 6.510739.
+Process 11, t_init: 0.154628, t_comm: 3.106406, t_calc: 6.517150.
+
+64 processes:
+Process 0, t_init: 0.182703, t_comm: 2.407149, t_calc: 1.658719.
+Process 16, t_init: 0.183171, t_comm: 2.407362, t_calc: 1.658439.
+Process 56, t_init: 0.184536, t_comm: 2.408928, t_calc: 1.656442.
+Process 32, t_init: 0.182328, t_comm: 2.406548, t_calc: 1.659147.
+Process 24, t_init: 0.181940, t_comm: 2.407909, t_calc: 1.657926.
+Process 8, t_init: 0.183323, t_comm: 2.407279, t_calc: 1.658623.
+Process 40, t_init: 0.183898, t_comm: 2.401159, t_calc: 1.664478.
+Process 48, t_init: 0.183508, t_comm: 2.407387, t_calc: 1.658170.
+Process 28, t_init: 0.182480, t_comm: 2.381661, t_calc: 1.683921.
+Process 36, t_init: 0.183433, t_comm: 2.391789, t_calc: 1.673855.
+Process 33, t_init: 0.183545, t_comm: 2.406165, t_calc: 1.659554.
+Process 34, t_init: 0.181105, t_comm: 2.399870, t_calc: 1.665808.
+Process 51, t_init: 0.183841, t_comm: 2.405817, t_calc: 1.660155.
+Process 14, t_init: 0.182557, t_comm: 2.407691, t_calc: 1.657906.
+Process 21, t_init: 0.181301, t_comm: 2.409773, t_calc: 1.656119.
+Process 4, t_init: 0.181930, t_comm: 2.406031, t_calc: 1.659688.
+Process 49, t_init: 0.182477, t_comm: 2.409501, t_calc: 1.656469.
+Process 50, t_init: 0.181094, t_comm: 2.407594, t_calc: 1.658349.
+Process 11, t_init: 0.182637, t_comm: 2.406332, t_calc: 1.659122.
+Process 46, t_init: 0.182290, t_comm: 2.407230, t_calc: 1.658556.
+Process 61, t_init: 0.183895, t_comm: 2.407808, t_calc: 1.657943.
+Process 23, t_init: 0.180776, t_comm: 2.408784, t_calc: 1.657154.
+Process 17, t_init: 0.182151, t_comm: 2.405710, t_calc: 1.660218.
+Process 42, t_init: 0.184118, t_comm: 2.405476, t_calc: 1.660263.
+Process 19, t_init: 0.181898, t_comm: 2.404440, t_calc: 1.661350.
+Process 54, t_init: 0.182567, t_comm: 2.406524, t_calc: 1.659328.
+Process 5, t_init: 0.183486, t_comm: 2.401906, t_calc: 1.663806.
+Process 7, t_init: 0.181104, t_comm: 2.406024, t_calc: 1.659940.
+Process 12, t_init: 0.181279, t_comm: 2.403333, t_calc: 1.662184.
+Process 1, t_init: 0.182397, t_comm: 2.400676, t_calc: 1.664834.
+Process 58, t_init: 0.182507, t_comm: 2.407598, t_calc: 1.657904.
+Process 59, t_init: 0.182756, t_comm: 2.407058, t_calc: 1.658742.
+Process 6, t_init: 0.183614, t_comm: 2.398853, t_calc: 1.666859.
+Process 13, t_init: 0.182676, t_comm: 2.407487, t_calc: 1.658327.
+Process 15, t_init: 0.182500, t_comm: 2.406965, t_calc: 1.658904.
+Process 20, t_init: 0.181706, t_comm: 2.396896, t_calc: 1.668910.
+Process 9, t_init: 0.182498, t_comm: 2.407402, t_calc: 1.658257.
+Process 18, t_init: 0.181973, t_comm: 2.408019, t_calc: 1.657577.
+Process 3, t_init: 0.181739, t_comm: 2.407301, t_calc: 1.658620.
+Process 22, t_init: 0.182716, t_comm: 2.405288, t_calc: 1.660421.
+Process 29, t_init: 0.181466, t_comm: 2.401712, t_calc: 1.663828.
+Process 44, t_init: 0.182883, t_comm: 2.404583, t_calc: 1.661270.
+Process 41, t_init: 0.182030, t_comm: 2.407049, t_calc: 1.658688.
+Process 2, t_init: 0.183464, t_comm: 2.399799, t_calc: 1.665671.
+Process 27, t_init: 0.181871, t_comm: 2.391077, t_calc: 1.674645.
+Process 38, t_init: 0.182619, t_comm: 2.407914, t_calc: 1.657851.
+Process 37, t_init: 0.181157, t_comm: 2.406527, t_calc: 1.659433.
+Process 52, t_init: 0.181308, t_comm: 2.397497, t_calc: 1.668146.
+Process 57, t_init: 0.183371, t_comm: 2.406710, t_calc: 1.658927.
+Process 10, t_init: 0.183041, t_comm: 2.407865, t_calc: 1.657868.
+Process 35, t_init: 0.182282, t_comm: 2.382771, t_calc: 1.683007.
+Process 30, t_init: 0.181811, t_comm: 2.406514, t_calc: 1.659307.
+Process 53, t_init: 0.181585, t_comm: 2.406852, t_calc: 1.658682.
+Process 60, t_init: 0.184000, t_comm: 2.407835, t_calc: 1.657970.
+Process 25, t_init: 0.182485, t_comm: 2.406783, t_calc: 1.659033.
+Process 26, t_init: 0.181832, t_comm: 2.404428, t_calc: 1.661373.
+Process 43, t_init: 0.183018, t_comm: 2.391744, t_calc: 1.674201.
+Process 62, t_init: 0.183935, t_comm: 2.408048, t_calc: 1.657573.
+Process 45, t_init: 0.182111, t_comm: 2.407066, t_calc: 1.658444.
+Process 63, t_init: 0.181355, t_comm: 2.408188, t_calc: 1.657431.
+Process 31, t_init: 0.181852, t_comm: 2.408098, t_calc: 1.657937.
+Process 47, t_init: 0.182393, t_comm: 2.408561, t_calc: 1.657144.
+Process 55, t_init: 0.183733, t_comm: 2.408276, t_calc: 1.657653.
+Process 39, t_init: 0.183102, t_comm: 2.398714, t_calc: 1.666941.
+
+100 processes:
+Process 0, t_init: 1.194734, t_comm: 3.291477, t_calc: 1.069330.
+Process 65, t_init: 1.195797, t_comm: 3.287944, t_calc: 1.073102.
+Process 13, t_init: 1.194167, t_comm: 3.286855, t_calc: 1.073914.
+Process 91, t_init: 1.198212, t_comm: 3.290490, t_calc: 1.069451.
+Process 39, t_init: 1.196360, t_comm: 3.291360, t_calc: 1.069550.
+Process 78, t_init: 1.196525, t_comm: 3.289522, t_calc: 1.071146.
+Process 52, t_init: 1.197191, t_comm: 3.288558, t_calc: 1.072342.
+Process 56, t_init: 1.195072, t_comm: 3.287440, t_calc: 1.073477.
+Process 92, t_init: 1.195288, t_comm: 3.291351, t_calc: 1.069786.
+Process 69, t_init: 1.197215, t_comm: 3.291490, t_calc: 1.069664.
+Process 96, t_init: 1.193351, t_comm: 3.291212, t_calc: 1.069779.
+Process 77, t_init: 1.197294, t_comm: 3.290899, t_calc: 1.070076.
+Process 11, t_init: 1.195364, t_comm: 3.292635, t_calc: 1.068434.
+Process 1, t_init: 1.196628, t_comm: 3.291851, t_calc: 1.069125.
+Process 54, t_init: 1.195795, t_comm: 3.274728, t_calc: 1.086292.
+Process 60, t_init: 1.195307, t_comm: 3.292514, t_calc: 1.068257.
+Process 95, t_init: 1.195563, t_comm: 3.292173, t_calc: 1.068900.
+Process 55, t_init: 1.196656, t_comm: 3.279948, t_calc: 1.080935.
+Process 22, t_init: 1.196193, t_comm: 3.292256, t_calc: 1.068689.
+Process 70, t_init: 1.194301, t_comm: 3.291501, t_calc: 1.069315.
+Process 10, t_init: 1.195601, t_comm: 3.287722, t_calc: 1.073042.
+Process 71, t_init: 1.196750, t_comm: 3.291525, t_calc: 1.069577.
+Process 51, t_init: 1.196246, t_comm: 3.291363, t_calc: 1.069483.
+Process 50, t_init: 1.195818, t_comm: 3.287980, t_calc: 1.072960.
+Process 7, t_init: 1.195064, t_comm: 3.291542, t_calc: 1.069443.
+Process 14, t_init: 1.194552, t_comm: 3.285893, t_calc: 1.074838.
+Process 93, t_init: 1.195341, t_comm: 3.291629, t_calc: 1.069061.
+Process 21, t_init: 1.196967, t_comm: 3.288792, t_calc: 1.071936.
+Process 4, t_init: 1.195241, t_comm: 3.290830, t_calc: 1.070002.
+Process 81, t_init: 1.196713, t_comm: 3.291055, t_calc: 1.070075.
+Process 74, t_init: 1.179941, t_comm: 3.289095, t_calc: 1.071948.
+Process 5, t_init: 1.197224, t_comm: 3.286769, t_calc: 1.073980.
+Process 36, t_init: 1.195801, t_comm: 3.289077, t_calc: 1.071774.
+Process 84, t_init: 1.196238, t_comm: 3.290574, t_calc: 1.070652.
+Process 90, t_init: 1.195887, t_comm: 3.292295, t_calc: 1.068609.
+Process 63, t_init: 1.195188, t_comm: 3.290355, t_calc: 1.070543.
+Process 72, t_init: 1.196481, t_comm: 3.291164, t_calc: 1.069474.
+Process 27, t_init: 1.195480, t_comm: 3.292207, t_calc: 1.068682.
+Process 80, t_init: 1.196994, t_comm: 3.292489, t_calc: 1.068804.
+Process 34, t_init: 1.195491, t_comm: 3.286888, t_calc: 1.074027.
+Process 82, t_init: 1.194715, t_comm: 3.286446, t_calc: 1.074316.
+Process 94, t_init: 1.194982, t_comm: 3.286470, t_calc: 1.074496.
+Process 9, t_init: 1.196548, t_comm: 3.291023, t_calc: 1.069847.
+Process 31, t_init: 1.194796, t_comm: 3.288920, t_calc: 1.071387.
+Process 88, t_init: 1.196866, t_comm: 3.290523, t_calc: 1.070222.
+Process 19, t_init: 1.195684, t_comm: 3.286721, t_calc: 1.074158.
+Process 64, t_init: 1.195816, t_comm: 3.282261, t_calc: 1.078751.
+Process 89, t_init: 1.195251, t_comm: 3.287927, t_calc: 1.072862.
+Process 46, t_init: 1.196970, t_comm: 3.284465, t_calc: 1.076696.
+Process 40, t_init: 1.195284, t_comm: 3.291570, t_calc: 1.069543.
+Process 2, t_init: 1.196174, t_comm: 3.288312, t_calc: 1.072522.
+Process 8, t_init: 1.195472, t_comm: 3.289669, t_calc: 1.071197.
+Process 17, t_init: 1.195581, t_comm: 3.291417, t_calc: 1.069280.
+Process 68, t_init: 1.196410, t_comm: 3.291054, t_calc: 1.070014.
+Process 18, t_init: 1.193595, t_comm: 3.291120, t_calc: 1.069726.
+Process 97, t_init: 1.194695, t_comm: 3.291231, t_calc: 1.069824.
+Process 25, t_init: 1.196270, t_comm: 3.289017, t_calc: 1.071760.
+Process 37, t_init: 1.196293, t_comm: 3.292410, t_calc: 1.068730.
+Process 98, t_init: 1.188050, t_comm: 3.292194, t_calc: 1.068641.
+Process 79, t_init: 1.197009, t_comm: 3.291276, t_calc: 1.069788.
+Process 67, t_init: 1.194881, t_comm: 3.291508, t_calc: 1.069513.
+Process 86, t_init: 1.195376, t_comm: 3.292588, t_calc: 1.068549.
+Process 43, t_init: 1.194708, t_comm: 3.287508, t_calc: 1.073068.
+Process 16, t_init: 1.196169, t_comm: 3.290084, t_calc: 1.070572.
+Process 44, t_init: 1.193417, t_comm: 3.280081, t_calc: 1.080960.
+Process 32, t_init: 1.196000, t_comm: 3.292606, t_calc: 1.068127.
+Process 12, t_init: 1.196282, t_comm: 3.287217, t_calc: 1.073503.
+Process 76, t_init: 1.195914, t_comm: 3.292452, t_calc: 1.068602.
+Process 20, t_init: 1.181934, t_comm: 3.293463, t_calc: 1.067467.
+Process 66, t_init: 1.194619, t_comm: 3.292116, t_calc: 1.069090.
+Process 15, t_init: 1.195103, t_comm: 3.291562, t_calc: 1.069617.
+Process 47, t_init: 1.196404, t_comm: 3.289969, t_calc: 1.070882.
+Process 30, t_init: 1.195230, t_comm: 3.290779, t_calc: 1.070091.
+Process 29, t_init: 1.196236, t_comm: 3.291266, t_calc: 1.069724.
+Process 87, t_init: 1.197399, t_comm: 3.286179, t_calc: 1.074752.
+Process 57, t_init: 1.193719, t_comm: 3.292215, t_calc: 1.068694.
+Process 49, t_init: 1.195586, t_comm: 3.292309, t_calc: 1.068707.
+Process 45, t_init: 1.196614, t_comm: 3.273797, t_calc: 1.086995.
+Process 38, t_init: 1.196032, t_comm: 3.291412, t_calc: 1.069673.
+Process 24, t_init: 1.197108, t_comm: 3.291771, t_calc: 1.069156.
+Process 33, t_init: 1.195826, t_comm: 3.286738, t_calc: 1.074094.
+Process 53, t_init: 1.195077, t_comm: 3.282579, t_calc: 1.078087.
+Process 28, t_init: 1.195545, t_comm: 3.292179, t_calc: 1.068882.
+Process 73, t_init: 1.194502, t_comm: 3.291443, t_calc: 1.069555.
+Process 42, t_init: 1.197052, t_comm: 3.290878, t_calc: 1.069947.
+Process 48, t_init: 1.195992, t_comm: 3.291547, t_calc: 1.069463.
+Process 83, t_init: 1.194119, t_comm: 3.291636, t_calc: 1.069408.
+Process 62, t_init: 1.197426, t_comm: 3.291344, t_calc: 1.069691.
+Process 6, t_init: 1.196731, t_comm: 3.292549, t_calc: 1.068641.
+Process 59, t_init: 1.195653, t_comm: 3.293144, t_calc: 1.067897.
+Process 41, t_init: 1.197057, t_comm: 3.291705, t_calc: 1.069405.
+Process 99, t_init: 1.195253, t_comm: 3.292867, t_calc: 1.068146.
+Process 3, t_init: 1.196326, t_comm: 3.291424, t_calc: 1.069141.
+Process 61, t_init: 1.195995, t_comm: 3.291336, t_calc: 1.069593.
+Process 75, t_init: 1.195593, t_comm: 3.289003, t_calc: 1.071583.
+Process 58, t_init: 1.196440, t_comm: 3.289830, t_calc: 1.070993.
+Process 85, t_init: 1.195684, t_comm: 3.291737, t_calc: 1.069252.
+Process 35, t_init: 1.196016, t_comm: 3.283974, t_calc: 1.077145.
+Process 23, t_init: 1.196098, t_comm: 3.292647, t_calc: 1.068408.
+Process 26, t_init: 1.196554, t_comm: 3.291657, t_calc: 1.069270.
+
+=================================================================
+
+vgsbf.c 
+1000x1000
+56000 iterationer
+
+#define HT 0.075
+#define F 0.026
+#define K 0.0550
+#define DU 2.0*1e-6
+#define DV 1.0*1e-6
+#define U0 0.5		// non-zero starting value at blob
+#define V0 0.25		// non-zero starting value at blob
+
+=================================================================
+
+4 Processes:
+Process 1, t_init: 0.005554, t_comm: 71.501623, t_calc: 398.283068.
+Process 3, t_init: 0.010282, t_comm: 70.005535, t_calc: 399.771322.
+Process 2, t_init: 0.005350, t_comm: 12.256882, t_calc: 457.530340.
+Process 0, t_init: 0.009422, t_comm: 11.785528, t_calc: 457.992328.
+
+16 Processes:
+Process 12, t_init: 0.063586, t_comm: 14.070197, t_calc: 47.142314.
+Process 0, t_init: 0.064739, t_comm: 14.189722, t_calc: 47.021765.
+Process 14, t_init: 0.064909, t_comm: 12.878811, t_calc: 48.335850.
+Process 2, t_init: 0.064678, t_comm: 12.487464, t_calc: 48.728179.
+Process 4, t_init: 0.065648, t_comm: 13.093076, t_calc: 48.117057.
+Process 6, t_init: 0.064780, t_comm: 7.456265, t_calc: 53.759542.
+Process 10, t_init: 0.064113, t_comm: 12.324749, t_calc: 48.890538.
+Process 8, t_init: 0.064846, t_comm: 11.803421, t_calc: 49.404983.
+Process 13, t_init: 0.065341, t_comm: 12.578512, t_calc: 48.634802.
+Process 15, t_init: 0.065063, t_comm: 13.809247, t_calc: 47.403701.
+Process 5, t_init: 0.064678, t_comm: 11.631078, t_calc: 49.581859.
+Process 1, t_init: 0.063601, t_comm: 13.474877, t_calc: 47.738898.
+Process 3, t_init: 0.064603, t_comm: 13.738290, t_calc: 47.474311.
+Process 7, t_init: 0.064556, t_comm: 11.751379, t_calc: 49.457638.
+Process 9, t_init: 0.063045, t_comm: 7.136853, t_calc: 54.074792.
+Process 11, t_init: 0.064830, t_comm: 13.420035, t_calc: 47.791607.
+
+64 Processes:
+Process 40, t_init: 0.205394, t_comm: 10.721811, t_calc: 17.624454.
+Process 48, t_init: 0.206775, t_comm: 11.072836, t_calc: 17.273579.
+Process 0, t_init: 0.205662, t_comm: 10.928691, t_calc: 17.417350.
+Process 56, t_init: 0.205643, t_comm: 11.067348, t_calc: 17.278997.
+Process 8, t_init: 0.204515, t_comm: 10.980229, t_calc: 17.366039.
+Process 24, t_init: 0.205429, t_comm: 9.529473, t_calc: 18.817464.
+Process 32, t_init: 0.204823, t_comm: 9.446585, t_calc: 18.900058.
+Process 16, t_init: 0.205647, t_comm: 10.807381, t_calc: 17.539376.
+Process 17, t_init: 0.166270, t_comm: 10.733511, t_calc: 17.651662.
+Process 44, t_init: 0.166845, t_comm: 8.765751, t_calc: 19.619468.
+Process 42, t_init: 0.167045, t_comm: 8.911535, t_calc: 19.473640.
+Process 53, t_init: 0.166146, t_comm: 10.789773, t_calc: 17.595527.
+Process 3, t_init: 0.167187, t_comm: 9.500900, t_calc: 18.883899.
+Process 54, t_init: 0.167546, t_comm: 11.099264, t_calc: 17.285676.
+Process 7, t_init: 0.167005, t_comm: 11.027419, t_calc: 17.357561.
+Process 57, t_init: 0.164896, t_comm: 11.084476, t_calc: 17.300428.
+Process 4, t_init: 0.167102, t_comm: 9.370005, t_calc: 19.015413.
+Process 2, t_init: 0.166662, t_comm: 10.798657, t_calc: 17.586047.
+Process 37, t_init: 0.167570, t_comm: 8.759939, t_calc: 19.625199.
+Process 43, t_init: 0.166863, t_comm: 7.690379, t_calc: 20.694659.
+Process 22, t_init: 0.165207, t_comm: 10.102309, t_calc: 18.283209.
+Process 63, t_init: 0.166385, t_comm: 11.037725, t_calc: 17.347430.
+Process 49, t_init: 0.166222, t_comm: 10.804788, t_calc: 17.580727.
+Process 12, t_init: 0.165929, t_comm: 8.825885, t_calc: 19.559126.
+Process 10, t_init: 0.167625, t_comm: 10.699099, t_calc: 17.685501.
+Process 13, t_init: 0.165261, t_comm: 10.049505, t_calc: 18.335772.
+Process 11, t_init: 0.166267, t_comm: 9.385486, t_calc: 18.999849.
+Process 62, t_init: 0.165668, t_comm: 11.021845, t_calc: 17.362486.
+Process 15, t_init: 0.166577, t_comm: 11.033839, t_calc: 17.351263.
+Process 9, t_init: 0.164927, t_comm: 11.087702, t_calc: 17.297800.
+Process 20, t_init: 0.168014, t_comm: 7.699900, t_calc: 20.684930.
+Process 21, t_init: 0.165493, t_comm: 8.846859, t_calc: 19.538382.
+Process 19, t_init: 0.167026, t_comm: 8.754787, t_calc: 19.629985.
+Process 14, t_init: 0.165393, t_comm: 10.834644, t_calc: 17.550860.
+Process 1, t_init: 0.167246, t_comm: 10.944323, t_calc: 17.441023.
+Process 28, t_init: 0.166590, t_comm: 6.449765, t_calc: 21.935220.
+Process 5, t_init: 0.166323, t_comm: 10.841082, t_calc: 17.544493.
+Process 27, t_init: 0.166689, t_comm: 7.482370, t_calc: 20.902934.
+Process 6, t_init: 0.166081, t_comm: 11.095016, t_calc: 17.290318.
+Process 25, t_init: 0.165301, t_comm: 9.429007, t_calc: 18.955895.
+Process 36, t_init: 0.167960, t_comm: 7.501310, t_calc: 20.883144.
+Process 18, t_init: 0.166171, t_comm: 10.079441, t_calc: 18.305692.
+Process 29, t_init: 0.166218, t_comm: 7.712349, t_calc: 20.672190.
+Process 59, t_init: 0.166977, t_comm: 9.475189, t_calc: 18.909932.
+Process 38, t_init: 0.166666, t_comm: 9.401052, t_calc: 18.984562.
+Process 23, t_init: 0.166945, t_comm: 10.723975, t_calc: 17.660090.
+Process 33, t_init: 0.167899, t_comm: 8.786927, t_calc: 19.598233.
+Process 60, t_init: 0.165967, t_comm: 9.490278, t_calc: 18.895066.
+Process 26, t_init: 0.165387, t_comm: 8.782001, t_calc: 19.603335.
+Process 45, t_init: 0.166947, t_comm: 10.007404, t_calc: 18.377527.
+Process 35, t_init: 0.167194, t_comm: 6.528467, t_calc: 21.856909.
+Process 46, t_init: 0.164533, t_comm: 10.835737, t_calc: 17.549128.
+Process 31, t_init: 0.167046, t_comm: 9.313263, t_calc: 19.071402.
+Process 41, t_init: 0.166618, t_comm: 10.057542, t_calc: 18.328384.
+Process 52, t_init: 0.166155, t_comm: 9.470350, t_calc: 18.914305.
+Process 58, t_init: 0.165943, t_comm: 10.774750, t_calc: 17.610053.
+Process 61, t_init: 0.165094, t_comm: 10.820881, t_calc: 17.564445.
+Process 51, t_init: 0.167505, t_comm: 8.787894, t_calc: 19.596746.
+Process 30, t_init: 0.166820, t_comm: 8.782360, t_calc: 19.601800.
+Process 39, t_init: 0.165555, t_comm: 9.486140, t_calc: 18.899140.
+Process 34, t_init: 0.165505, t_comm: 7.734353, t_calc: 20.651379.
+Process 47, t_init: 0.166884, t_comm: 10.739660, t_calc: 17.645227.
+Process 50, t_init: 0.167943, t_comm: 10.107534, t_calc: 18.277649.
+Process 55, t_init: 0.166238, t_comm: 11.049932, t_calc: 17.335248.
+
+100 Processes:
+Process 52, t_init: 1.195761, t_comm: 8.115347, t_calc: 8.611599.
+Process 78, t_init: 1.195594, t_comm: 10.148736, t_calc: 6.578706.
+Process 13, t_init: 1.195779, t_comm: 9.695896, t_calc: 7.031223.
+Process 65, t_init: 1.194891, t_comm: 8.054876, t_calc: 8.671542.
+Process 0, t_init: 1.195880, t_comm: 10.210778, t_calc: 6.516584.
+Process 26, t_init: 1.194136, t_comm: 8.831200, t_calc: 7.895977.
+Process 39, t_init: 1.198031, t_comm: 9.725786, t_calc: 7.001547.
+Process 40, t_init: 1.195549, t_comm: 8.863175, t_calc: 7.864010.
+Process 86, t_init: 1.196736, t_comm: 9.730360, t_calc: 6.996881.
+Process 54, t_init: 1.196963, t_comm: 6.665106, t_calc: 10.061723.
+Process 56, t_init: 1.195234, t_comm: 8.023411, t_calc: 8.703887.
+Process 68, t_init: 1.186278, t_comm: 9.725879, t_calc: 7.001631.
+Process 44, t_init: 1.192960, t_comm: 7.263537, t_calc: 9.463933.
+Process 6, t_init: 1.194290, t_comm: 9.736623, t_calc: 6.990263.
+Process 9, t_init: 1.195589, t_comm: 10.214973, t_calc: 6.512468.
+Process 25, t_init: 1.196762, t_comm: 8.114129, t_calc: 8.612687.
+Process 59, t_init: 1.194076, t_comm: 8.853849, t_calc: 7.873448.
+Process 36, t_init: 1.196321, t_comm: 8.093361, t_calc: 8.633651.
+Process 50, t_init: 1.197496, t_comm: 8.843116, t_calc: 7.884394.
+Process 79, t_init: 1.192810, t_comm: 10.166881, t_calc: 6.560361.
+Process 99, t_init: 1.197059, t_comm: 10.205812, t_calc: 6.521294.
+Process 67, t_init: 1.196993, t_comm: 9.400128, t_calc: 7.327052.
+Process 95, t_init: 1.194416, t_comm: 8.862534, t_calc: 7.864752.
+Process 81, t_init: 1.196657, t_comm: 10.162258, t_calc: 6.564368.
+Process 96, t_init: 1.194984, t_comm: 9.752101, t_calc: 6.974830.
+Process 45, t_init: 1.196961, t_comm: 6.667318, t_calc: 10.059887.
+Process 74, t_init: 1.195980, t_comm: 8.115813, t_calc: 8.611112.
+Process 90, t_init: 1.197769, t_comm: 10.217777, t_calc: 6.509118.
+Process 98, t_init: 1.194333, t_comm: 10.217204, t_calc: 6.509776.
+Process 49, t_init: 1.196458, t_comm: 8.837714, t_calc: 7.889969.
+Process 37, t_init: 1.196145, t_comm: 8.828895, t_calc: 7.898391.
+Process 92, t_init: 1.197896, t_comm: 10.145832, t_calc: 6.581451.
+Process 60, t_init: 1.197611, t_comm: 9.700272, t_calc: 7.027070.
+Process 2, t_init: 1.196977, t_comm: 10.162677, t_calc: 6.564142.
+Process 69, t_init: 1.194558, t_comm: 9.754465, t_calc: 6.972538.
+Process 42, t_init: 1.186914, t_comm: 8.556412, t_calc: 8.170563.
+Process 5, t_init: 1.194657, t_comm: 8.836672, t_calc: 7.890570.
+Process 84, t_init: 1.193936, t_comm: 8.590152, t_calc: 8.136907.
+Process 22, t_init: 1.189065, t_comm: 9.944018, t_calc: 6.783630.
+Process 12, t_init: 1.196143, t_comm: 10.144925, t_calc: 6.582372.
+Process 85, t_init: 1.197210, t_comm: 8.841040, t_calc: 7.886127.
+Process 10, t_init: 1.197105, t_comm: 10.186142, t_calc: 6.541332.
+Process 11, t_init: 1.196246, t_comm: 10.182339, t_calc: 6.544913.
+Process 34, t_init: 1.196573, t_comm: 8.053565, t_calc: 8.673748.
+Process 93, t_init: 1.196267, t_comm: 9.730702, t_calc: 6.996376.
+Process 4, t_init: 1.194343, t_comm: 8.859877, t_calc: 7.867278.
+Process 3, t_init: 1.195793, t_comm: 9.754303, t_calc: 6.972886.
+Process 18, t_init: 1.197684, t_comm: 10.157835, t_calc: 6.569085.
+Process 97, t_init: 1.192925, t_comm: 10.164968, t_calc: 6.561889.
+Process 77, t_init: 1.196084, t_comm: 9.944765, t_calc: 6.782384.
+Process 20, t_init: 1.196145, t_comm: 10.164441, t_calc: 6.562337.
+Process 24, t_init: 1.196291, t_comm: 8.589547, t_calc: 8.137767.
+Process 91, t_init: 1.195685, t_comm: 10.217124, t_calc: 6.509876.
+Process 1, t_init: 1.196607, t_comm: 10.214380, t_calc: 6.512755.
+Process 47, t_init: 1.196453, t_comm: 8.115662, t_calc: 8.610852.
+Process 28, t_init: 1.196930, t_comm: 9.935258, t_calc: 6.791947.
+Process 30, t_init: 1.196415, t_comm: 9.753973, t_calc: 6.973338.
+Process 29, t_init: 1.196315, t_comm: 10.142324, t_calc: 6.584774.
+Process 31, t_init: 1.194995, t_comm: 9.730996, t_calc: 6.996441.
+Process 19, t_init: 1.196486, t_comm: 10.188113, t_calc: 6.538757.
+Process 35, t_init: 1.191169, t_comm: 7.368444, t_calc: 9.358625.
+Process 38, t_init: 1.196136, t_comm: 9.401809, t_calc: 7.325819.
+Process 7, t_init: 1.195599, t_comm: 10.146033, t_calc: 6.581318.
+Process 88, t_init: 1.196387, t_comm: 10.214668, t_calc: 6.512481.
+Process 63, t_init: 1.196643, t_comm: 8.096387, t_calc: 8.630679.
+Process 14, t_init: 1.196691, t_comm: 8.841596, t_calc: 7.885655.
+Process 21, t_init: 1.196608, t_comm: 10.147099, t_calc: 6.580018.
+Process 41, t_init: 1.197260, t_comm: 8.843603, t_calc: 7.883692.
+Process 82, t_init: 1.194176, t_comm: 9.943719, t_calc: 6.783573.
+Process 16, t_init: 1.197491, t_comm: 9.397331, t_calc: 7.329702.
+Process 57, t_init: 1.196787, t_comm: 8.555270, t_calc: 8.171857.
+Process 32, t_init: 1.196331, t_comm: 9.402683, t_calc: 7.324037.
+Process 48, t_init: 1.191074, t_comm: 8.588058, t_calc: 8.139241.
+Process 51, t_init: 1.196345, t_comm: 8.569123, t_calc: 8.158080.
+Process 46, t_init: 1.196209, t_comm: 7.414884, t_calc: 9.312179.
+Process 62, t_init: 1.196435, t_comm: 8.830503, t_calc: 7.896514.
+Process 76, t_init: 1.196080, t_comm: 9.396904, t_calc: 7.329561.
+Process 27, t_init: 1.195695, t_comm: 9.441049, t_calc: 7.286040.
+Process 73, t_init: 1.196447, t_comm: 8.827127, t_calc: 7.899818.
+Process 80, t_init: 1.196952, t_comm: 10.181994, t_calc: 6.544713.
+Process 43, t_init: 1.197965, t_comm: 8.054238, t_calc: 8.672833.
+Process 94, t_init: 1.186401, t_comm: 8.835453, t_calc: 7.891763.
+Process 70, t_init: 1.196474, t_comm: 10.129774, t_calc: 6.597555.
+Process 71, t_init: 1.196317, t_comm: 9.945489, t_calc: 6.781721.
+Process 61, t_init: 1.197661, t_comm: 9.399987, t_calc: 7.327337.
+Process 64, t_init: 1.196764, t_comm: 7.374255, t_calc: 9.352975.
+Process 72, t_init: 1.196146, t_comm: 9.401345, t_calc: 7.325627.
+Process 75, t_init: 1.196395, t_comm: 8.589647, t_calc: 8.137338.
+Process 89, t_init: 1.196022, t_comm: 10.213207, t_calc: 6.513969.
+Process 53, t_init: 1.197044, t_comm: 7.359066, t_calc: 9.367645.
+Process 8, t_init: 1.196845, t_comm: 10.212841, t_calc: 6.514165.
+Process 15, t_init: 1.197034, t_comm: 8.583477, t_calc: 8.143679.
+Process 17, t_init: 1.194197, t_comm: 9.935929, t_calc: 6.790567.
+Process 55, t_init: 1.196276, t_comm: 7.269608, t_calc: 9.457750.
+Process 83, t_init: 1.196571, t_comm: 9.402288, t_calc: 7.325312.
+Process 58, t_init: 1.196820, t_comm: 8.842942, t_calc: 7.884201.
+Process 87, t_init: 1.197164, t_comm: 10.148338, t_calc: 6.578900.
+Process 33, t_init: 1.194299, t_comm: 8.827001, t_calc: 7.900334.
+Process 23, t_init: 1.196376, t_comm: 9.395883, t_calc: 7.331722.
+Process 66, t_init: 1.191626, t_comm: 8.821541, t_calc: 7.905431.
