@@ -4,8 +4,8 @@
 #include <mpi.h>
 #include <time.h>
 
-#define NDIRS 8	// how many neighbours
-#define N_MIN 1	// minimum meaningful size of local subdomain
+//#define NDIRS 8	// how many neighbours
+//#define N_MIN 1	// minimum meaningful size of local subdomain
 
 /*#define BORDER_NORTH [1][1]			// 	north starts
 #define BORDER_EAST [1][n]			//	east starts
@@ -61,22 +61,22 @@
 //#define BLOPSIZE 4
 
 // my testcase
-
+#define HT 0.075
 /*#define HT 0.25
 #define DU 0.00002
 #define DV 0.00001*/
 /*#define DU 2.0*1e-5
 #define DV 1.0*1e-5*/
-/*#define F 0.026
-#define K 0.0550*/
+#define F 0.026
+#define K 0.0550
 
 // JR's values
 // #define HT 0.19
-#define HT 0.019
+//#define HT 0.019
 #define DU 2.0*1e-6
 #define DV 1.0*1e-6
-#define F 0.0375
-#define K 0.0634
+//#define F 0.0375
+//#define K 0.0634
 
 #define U0 0.5		// non-zero starting value at blob
 #define V0 0.25		// non-zero starting value at blob

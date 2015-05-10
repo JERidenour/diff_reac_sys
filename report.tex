@@ -186,9 +186,7 @@ if (even row AND even process) OR (odd row AND odd process)
 else if (even row AND odd process) OR (odd row AND even process)
   color = black
 
-The 2D process grid is thus colored in a checkerboard pattern. Since we use periodic boundary conditions, we assume even p to ensure red-black neighbours when wrapping around the boundaries of the grid.
-
-Because the subdomain borders are shared between neighbours, we implement overlap by introducing a ghost frame surrounding the subdomain, labeled GHOST_NORTH, GHOST_EAST, GHOST_SOUTH and GHOST_WEST, which give each subdomain a total dimension of (n+2)x(n+2). In addition, we define four borders of the inner nxn domain, labeled BORDER_NORTH, BORDER_EAST etc. The values in the borders are recalculated every iteration, then sent to the corresponding neighbour. The values in the ghosts are used when the computation molecule centers on an element at a border. They are received from a neighbour every iteration before the computation phase starts.
+The 2D process grid is thus colored in a checkerboard pattern. Since we use periodic boundary conditions, we assume even p to ensure red-black neighbours when wrapping around the boundaries of the grid. Because the subdomain borders are shared between neighbours, we implement overlap by introducing a ghost frame surrounding the subdomain, labeled GHOST_NORTH, GHOST_EAST, GHOST_SOUTH and GHOST_WEST, which give each subdomain a total dimension of (n+2)x(n+2). In addition, we define four borders of the inner nxn domain, labeled BORDER_NORTH, BORDER_EAST etc. The values in the borders are recalculated every iteration, then sent to the corresponding neighbour. The values in the ghosts are used when the computation molecule centers on an element at a border. They are received from a neighbour every iteration before the computation phase starts.
 
 Each computation iteration is preceded by a communication phase arranged in four parts to avoid deadlock. Each sendreceive is done once for u and once for v. We also show the timing calls:
 
@@ -223,9 +221,7 @@ while(iter < maxiter)
 
 end while
 
-We now describe the specifics our two implementations, which differ mainly in the calculate_domain() procedure. 
-
-The matrix version uses a small sparse matrix library called CSparse, which accompanies ``Direct Methods for Sparse Linear Systems'' [#reference#]. The author, who has contributed to several matrix routines in MATLAB as well as NVIDIA, describes CSparse as ``for educational use''. While fast, it's not fully competitive with professional libraries. Yet the code is very readable and enables us to formulate concise code similar to formulas (9) and (10). We show only the expressions for u, with v being analogous:
+We now describe the specifics our two implementations, which differ mainly in the calculate_domain() procedure. The matrix version uses a small sparse matrix library called CSparse, which accompanies ``Direct Methods for Sparse Linear Systems'' [#reference#]. The author, who has contributed to several matrix routines in MATLAB as well as NVIDIA, describes CSparse as ``for educational use''. While fast, it's not fully competitive with professional libraries. Yet the code is very readable and enables us to formulate concise code similar to formulas (9) and (10). We show only the expressions for u, with v being analogous:
 
 def calculateDomain():
 
@@ -235,13 +231,14 @@ def calculateDomain():
     unew[i] = u[i] + ht * ( (-u[i] * v[i]^2) + (F * (1.0 - u[i])) )
   end for
 
-  csGaxpy(IpTu, u, unew)   // CSparse call eqv to unew = Au*v + unew
+  // CSparse call equivalent to unew = Au*v + unew
+  csGaxpy(IpTu, u, unew)   
 
   unew[boundaries] += sigma * ghost
 
 end
 
-The east and west borders/ghosts are columns and thus non-contiguous in memory. This version maintains two work buffers for this data, which is arranged sequentially and copied into these buffers before IO.
+The east and west borders/ghosts are columns and thus non-contiguous in memory. This version maintains two work buffers for this data, which is arranged sequentially and copied into these buffers before IO. While 
 
 The kernel version computes the 5-point molecule for each domain element with a direct expression:
 
@@ -382,12 +379,46 @@ $P$ & $t_{init}$ & $t_{comm}$ & $t_{calc}$ & $t_{tot}$ \\
     \label{fig:kernel}
 \end{figure}
 
+\subsection*{Larger Domain}
+Using the faster kernel method, we conduct another numerical experiment on Ferlin with a 1000x1000 domain and same number of iterations. We find that dt = 0.075 is sufficient for stability, while still yielding a pattern growth which almost fills the entire domain. As before, we run 1, 4, 16, 64, and 100 processes. 
+
+\begin{table}[h]
+\def\arraystretch{1.2}
+\begin{center}
+\caption{Max time (seconds) measurements, kernel method, 1000x1000 domain.}
+\label{tab:matrix}
+%\vspace{0.3cm}
+\begin{tabular}{| c | c | c | c | c |}
+\hline
+$P$ & $t_{init}$ & $t_{comm}$ & $t_{calc}$ & $t_{tot}$ \\
+\hline
+1 & 0.02936 &  0.000 & 756.86 & 756.89\\
+\hline
+4 & 0.00555 & 71.502 & 398.283 & 469.79\\
+\hline
+16 & 0.06474 & 14.1897 & 47.0218 & 61.276\\
+\hline
+64 & 0.1676 & 11.099 & 17.286 & 28.553\\
+\hline
+100 & 1.1956 & 10.215 & 6.5125 & 17.923\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.6]{kernel-1k}
+    \caption{Experimental speedup, kernel method, 1000x1000 domain.}
+    \label{fig:kernel-1k}
+\end{figure}
+
 \subsection*{Speedup Analysis}
 There are a few reasons why the extrapolation of Amdahl's Law does not provide an accurate predictor for the parallel speedup.  The most obvious reason is that $f$, the fraction of the computation which cannot be divided into parallel tasks, does not in itself account for an upper bound on the speedup.  In fact, our best measure of $f$ is $t_{init}$ and, as can be seen in tables \ref{tab:matrix} and \ref{tab:kernal}, this accounts for only a minuscule portion of the total runtime.  It is more likely that the speedup can be explained by the memory hierarchies employed by Ferlin.  
 
 ** TVEKSAMT vi vet inget om hur ferlin är byggd. When the number of processes is low, so is the available cache.  As the number of processes increases, more of the working set, and at some point the entire working set, can fit into the available caches, allowing for a quicker memory access time. **
 
-The matrix implementation shows a mostly linear speedup (although the plot could be interpreted as a gently decreasing curve), but it is not fast sequentially. We suspect that the sparse matrix multiplication largely fails to exploit memory proximity, and a large fraction of memory accesses result in a cache miss. The kernel implementation, which is several times faster both sequentially and in parallel, accesses memory in a linear fashion more favorable for caching. Looking at the supralinear speedup which sharply descends after 64 processes, we suspect that there exists (for this computer) an optimal domain size per node. We conclude that profiling is essential for optimal code design.
+The matrix implementation shows a mostly linear speedup (although the plot could be interpreted as a gently decreasing curve), but the sequential version is not fast. We suspect that the sparse matrix multiplication largely fails to exploit memory proximity, and a large fraction of memory accesses result in a cache miss. On the other hand, the kernel implementation (which is several times faster both sequentially and in parallel), accesses memory in a linear fashion more favorable for caching. Looking at its initially supralinear speedup which sharply descends after 64 processes, we suspect that there exists (for this computer) an optimal domain size per node. We conclude that profiling is essential for optimal code design.
 
 \section*{Patterns}
 \section*{Conclusions}

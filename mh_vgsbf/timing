@@ -226,6 +226,12 @@ vgsbf.c
 
 =================================================================
 
+Sequential LAPTOP
+Sequential t_init: 0.013859, t_comm: 0.000000, t_calc: 314.837839.
+
+Sequential Ferlin:
+Sequential t_init: 0.029358, t_comm: 0.000000, t_calc: 756.858967.
+
 4 Processes:
 Process 1, t_init: 0.005554, t_comm: 71.501623, t_calc: 398.283068.
 Process 3, t_init: 0.010282, t_comm: 70.005535, t_calc: 399.771322.

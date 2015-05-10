@@ -26,11 +26,17 @@ ylabel('Speedup')
 
 
 %% kernel version
-T1 = 113;
-T4 = 94.26;
-T16 = 9.778;
-T64 = 4.248;
-T100 = 5.556;
+% T1 = 113;
+% T4 = 94.26;
+% T16 = 9.778;
+% T64 = 4.248;
+% T100 = 5.556;
+
+T1 = 756.89;
+T4 = 469.79;
+T16 = 61.276;
+T64 = 28.553;
+T100 = 17.923;
 
 
 P = [1 4 16 64 100];
@@ -47,7 +53,7 @@ hold on;
 plot(fittedX, fittedY, 'r-');
 plot(P,Sp, '*')
 %plot(fittedX, alm, 'k')
-title('Parallel speedup for 400x400 gray-scott system, kernel method')
+title('Parallel speedup for 1000x1000 gray-scott system, kernel method')
 xlabel('Number of processes')
 ylabel('Speedup')
 %axis([0 max(P)+10 0 max(P)+10])
