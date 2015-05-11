@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2015.2.8)  11 MAY 2015 19:26
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2015.2.8)  11 MAY 2015 19:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -892,34 +892,42 @@ File: it_30000-eps-converted-to.pdf Graphic file (type pdf)
 <use it_30000-eps-converted-to.pdf>
 Package pdftex.def Info: it_30000-eps-converted-to.pdf used on input line 498.
 (pdftex.def)             Requested size: 200.75996pt x 150.57039pt.
+Package epstopdf Info: Source file: <FK1250.eps>
+(epstopdf)                    date: 2015-05-11 19:33:17
+(epstopdf)                    size: 914872 bytes
+(epstopdf)             Output file: <FK1250-eps-converted-to.pdf>
+(epstopdf)             Command: <repstopdf --outfile=FK1250-eps-converted-to.pd
+f FK1250.eps>
+(epstopdf)             \includegraphics on input line 511.
+runsystem(repstopdf --outfile=FK1250-eps-converted-to.pdf FK1250.eps)...execute
+d safely (allowed).
 
-! LaTeX Error: File `FK1250' not found.
+Package epstopdf Info: Result file: <FK1250-eps-converted-to.pdf>
+(epstopdf)                    date: 2015-05-11 19:33:28
+(epstopdf)                    size: 364921 bytes.
+<FK1250-eps-converted-to.pdf, id=86, 562.1pt x 421.575pt>
+File: FK1250-eps-converted-to.pdf Graphic file (type pdf)
+<use FK1250-eps-converted-to.pdf>
+Package pdftex.def Info: FK1250-eps-converted-to.pdf used on input line 511.
+(pdftex.def)             Requested size: 200.75996pt x 150.57039pt.
+Package epstopdf Info: Source file: <FK3565.eps>
+(epstopdf)                    date: 2015-05-11 19:33:17
+(epstopdf)                    size: 1455792 bytes
+(epstopdf)             Output file: <FK3565-eps-converted-to.pdf>
+(epstopdf)             Command: <repstopdf --outfile=FK3565-eps-converted-to.pd
+f FK3565.eps>
+(epstopdf)             \includegraphics on input line 518.
+runsystem(repstopdf --outfile=FK3565-eps-converted-to.pdf FK3565.eps)...execute
+d safely (allowed).
 
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.511 ...includegraphics[width=\textwidth]{FK1250}
-                                                  
-I could not locate the file with any of these extensions:
-.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: File `FK3565' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.518 ...includegraphics[width=\textwidth]{FK3565}
-                                                  
-I could not locate the file with any of these extensions:
-.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
+Package epstopdf Info: Result file: <FK3565-eps-converted-to.pdf>
+(epstopdf)                    date: 2015-05-11 19:33:30
+(epstopdf)                    size: 500737 bytes.
+<FK3565-eps-converted-to.pdf, id=87, 562.1pt x 421.575pt>
+File: FK3565-eps-converted-to.pdf Graphic file (type pdf)
+<use FK3565-eps-converted-to.pdf>
+Package pdftex.def Info: FK3565-eps-converted-to.pdf used on input line 518.
+(pdftex.def)             Requested size: 200.75996pt x 150.57039pt.
 Package epstopdf Info: Source file: <FK2050.eps>
 (epstopdf)                    date: 2015-05-11 19:21:05
 (epstopdf)                    size: 929932 bytes
@@ -930,7 +938,7 @@ Package epstopdf Info: Source file: <FK2050.eps>
 f FK2050.eps>
 (epstopdf)             \includegraphics on input line 525.
 Package epstopdf Info: Output file is already uptodate.
-<FK2050-eps-converted-to.pdf, id=86, 562.1pt x 421.575pt>
+<FK2050-eps-converted-to.pdf, id=88, 562.1pt x 421.575pt>
 File: FK2050-eps-converted-to.pdf Graphic file (type pdf)
 <use FK2050-eps-converted-to.pdf>
 Package pdftex.def Info: FK2050-eps-converted-to.pdf used on input line 525.
@@ -945,39 +953,47 @@ Package epstopdf Info: Source file: <FK3863.eps>
 f FK3863.eps>
 (epstopdf)             \includegraphics on input line 532.
 Package epstopdf Info: Output file is already uptodate.
-<FK3863-eps-converted-to.pdf, id=87, 562.1pt x 421.575pt>
+<FK3863-eps-converted-to.pdf, id=89, 562.1pt x 421.575pt>
 File: FK3863-eps-converted-to.pdf Graphic file (type pdf)
 <use FK3863-eps-converted-to.pdf>
 Package pdftex.def Info: FK3863-eps-converted-to.pdf used on input line 532.
 (pdftex.def)             Requested size: 200.75996pt x 150.57039pt.
+Package epstopdf Info: Source file: <FK2550.eps>
+(epstopdf)                    date: 2015-05-11 19:33:17
+(epstopdf)                    size: 260080 bytes
+(epstopdf)             Output file: <FK2550-eps-converted-to.pdf>
+(epstopdf)             Command: <repstopdf --outfile=FK2550-eps-converted-to.pd
+f FK2550.eps>
+(epstopdf)             \includegraphics on input line 539.
+runsystem(repstopdf --outfile=FK2550-eps-converted-to.pdf FK2550.eps)...execute
+d safely (allowed).
 
-! LaTeX Error: File `FK2550' not found.
+Package epstopdf Info: Result file: <FK2550-eps-converted-to.pdf>
+(epstopdf)                    date: 2015-05-11 19:33:31
+(epstopdf)                    size: 93100 bytes.
+<FK2550-eps-converted-to.pdf, id=90, 562.1pt x 421.575pt>
+File: FK2550-eps-converted-to.pdf Graphic file (type pdf)
+<use FK2550-eps-converted-to.pdf>
+Package pdftex.def Info: FK2550-eps-converted-to.pdf used on input line 539.
+(pdftex.def)             Requested size: 200.75996pt x 150.57039pt.
+Package epstopdf Info: Source file: <FK4261.eps>
+(epstopdf)                    date: 2015-05-11 19:33:17
+(epstopdf)                    size: 2708424 bytes
+(epstopdf)             Output file: <FK4261-eps-converted-to.pdf>
+(epstopdf)             Command: <repstopdf --outfile=FK4261-eps-converted-to.pd
+f FK4261.eps>
+(epstopdf)             \includegraphics on input line 546.
+runsystem(repstopdf --outfile=FK4261-eps-converted-to.pdf FK4261.eps)...execute
+d safely (allowed).
 
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.539 ...includegraphics[width=\textwidth]{FK2550}
-                                                  
-I could not locate the file with any of these extensions:
-.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-! LaTeX Error: File `FK4261' not found.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.546 ...includegraphics[width=\textwidth]{FK4261}
-                                                  
-I could not locate the file with any of these extensions:
-.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
+Package epstopdf Info: Result file: <FK4261-eps-converted-to.pdf>
+(epstopdf)                    date: 2015-05-11 19:33:33
+(epstopdf)                    size: 1230243 bytes.
+<FK4261-eps-converted-to.pdf, id=91, 562.1pt x 421.575pt>
+File: FK4261-eps-converted-to.pdf Graphic file (type pdf)
+<use FK4261-eps-converted-to.pdf>
+Package pdftex.def Info: FK4261-eps-converted-to.pdf used on input line 546.
+(pdftex.def)             Requested size: 200.75996pt x 150.57039pt.
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 25.22153pt.
@@ -1000,7 +1016,9 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[15 <./FK2050-eps-converted-to.pdf> <./FK3863-eps-converted-to.pdf>]
+[15 <./FK1250-eps-converted-to.pdf> <./FK3565-eps-converted-to.pdf> <./FK2050-e
+ps-converted-to.pdf> <./FK3863-eps-converted-to.pdf> <./FK2550-eps-converted-to
+.pdf> <./FK4261-eps-converted-to.pdf>]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 25.22153pt.
@@ -1015,10 +1033,10 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 7475 strings out of 493117
- 107071 string characters out of 6135434
+ 7491 strings out of 493117
+ 107595 string characters out of 6135434
  214200 words of memory out of 5000000
- 10774 multiletter control sequences out of 15000+600000
+ 10790 multiletter control sequences out of 15000+600000
  22087 words of font info for 64 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  38i,16n,45p,1008b,522s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1042,10 +1060,10 @@ ve/2014/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb></usr/local/texlive
 4/texmf-dist/fonts/type1/public/cm-super/sfti1095.pfb></usr/local/texlive/2014/
 texmf-dist/fonts/type1/public/cm-super/sftt1095.pfb>
 Output written on /Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/Output
-/report.pdf (16 pages, 2962751 bytes).
+/report.pdf (16 pages, 5138535 bytes).
 PDF statistics:
- 209 PDF objects out of 1000 (max. 8388607)
- 148 compressed objects within 2 object streams
+ 237 PDF objects out of 1000 (max. 8388607)
+ 168 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 56 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 76 words of extra memory for PDF output out of 10000 (max. 10000000)
 
