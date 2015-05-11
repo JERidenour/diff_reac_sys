@@ -237,9 +237,7 @@ Algorithm \ref{alg:communication} shows how each computation is preceded by a co
 \end{algorithm}
 \vspace{0.7 cm}
 
-We now describe the specifics our two implementations, which differ mainly in the calculateDomain() procedure. The matrix version uses a small sparse matrix library called CSparse, which accompanies ``Direct Methods for Sparse Linear Systems'' 
-%[#reference#]. 
-The author, who has contributed to several matrix routines in MATLAB as well as NVIDIA, describes CSparse as ``for educational use''. While fast, it's not fully competitive with professional libraries. Yet the code is readable and enables us to formulate code similar to MATLAB and formulas (9) and (10). CSparse doesn't reference any other libraries, so the code is portable between our laptops and Ferlin. Algorithm \ref{alg:sparsematrix} shows the expressions for u, with v being analogous. 
+We now describe the specifics our two implementations, which differ mainly in the calculateDomain() procedure. The matrix version uses a small sparse matrix library called CSparse, authored by Timothy Davis, who has contributed to several matrix routines in MATLAB as well as NVIDIA \cite{Davis}.  While fast, it's not fully competitive with professional libraries. Yet the code is readable and enables us to formulate code similar to MATLAB and formulas (9) and (10). CSparse doesn't reference any other libraries, so the code is portable between our laptops and Ferlin. Algorithm \ref{alg:sparsematrix} shows the expressions for u, with v being analogous. 
 
 \vspace{0.7 cm}
 \begin{algorithm}[H]
@@ -456,6 +454,8 @@ Cache architecture surely effects performance as well, considering that the impl
 
 \section*{Patterns}
 
+A variety of patterns 
+
 \begin{figure}
     \centering
     \begin{subfigure}[b]{0.48\textwidth}
@@ -565,6 +565,7 @@ Finally, the explicit method may not be optimal if implicit methods can be found
 %\bibitem{Ruuth} Steven J Ruuth, {\it Implicit-Explicit Methods for Reaction-Diffusion Problems in Pattern Formation}, Journal of Mathematical Biology 34 (2), 148-176. 
 \bibitem{Edsberg} Lennart Edsberg {\it Introduction to Computation and Modelling for Differential Equations}, 2008, John Wiley and Sons, pp 50.
 %\bibitem{Wilkinson} Barry Wilkinson, Michael Allen {\it Parallel Programming, Techniques and Applications Using Networked Workstations and Parallel Computers}, 2005, Pearson Prentice Hall, pp 9.
+\bibitem{Davis} Timothy Davis, {\it Direct Methods for Sparse Linear Systems}, Society of Industrial and Applied Mathematics, 2006.
 \end{thebibliography}
 
 \end{document}
