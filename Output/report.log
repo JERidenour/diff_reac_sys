@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2015.2.8)  11 MAY 2015 19:33
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2015.2.8)  11 MAY 2015 21:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -480,13 +480,191 @@ Package caption3 Info: TeX engine: e-TeX on input line 57.
 \caption@hangindent=\dimen139
 )
 \c@ContinuedFloat=\count116
-) (/usr/local/texlive/2014/texmf-dist/tex/latex/caption/subcaption.sty
+) (./mcode.sty
+-- Package: `mcode' 2.4 <2013/11/05> --
+Package: mcode 2013/11/05 2.4
+ - settings optimized for display (colour formating)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count117
+\lst@gtempboxa=\box56
+\lst@token=\toks24
+\lst@length=\count118
+\lst@currlwidth=\dimen140
+\lst@column=\count119
+\lst@pos=\count120
+\lst@lostspace=\dimen141
+\lst@width=\dimen142
+\lst@newlines=\count121
+\lst@lineno=\count122
+\lst@maxwidth=\dimen143
+(/usr/local/texlive/2014/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2014/03/04 1.5c (Carsten Heinz)
+\c@lstnumber=\count123
+\lst@skipnumbers=\count124
+\lst@framebox=\box57
+) (/usr/local/texlive/2014/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2014/03/04 1.5c listings configuration
+))
+Package: listings 2014/03/04 1.5c (Carsten Heinz)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/base/textcomp.sty
+Package: textcomp 2005/09/27 v1.99g Standard LaTeX package
+Package textcomp Info: Sub-encoding information:
+(textcomp)               5 = only ISO-Adobe without \textcurrency
+(textcomp)               4 = 5 + \texteuro
+(textcomp)               3 = 4 + \textohm
+(textcomp)               2 = 3 + \textestimated + \textcurrency
+(textcomp)               1 = TS1 - \textcircled - \t
+(textcomp)               0 = TS1 (full)
+(textcomp)             Font families with sub-encoding setting implement
+(textcomp)             only a restricted character set as indicated.
+(textcomp)             Family '?' is the default used for unknown fonts.
+(textcomp)             See the documentation for details.
+Package textcomp Info: Setting ? sub-encoding to TS1/1 on input line 71.
+(/usr/local/texlive/2014/texmf-dist/tex/latex/base/ts1enc.def
+File: ts1enc.def 2001/06/05 v3.0e (jk/car/fm) Standard LaTeX file
+Now handling font encoding TS1 ...
+... processing UTF-8 mapping file for font encoding TS1
+(/usr/local/texlive/2014/texmf-dist/tex/latex/base/ts1enc.dfu
+File: ts1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
+   defining Unicode char U+00A2 (decimal 162)
+   defining Unicode char U+00A3 (decimal 163)
+   defining Unicode char U+00A4 (decimal 164)
+   defining Unicode char U+00A5 (decimal 165)
+   defining Unicode char U+00A6 (decimal 166)
+   defining Unicode char U+00A7 (decimal 167)
+   defining Unicode char U+00A8 (decimal 168)
+   defining Unicode char U+00A9 (decimal 169)
+   defining Unicode char U+00AA (decimal 170)
+   defining Unicode char U+00AC (decimal 172)
+   defining Unicode char U+00AE (decimal 174)
+   defining Unicode char U+00AF (decimal 175)
+   defining Unicode char U+00B0 (decimal 176)
+   defining Unicode char U+00B1 (decimal 177)
+   defining Unicode char U+00B2 (decimal 178)
+   defining Unicode char U+00B3 (decimal 179)
+   defining Unicode char U+00B4 (decimal 180)
+   defining Unicode char U+00B5 (decimal 181)
+   defining Unicode char U+00B6 (decimal 182)
+   defining Unicode char U+00B7 (decimal 183)
+   defining Unicode char U+00B9 (decimal 185)
+   defining Unicode char U+00BA (decimal 186)
+   defining Unicode char U+00BC (decimal 188)
+   defining Unicode char U+00BD (decimal 189)
+   defining Unicode char U+00BE (decimal 190)
+   defining Unicode char U+00D7 (decimal 215)
+   defining Unicode char U+00F7 (decimal 247)
+   defining Unicode char U+0192 (decimal 402)
+   defining Unicode char U+02C7 (decimal 711)
+   defining Unicode char U+02D8 (decimal 728)
+   defining Unicode char U+02DD (decimal 733)
+   defining Unicode char U+0E3F (decimal 3647)
+   defining Unicode char U+2016 (decimal 8214)
+   defining Unicode char U+2020 (decimal 8224)
+   defining Unicode char U+2021 (decimal 8225)
+   defining Unicode char U+2022 (decimal 8226)
+   defining Unicode char U+2030 (decimal 8240)
+   defining Unicode char U+2031 (decimal 8241)
+   defining Unicode char U+203B (decimal 8251)
+   defining Unicode char U+203D (decimal 8253)
+   defining Unicode char U+2044 (decimal 8260)
+   defining Unicode char U+204E (decimal 8270)
+   defining Unicode char U+2052 (decimal 8274)
+   defining Unicode char U+20A1 (decimal 8353)
+   defining Unicode char U+20A4 (decimal 8356)
+   defining Unicode char U+20A6 (decimal 8358)
+   defining Unicode char U+20A9 (decimal 8361)
+   defining Unicode char U+20AB (decimal 8363)
+   defining Unicode char U+20AC (decimal 8364)
+   defining Unicode char U+20B1 (decimal 8369)
+   defining Unicode char U+2103 (decimal 8451)
+   defining Unicode char U+2116 (decimal 8470)
+   defining Unicode char U+2117 (decimal 8471)
+   defining Unicode char U+211E (decimal 8478)
+   defining Unicode char U+2120 (decimal 8480)
+   defining Unicode char U+2122 (decimal 8482)
+   defining Unicode char U+2126 (decimal 8486)
+   defining Unicode char U+2127 (decimal 8487)
+   defining Unicode char U+212E (decimal 8494)
+   defining Unicode char U+2190 (decimal 8592)
+   defining Unicode char U+2191 (decimal 8593)
+   defining Unicode char U+2192 (decimal 8594)
+   defining Unicode char U+2193 (decimal 8595)
+   defining Unicode char U+2329 (decimal 9001)
+   defining Unicode char U+232A (decimal 9002)
+   defining Unicode char U+2422 (decimal 9250)
+   defining Unicode char U+25E6 (decimal 9702)
+   defining Unicode char U+25EF (decimal 9711)
+   defining Unicode char U+266A (decimal 9834)
+))
+LaTeX Info: Redefining \oldstylenums on input line 266.
+Package textcomp Info: Setting cmr sub-encoding to TS1/0 on input line 281.
+Package textcomp Info: Setting cmss sub-encoding to TS1/0 on input line 282.
+Package textcomp Info: Setting cmtt sub-encoding to TS1/0 on input line 283.
+Package textcomp Info: Setting cmvtt sub-encoding to TS1/0 on input line 284.
+Package textcomp Info: Setting cmbr sub-encoding to TS1/0 on input line 285.
+Package textcomp Info: Setting cmtl sub-encoding to TS1/0 on input line 286.
+Package textcomp Info: Setting ccr sub-encoding to TS1/0 on input line 287.
+Package textcomp Info: Setting ptm sub-encoding to TS1/4 on input line 288.
+Package textcomp Info: Setting pcr sub-encoding to TS1/4 on input line 289.
+Package textcomp Info: Setting phv sub-encoding to TS1/4 on input line 290.
+Package textcomp Info: Setting ppl sub-encoding to TS1/3 on input line 291.
+Package textcomp Info: Setting pag sub-encoding to TS1/4 on input line 292.
+Package textcomp Info: Setting pbk sub-encoding to TS1/4 on input line 293.
+Package textcomp Info: Setting pnc sub-encoding to TS1/4 on input line 294.
+Package textcomp Info: Setting pzc sub-encoding to TS1/4 on input line 295.
+Package textcomp Info: Setting bch sub-encoding to TS1/4 on input line 296.
+Package textcomp Info: Setting put sub-encoding to TS1/5 on input line 297.
+Package textcomp Info: Setting uag sub-encoding to TS1/5 on input line 298.
+Package textcomp Info: Setting ugq sub-encoding to TS1/5 on input line 299.
+Package textcomp Info: Setting ul8 sub-encoding to TS1/4 on input line 300.
+Package textcomp Info: Setting ul9 sub-encoding to TS1/4 on input line 301.
+Package textcomp Info: Setting augie sub-encoding to TS1/5 on input line 302.
+Package textcomp Info: Setting dayrom sub-encoding to TS1/3 on input line 303.
+Package textcomp Info: Setting dayroms sub-encoding to TS1/3 on input line 304.
+
+Package textcomp Info: Setting pxr sub-encoding to TS1/0 on input line 305.
+Package textcomp Info: Setting pxss sub-encoding to TS1/0 on input line 306.
+Package textcomp Info: Setting pxtt sub-encoding to TS1/0 on input line 307.
+Package textcomp Info: Setting txr sub-encoding to TS1/0 on input line 308.
+Package textcomp Info: Setting txss sub-encoding to TS1/0 on input line 309.
+Package textcomp Info: Setting txtt sub-encoding to TS1/0 on input line 310.
+Package textcomp Info: Setting lmr sub-encoding to TS1/0 on input line 311.
+Package textcomp Info: Setting lmdh sub-encoding to TS1/0 on input line 312.
+Package textcomp Info: Setting lmss sub-encoding to TS1/0 on input line 313.
+Package textcomp Info: Setting lmssq sub-encoding to TS1/0 on input line 314.
+Package textcomp Info: Setting lmvtt sub-encoding to TS1/0 on input line 315.
+Package textcomp Info: Setting qhv sub-encoding to TS1/0 on input line 316.
+Package textcomp Info: Setting qag sub-encoding to TS1/0 on input line 317.
+Package textcomp Info: Setting qbk sub-encoding to TS1/0 on input line 318.
+Package textcomp Info: Setting qcr sub-encoding to TS1/0 on input line 319.
+Package textcomp Info: Setting qcs sub-encoding to TS1/0 on input line 320.
+Package textcomp Info: Setting qpl sub-encoding to TS1/0 on input line 321.
+Package textcomp Info: Setting qtm sub-encoding to TS1/0 on input line 322.
+Package textcomp Info: Setting qzc sub-encoding to TS1/0 on input line 323.
+Package textcomp Info: Setting qhvc sub-encoding to TS1/0 on input line 324.
+Package textcomp Info: Setting futs sub-encoding to TS1/4 on input line 325.
+Package textcomp Info: Setting futx sub-encoding to TS1/4 on input line 326.
+Package textcomp Info: Setting futj sub-encoding to TS1/4 on input line 327.
+Package textcomp Info: Setting hlh sub-encoding to TS1/3 on input line 328.
+Package textcomp Info: Setting hls sub-encoding to TS1/3 on input line 329.
+Package textcomp Info: Setting hlst sub-encoding to TS1/3 on input line 330.
+Package textcomp Info: Setting hlct sub-encoding to TS1/5 on input line 331.
+Package textcomp Info: Setting hlx sub-encoding to TS1/5 on input line 332.
+Package textcomp Info: Setting hlce sub-encoding to TS1/5 on input line 333.
+Package textcomp Info: Setting hlcn sub-encoding to TS1/5 on input line 334.
+Package textcomp Info: Setting hlcw sub-encoding to TS1/5 on input line 335.
+Package textcomp Info: Setting hlcf sub-encoding to TS1/5 on input line 336.
+Package textcomp Info: Setting pplx sub-encoding to TS1/3 on input line 337.
+Package textcomp Info: Setting pplj sub-encoding to TS1/3 on input line 338.
+Package textcomp Info: Setting ptmx sub-encoding to TS1/4 on input line 339.
+Package textcomp Info: Setting ptmj sub-encoding to TS1/4 on input line 340.
+)) (/usr/local/texlive/2014/texmf-dist/tex/latex/caption/subcaption.sty
 Package: subcaption 2013/02/03 v1.1-62 Sub-captions (AR)
-\c@subfigure=\count117
-\c@subtable=\count118
+\c@subfigure=\count125
+\c@subtable=\count126
 ) (/usr/local/texlive/2014/texmf-dist/tex/latex/algorithm2e/algorithm2e.sty
 Package: algorithm2e 2013/01/06 v5.00 algorithms environments
-\c@AlgoLine=\count119
+\c@AlgoLine=\count127
 (/usr/local/texlive/2014/texmf-dist/tex/latex/tools/xspace.sty
 Package: xspace 2009/10/20 v1.13 Space after command names (DPC,MH)
 ) (/usr/local/texlive/2014/texmf-dist/tex/latex/relsize/relsize.sty
@@ -507,66 +685,69 @@ subscribe by emailing sympa@lirmm.fr with 'subscribe <list> <firstname name>'
 \skiplength=\skip65
 \algomargin=\skip66
 \skipalgocfslide=\skip67
-\algowidth=\dimen140
-\inoutsize=\dimen141
-\inoutindent=\dimen142
-\interspacetitleruled=\dimen143
-\interspacealgoruled=\dimen144
-\interspacetitleboxruled=\dimen145
-\algocf@inoutbox=\box56
-\algocf@inputbox=\box57
+\algowidth=\dimen144
+\inoutsize=\dimen145
+\inoutindent=\dimen146
+\interspacetitleruled=\dimen147
+\interspacealgoruled=\dimen148
+\interspacetitleboxruled=\dimen149
+\algocf@inoutbox=\box58
+\algocf@inputbox=\box59
 \AlCapSkip=\skip68
 \AlCapHSkip=\skip69
 \algoskipindent=\skip70
-\algocf@nlbox=\box58
-\algocf@hangingbox=\box59
-\algocf@untilbox=\box60
+\algocf@nlbox=\box60
+\algocf@hangingbox=\box61
+\algocf@untilbox=\box62
 \algocf@skipuntil=\skip71
-\algocf@capbox=\box61
+\algocf@capbox=\box63
 \algoheightruledefault=\skip72
 \algoheightrule=\skip73
 \algotitleheightruledefault=\skip74
 \algotitleheightrule=\skip75
-\c@algocfline=\count120
-\c@algocfproc=\count121
-\c@algocf=\count122
-\algocf@algoframe=\box62
-\algocf@algobox=\box63
+\c@algocfline=\count128
+\c@algocfproc=\count129
+\c@algocf=\count130
+\algocf@algoframe=\box64
+\algocf@algobox=\box65
 ) (/Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/Output/report.aux
 
 LaTeX Warning: Label `tab:matrix' multiply defined.
 
-
-LaTeX Warning: Label `fig:gray-scott' multiply defined.
-
 )
 \openout1 = `report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 39.
-LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 40.
+LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 40.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 40.
+(/usr/local/texlive/2014/texmf-dist/tex/latex/base/ts1cmr.fd
+File: ts1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    ... okay on input line 40.
 (/usr/local/texlive/2014/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count123
-\scratchdimen=\dimen146
-\scratchbox=\box64
-\nofMPsegments=\count124
-\nofMParguments=\count125
-\everyMPshowfont=\toks24
-\MPscratchCnt=\count126
-\MPscratchDim=\dimen147
-\MPnumerator=\count127
-\makeMPintoPDFobject=\count128
-\everyMPtoPDFconversion=\toks25
+\scratchcounter=\count131
+\scratchdimen=\dimen150
+\scratchbox=\box66
+\nofMPsegments=\count132
+\nofMParguments=\count133
+\everyMPshowfont=\toks25
+\MPscratchCnt=\count134
+\MPscratchDim=\dimen151
+\MPnumerator=\count135
+\makeMPintoPDFobject=\count136
+\everyMPtoPDFconversion=\toks26
 ) (/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
 )
@@ -637,20 +818,22 @@ e
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-\AtBeginShipoutBox=\box65
+\AtBeginShipoutBox=\box67
 Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Try loading font information for U+msa on input line 40.
+\c@lstlisting=\count137
+LaTeX Font Info:    Try loading font information for U+msa on input line 41.
 (/usr/local/texlive/2014/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 40.
+LaTeX Font Info:    Try loading font information for U+msb on input line 41.
 (/usr/local/texlive/2014/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
 {/usr/local/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (0.92169pt too wide) in paragraph at lines 43--44
+Overfull \hbox (0.92169pt too wide) in paragraph at lines 44--45
 \T1/cmr/m/n/10.95 The sub-ject of this re-port is the par-al-leli-sa-tion of a 
 nu-mer-i-cal method for a two-component
  []
@@ -677,13 +860,20 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 [4]
 
+LaTeX Warning: Reference `alg:coms' on page 5 undefined on input line 181.
+
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 185.
+(/usr/local/texlive/2014/texmf-dist/tex/latex/psnfss/t1pcr.fd
+File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
+)
+
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 25.22153pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
 [5]
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 195.
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 196.
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
@@ -698,7 +888,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.258     }
+l.257     }
            
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -706,7 +896,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.258     }
+l.257     }
            
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -728,13 +918,6 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 25.22153pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[9]
 Package epstopdf Info: Source file: <sparse.eps>
 (epstopdf)                    date: 2015-05-09 21:38:31
 (epstopdf)                    size: 9275 bytes
@@ -743,12 +926,12 @@ Package epstopdf Info: Source file: <sparse.eps>
 (epstopdf)                    size: 8197 bytes
 (epstopdf)             Command: <repstopdf --outfile=sparse-eps-converted-to.pd
 f sparse.eps>
-(epstopdf)             \includegraphics on input line 398.
+(epstopdf)             \includegraphics on input line 396.
 Package epstopdf Info: Output file is already uptodate.
-<sparse-eps-converted-to.pdf, id=48, 562.1pt x 421.575pt>
+<sparse-eps-converted-to.pdf, id=46, 562.1pt x 421.575pt>
 File: sparse-eps-converted-to.pdf Graphic file (type pdf)
 <use sparse-eps-converted-to.pdf>
-Package pdftex.def Info: sparse-eps-converted-to.pdf used on input line 398.
+Package pdftex.def Info: sparse-eps-converted-to.pdf used on input line 396.
 (pdftex.def)             Requested size: 337.2626pt x 252.94695pt.
 Package epstopdf Info: Source file: <kernel.eps>
 (epstopdf)                    date: 2015-05-09 21:38:31
@@ -758,12 +941,12 @@ Package epstopdf Info: Source file: <kernel.eps>
 (epstopdf)                    size: 8234 bytes
 (epstopdf)             Command: <repstopdf --outfile=kernel-eps-converted-to.pd
 f kernel.eps>
-(epstopdf)             \includegraphics on input line 405.
+(epstopdf)             \includegraphics on input line 403.
 Package epstopdf Info: Output file is already uptodate.
-<kernel-eps-converted-to.pdf, id=49, 562.1pt x 421.575pt>
+<kernel-eps-converted-to.pdf, id=47, 562.1pt x 421.575pt>
 File: kernel-eps-converted-to.pdf Graphic file (type pdf)
 <use kernel-eps-converted-to.pdf>
-Package pdftex.def Info: kernel-eps-converted-to.pdf used on input line 405.
+Package pdftex.def Info: kernel-eps-converted-to.pdf used on input line 403.
 (pdftex.def)             Requested size: 337.2626pt x 252.94695pt.
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -771,14 +954,14 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[10]
+[9]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 25.22153pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[11 <./sparse-eps-converted-to.pdf> <./kernel-eps-converted-to.pdf>]
+[10 <./sparse-eps-converted-to.pdf> <./kernel-eps-converted-to.pdf>]
 Package epstopdf Info: Source file: <kernel-1k.eps>
 (epstopdf)                    date: 2015-05-10 22:12:36
 (epstopdf)                    size: 17192 bytes
@@ -787,12 +970,12 @@ Package epstopdf Info: Source file: <kernel-1k.eps>
 (epstopdf)                    size: 9979 bytes
 (epstopdf)             Command: <repstopdf --outfile=kernel-1k-eps-converted-to
 .pdf kernel-1k.eps>
-(epstopdf)             \includegraphics on input line 439.
+(epstopdf)             \includegraphics on input line 437.
 Package epstopdf Info: Output file is already uptodate.
-<kernel-1k-eps-converted-to.pdf, id=68, 562.1pt x 421.575pt>
+<kernel-1k-eps-converted-to.pdf, id=66, 562.1pt x 421.575pt>
 File: kernel-1k-eps-converted-to.pdf Graphic file (type pdf)
 <use kernel-1k-eps-converted-to.pdf>
-Package pdftex.def Info: kernel-1k-eps-converted-to.pdf used on input line 439.
+Package pdftex.def Info: kernel-1k-eps-converted-to.pdf used on input line 437.
 
 (pdftex.def)             Requested size: 337.2626pt x 252.94695pt.
 
@@ -801,7 +984,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[12 <./kernel-1k-eps-converted-to.pdf>]
+[11]
 Package epstopdf Info: Source file: <it_0.eps>
 (epstopdf)                    date: 2015-05-11 18:01:13
 (epstopdf)                    size: 256055 bytes
@@ -810,12 +993,12 @@ Package epstopdf Info: Source file: <it_0.eps>
 (epstopdf)                    size: 7603 bytes
 (epstopdf)             Command: <repstopdf --outfile=it_0-eps-converted-to.pdf 
 it_0.eps>
-(epstopdf)             \includegraphics on input line 463.
+(epstopdf)             \includegraphics on input line 461.
 Package epstopdf Info: Output file is already uptodate.
-<it_0-eps-converted-to.pdf, id=80, 562.1pt x 421.575pt>
+<it_0-eps-converted-to.pdf, id=70, 562.1pt x 421.575pt>
 File: it_0-eps-converted-to.pdf Graphic file (type pdf)
 <use it_0-eps-converted-to.pdf>
-Package pdftex.def Info: it_0-eps-converted-to.pdf used on input line 463.
+Package pdftex.def Info: it_0-eps-converted-to.pdf used on input line 461.
 (pdftex.def)             Requested size: 200.75996pt x 150.57039pt.
 Package epstopdf Info: Source file: <it_2000.eps>
 (epstopdf)                    date: 2015-05-11 18:01:13
@@ -825,12 +1008,12 @@ Package epstopdf Info: Source file: <it_2000.eps>
 (epstopdf)                    size: 43684 bytes
 (epstopdf)             Command: <repstopdf --outfile=it_2000-eps-converted-to.p
 df it_2000.eps>
-(epstopdf)             \includegraphics on input line 470.
+(epstopdf)             \includegraphics on input line 468.
 Package epstopdf Info: Output file is already uptodate.
-<it_2000-eps-converted-to.pdf, id=81, 562.1pt x 421.575pt>
+<it_2000-eps-converted-to.pdf, id=71, 562.1pt x 421.575pt>
 File: it_2000-eps-converted-to.pdf Graphic file (type pdf)
 <use it_2000-eps-converted-to.pdf>
-Package pdftex.def Info: it_2000-eps-converted-to.pdf used on input line 470.
+Package pdftex.def Info: it_2000-eps-converted-to.pdf used on input line 468.
 (pdftex.def)             Requested size: 200.75996pt x 150.57039pt.
 Package epstopdf Info: Source file: <it_5000.eps>
 (epstopdf)                    date: 2015-05-11 18:01:13
@@ -840,12 +1023,12 @@ Package epstopdf Info: Source file: <it_5000.eps>
 (epstopdf)                    size: 134938 bytes
 (epstopdf)             Command: <repstopdf --outfile=it_5000-eps-converted-to.p
 df it_5000.eps>
-(epstopdf)             \includegraphics on input line 477.
+(epstopdf)             \includegraphics on input line 475.
 Package epstopdf Info: Output file is already uptodate.
-<it_5000-eps-converted-to.pdf, id=82, 562.1pt x 421.575pt>
+<it_5000-eps-converted-to.pdf, id=72, 562.1pt x 421.575pt>
 File: it_5000-eps-converted-to.pdf Graphic file (type pdf)
 <use it_5000-eps-converted-to.pdf>
-Package pdftex.def Info: it_5000-eps-converted-to.pdf used on input line 477.
+Package pdftex.def Info: it_5000-eps-converted-to.pdf used on input line 475.
 (pdftex.def)             Requested size: 200.75996pt x 150.57039pt.
 Package epstopdf Info: Source file: <it_10000.eps>
 (epstopdf)                    date: 2015-05-11 18:01:13
@@ -855,12 +1038,12 @@ Package epstopdf Info: Source file: <it_10000.eps>
 (epstopdf)                    size: 341049 bytes
 (epstopdf)             Command: <repstopdf --outfile=it_10000-eps-converted-to.
 pdf it_10000.eps>
-(epstopdf)             \includegraphics on input line 484.
+(epstopdf)             \includegraphics on input line 482.
 Package epstopdf Info: Output file is already uptodate.
-<it_10000-eps-converted-to.pdf, id=83, 562.1pt x 421.575pt>
+<it_10000-eps-converted-to.pdf, id=73, 562.1pt x 421.575pt>
 File: it_10000-eps-converted-to.pdf Graphic file (type pdf)
 <use it_10000-eps-converted-to.pdf>
-Package pdftex.def Info: it_10000-eps-converted-to.pdf used on input line 484.
+Package pdftex.def Info: it_10000-eps-converted-to.pdf used on input line 482.
 (pdftex.def)             Requested size: 200.75996pt x 150.57039pt.
 Package epstopdf Info: Source file: <it_15000.eps>
 (epstopdf)                    date: 2015-05-11 18:01:13
@@ -870,12 +1053,12 @@ Package epstopdf Info: Source file: <it_15000.eps>
 (epstopdf)                    size: 539080 bytes
 (epstopdf)             Command: <repstopdf --outfile=it_15000-eps-converted-to.
 pdf it_15000.eps>
-(epstopdf)             \includegraphics on input line 491.
+(epstopdf)             \includegraphics on input line 489.
 Package epstopdf Info: Output file is already uptodate.
-<it_15000-eps-converted-to.pdf, id=84, 562.1pt x 421.575pt>
+<it_15000-eps-converted-to.pdf, id=74, 562.1pt x 421.575pt>
 File: it_15000-eps-converted-to.pdf Graphic file (type pdf)
 <use it_15000-eps-converted-to.pdf>
-Package pdftex.def Info: it_15000-eps-converted-to.pdf used on input line 491.
+Package pdftex.def Info: it_15000-eps-converted-to.pdf used on input line 489.
 (pdftex.def)             Requested size: 200.75996pt x 150.57039pt.
 Package epstopdf Info: Source file: <it_30000.eps>
 (epstopdf)                    date: 2015-05-11 18:01:13
@@ -885,48 +1068,42 @@ Package epstopdf Info: Source file: <it_30000.eps>
 (epstopdf)                    size: 575963 bytes
 (epstopdf)             Command: <repstopdf --outfile=it_30000-eps-converted-to.
 pdf it_30000.eps>
-(epstopdf)             \includegraphics on input line 498.
+(epstopdf)             \includegraphics on input line 496.
 Package epstopdf Info: Output file is already uptodate.
-<it_30000-eps-converted-to.pdf, id=85, 562.1pt x 421.575pt>
+<it_30000-eps-converted-to.pdf, id=75, 562.1pt x 421.575pt>
 File: it_30000-eps-converted-to.pdf Graphic file (type pdf)
 <use it_30000-eps-converted-to.pdf>
-Package pdftex.def Info: it_30000-eps-converted-to.pdf used on input line 498.
+Package pdftex.def Info: it_30000-eps-converted-to.pdf used on input line 496.
 (pdftex.def)             Requested size: 200.75996pt x 150.57039pt.
 Package epstopdf Info: Source file: <FK1250.eps>
 (epstopdf)                    date: 2015-05-11 19:33:17
 (epstopdf)                    size: 914872 bytes
 (epstopdf)             Output file: <FK1250-eps-converted-to.pdf>
+(epstopdf)                    date: 2015-05-11 19:33:28
+(epstopdf)                    size: 364921 bytes
 (epstopdf)             Command: <repstopdf --outfile=FK1250-eps-converted-to.pd
 f FK1250.eps>
-(epstopdf)             \includegraphics on input line 511.
-runsystem(repstopdf --outfile=FK1250-eps-converted-to.pdf FK1250.eps)...execute
-d safely (allowed).
-
-Package epstopdf Info: Result file: <FK1250-eps-converted-to.pdf>
-(epstopdf)                    date: 2015-05-11 19:33:28
-(epstopdf)                    size: 364921 bytes.
-<FK1250-eps-converted-to.pdf, id=86, 562.1pt x 421.575pt>
+(epstopdf)             \includegraphics on input line 509.
+Package epstopdf Info: Output file is already uptodate.
+<FK1250-eps-converted-to.pdf, id=76, 562.1pt x 421.575pt>
 File: FK1250-eps-converted-to.pdf Graphic file (type pdf)
 <use FK1250-eps-converted-to.pdf>
-Package pdftex.def Info: FK1250-eps-converted-to.pdf used on input line 511.
+Package pdftex.def Info: FK1250-eps-converted-to.pdf used on input line 509.
 (pdftex.def)             Requested size: 200.75996pt x 150.57039pt.
 Package epstopdf Info: Source file: <FK3565.eps>
 (epstopdf)                    date: 2015-05-11 19:33:17
 (epstopdf)                    size: 1455792 bytes
 (epstopdf)             Output file: <FK3565-eps-converted-to.pdf>
+(epstopdf)                    date: 2015-05-11 19:33:30
+(epstopdf)                    size: 500737 bytes
 (epstopdf)             Command: <repstopdf --outfile=FK3565-eps-converted-to.pd
 f FK3565.eps>
-(epstopdf)             \includegraphics on input line 518.
-runsystem(repstopdf --outfile=FK3565-eps-converted-to.pdf FK3565.eps)...execute
-d safely (allowed).
-
-Package epstopdf Info: Result file: <FK3565-eps-converted-to.pdf>
-(epstopdf)                    date: 2015-05-11 19:33:30
-(epstopdf)                    size: 500737 bytes.
-<FK3565-eps-converted-to.pdf, id=87, 562.1pt x 421.575pt>
+(epstopdf)             \includegraphics on input line 516.
+Package epstopdf Info: Output file is already uptodate.
+<FK3565-eps-converted-to.pdf, id=77, 562.1pt x 421.575pt>
 File: FK3565-eps-converted-to.pdf Graphic file (type pdf)
 <use FK3565-eps-converted-to.pdf>
-Package pdftex.def Info: FK3565-eps-converted-to.pdf used on input line 518.
+Package pdftex.def Info: FK3565-eps-converted-to.pdf used on input line 516.
 (pdftex.def)             Requested size: 200.75996pt x 150.57039pt.
 Package epstopdf Info: Source file: <FK2050.eps>
 (epstopdf)                    date: 2015-05-11 19:21:05
@@ -936,12 +1113,12 @@ Package epstopdf Info: Source file: <FK2050.eps>
 (epstopdf)                    size: 416704 bytes
 (epstopdf)             Command: <repstopdf --outfile=FK2050-eps-converted-to.pd
 f FK2050.eps>
-(epstopdf)             \includegraphics on input line 525.
+(epstopdf)             \includegraphics on input line 523.
 Package epstopdf Info: Output file is already uptodate.
-<FK2050-eps-converted-to.pdf, id=88, 562.1pt x 421.575pt>
+<FK2050-eps-converted-to.pdf, id=78, 562.1pt x 421.575pt>
 File: FK2050-eps-converted-to.pdf Graphic file (type pdf)
 <use FK2050-eps-converted-to.pdf>
-Package pdftex.def Info: FK2050-eps-converted-to.pdf used on input line 525.
+Package pdftex.def Info: FK2050-eps-converted-to.pdf used on input line 523.
 (pdftex.def)             Requested size: 200.75996pt x 150.57039pt.
 Package epstopdf Info: Source file: <FK3863.eps>
 (epstopdf)                    date: 2015-05-11 19:21:05
@@ -951,48 +1128,42 @@ Package epstopdf Info: Source file: <FK3863.eps>
 (epstopdf)                    size: 614370 bytes
 (epstopdf)             Command: <repstopdf --outfile=FK3863-eps-converted-to.pd
 f FK3863.eps>
-(epstopdf)             \includegraphics on input line 532.
+(epstopdf)             \includegraphics on input line 530.
 Package epstopdf Info: Output file is already uptodate.
-<FK3863-eps-converted-to.pdf, id=89, 562.1pt x 421.575pt>
+<FK3863-eps-converted-to.pdf, id=79, 562.1pt x 421.575pt>
 File: FK3863-eps-converted-to.pdf Graphic file (type pdf)
 <use FK3863-eps-converted-to.pdf>
-Package pdftex.def Info: FK3863-eps-converted-to.pdf used on input line 532.
+Package pdftex.def Info: FK3863-eps-converted-to.pdf used on input line 530.
 (pdftex.def)             Requested size: 200.75996pt x 150.57039pt.
 Package epstopdf Info: Source file: <FK2550.eps>
 (epstopdf)                    date: 2015-05-11 19:33:17
 (epstopdf)                    size: 260080 bytes
 (epstopdf)             Output file: <FK2550-eps-converted-to.pdf>
+(epstopdf)                    date: 2015-05-11 19:33:31
+(epstopdf)                    size: 93100 bytes
 (epstopdf)             Command: <repstopdf --outfile=FK2550-eps-converted-to.pd
 f FK2550.eps>
-(epstopdf)             \includegraphics on input line 539.
-runsystem(repstopdf --outfile=FK2550-eps-converted-to.pdf FK2550.eps)...execute
-d safely (allowed).
-
-Package epstopdf Info: Result file: <FK2550-eps-converted-to.pdf>
-(epstopdf)                    date: 2015-05-11 19:33:31
-(epstopdf)                    size: 93100 bytes.
-<FK2550-eps-converted-to.pdf, id=90, 562.1pt x 421.575pt>
+(epstopdf)             \includegraphics on input line 537.
+Package epstopdf Info: Output file is already uptodate.
+<FK2550-eps-converted-to.pdf, id=80, 562.1pt x 421.575pt>
 File: FK2550-eps-converted-to.pdf Graphic file (type pdf)
 <use FK2550-eps-converted-to.pdf>
-Package pdftex.def Info: FK2550-eps-converted-to.pdf used on input line 539.
+Package pdftex.def Info: FK2550-eps-converted-to.pdf used on input line 537.
 (pdftex.def)             Requested size: 200.75996pt x 150.57039pt.
 Package epstopdf Info: Source file: <FK4261.eps>
 (epstopdf)                    date: 2015-05-11 19:33:17
 (epstopdf)                    size: 2708424 bytes
 (epstopdf)             Output file: <FK4261-eps-converted-to.pdf>
+(epstopdf)                    date: 2015-05-11 19:33:33
+(epstopdf)                    size: 1230243 bytes
 (epstopdf)             Command: <repstopdf --outfile=FK4261-eps-converted-to.pd
 f FK4261.eps>
-(epstopdf)             \includegraphics on input line 546.
-runsystem(repstopdf --outfile=FK4261-eps-converted-to.pdf FK4261.eps)...execute
-d safely (allowed).
-
-Package epstopdf Info: Result file: <FK4261-eps-converted-to.pdf>
-(epstopdf)                    date: 2015-05-11 19:33:33
-(epstopdf)                    size: 1230243 bytes.
-<FK4261-eps-converted-to.pdf, id=91, 562.1pt x 421.575pt>
+(epstopdf)             \includegraphics on input line 544.
+Package epstopdf Info: Output file is already uptodate.
+<FK4261-eps-converted-to.pdf, id=81, 562.1pt x 421.575pt>
 File: FK4261-eps-converted-to.pdf Graphic file (type pdf)
 <use FK4261-eps-converted-to.pdf>
-Package pdftex.def Info: FK4261-eps-converted-to.pdf used on input line 546.
+Package pdftex.def Info: FK4261-eps-converted-to.pdf used on input line 544.
 (pdftex.def)             Requested size: 200.75996pt x 150.57039pt.
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1000,14 +1171,14 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[13]
+[12 <./kernel-1k-eps-converted-to.pdf>]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 25.22153pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[14 <./it_0-eps-converted-to.pdf> <./it_2000-eps-converted-to.pdf> <./it_5000-e
+[13 <./it_0-eps-converted-to.pdf> <./it_2000-eps-converted-to.pdf> <./it_5000-e
 ps-converted-to.pdf> <./it_10000-eps-converted-to.pdf> <./it_15000-eps-converte
 d-to.pdf> <./it_30000-eps-converted-to.pdf>]
 
@@ -1016,9 +1187,16 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[15 <./FK1250-eps-converted-to.pdf> <./FK3565-eps-converted-to.pdf> <./FK2050-e
+[14 <./FK1250-eps-converted-to.pdf> <./FK3565-eps-converted-to.pdf> <./FK2050-e
 ps-converted-to.pdf> <./FK3863-eps-converted-to.pdf> <./FK2550-eps-converted-to
 .pdf> <./FK4261-eps-converted-to.pdf>]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 25.22153pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[15]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 25.22153pt.
@@ -1029,41 +1207,46 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
 
 ] (/Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/Output/report.aux)
 
+LaTeX Warning: There were undefined references.
+
+
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 7491 strings out of 493117
- 107595 string characters out of 6135434
- 214200 words of memory out of 5000000
- 10790 multiletter control sequences out of 15000+600000
- 22087 words of font info for 64 fonts, out of 8000000 for 9000
+ 9725 strings out of 493117
+ 137561 string characters out of 6135434
+ 235494 words of memory out of 5000000
+ 12992 multiletter control sequences out of 15000+600000
+ 23352 words of font info for 68 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 38i,16n,45p,1008b,522s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,16n,45p,1003b,1084s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2014/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}
-</usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><
-/usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></
-usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></u
-sr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr
-/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/l
-ocal/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/loca
-l/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local
-/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/t
-exlive/2014/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/loc
-al/texlive/2014/texmf-dist/fonts/type1/public/cm-super/sfbx1095.pfb></usr/local
-/texlive/2014/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/t
-exlive/2014/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/tex
-live/2014/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texli
-ve/2014/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb></usr/local/texlive
-/2014/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2
-014/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb></usr/local/texlive/201
-4/texmf-dist/fonts/type1/public/cm-super/sfti1095.pfb></usr/local/texlive/2014/
-texmf-dist/fonts/type1/public/cm-super/sftt1095.pfb>
+{/usr/local/texlive/2014/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/tex
+live/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texl
+ive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texli
+ve/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texliv
+e/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/
+2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/20
+14/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2014/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2014/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2014/tex
+mf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2014
+/texmf-dist/fonts/type1/public/cm-super/sfbx1095.pfb></usr/local/texlive/2014/t
+exmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2014/tex
+mf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2014/texmf
+-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2014/texmf-d
+ist/fonts/type1/public/cm-super/sfrm1095.pfb></usr/local/texlive/2014/texmf-dis
+t/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2014/texmf-dist/
+fonts/type1/public/cm-super/sfrm1728.pfb></usr/local/texlive/2014/texmf-dist/fo
+nts/type1/public/cm-super/sfti1095.pfb></usr/local/texlive/2014/texmf-dist/font
+s/type1/public/cm-super/sftt1095.pfb></usr/local/texlive/2014/texmf-dist/fonts/
+type1/urw/courier/ucrr8a.pfb>
 Output written on /Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/Output
-/report.pdf (16 pages, 5138535 bytes).
+/report.pdf (16 pages, 5149970 bytes).
 PDF statistics:
- 237 PDF objects out of 1000 (max. 8388607)
- 168 compressed objects within 2 object streams
+ 242 PDF objects out of 1000 (max. 8388607)
+ 172 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  76 words of extra memory for PDF output out of 10000 (max. 10000000)
 

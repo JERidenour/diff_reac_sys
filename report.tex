@@ -11,6 +11,7 @@
 \usepackage{amssymb}
 \usepackage{pdfpages}
 \usepackage{caption}
+\usepackage{mcode}
 \usepackage{subcaption}
 \usepackage[]{algorithm2e}
 
@@ -66,18 +67,18 @@ Here, $D_u$ and $D_v$ are the diffusion constants for $u$ and $v$ respectively, 
 \nabla^2u = & \ \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2}.
 }
 
-As in \cite{Wang}, we use periodic boundary conditions for (\ref{eq:gsu}) and (\ref{eq:gsv}); thus, our simulation on $\Omega$ models a small surface surrounded by similar elements reacting identically. We choose the diffusion constants $D_u = 2 \cdot 10^{-6}$, $D_v = 1 \cdot 10^{-6}$, and let $F$ and $K$ take values according to $F \in [0.02, \ 0.08]$, $K \in [0.05,\ 0.07]$ in order to investigate the different types of patterns that arise from varying combinations of the two.
+As in \cite{Wang}, we use periodic boundary conditions for (\ref{eq:gsu}) and (\ref{eq:gsv}); thus, our simulation on $\Omega$ models a small surface surrounded by similar elements reacting identically. We choose the diffusion constants $D_u = 2 \cdot 10^{-6}$, $D_v = 1 \cdot 10^{-6}$, and let $F$ and $K$ take values according to $F \in [0.012, \ 0.061]$, $K \in [0.050,\ 0.065]$ in order to investigate the different types of patterns that arise from varying combinations of the two.
 
-The system is in a trivial state when $u = 1$ and $v=0$.  To initialize a reaction, we let the system assume this trivial state at time zero in all areas except a square in the middle of dimension one-sixth, where we set $u = 0.5$ and $v = 0.25$:
+The system is in a trivial state when $u = 1$ and $v=0$.  To initialize a reaction, we let the system assume this trivial state at time zero in all areas except a square in the middle of dimension one-fifth, where we set $u = 0.5$ and $v = 0.25$:
 \ban{
 \label{eq:icu}
 u(x,y,0) = \begin{cases}
-1/2, & \ 5/12 \ge x \ge 7/12, \ 5/12 \ge y \ge 7/12,\\
+1/2, & \ 2/5 \ge x \ge 3/5, \ 2/5 \ge y \ge 3/5,\\
 1, & \ \text{otherwise},
  \end{cases}\\
  \label{eq:icv}
  v(x,y,0) = \begin{cases}
-1/4, & \ 5/12 \ge x \ge 7/12, \ 5/12 \ge y \ge 7/12,\\
+1/4, & \ 2/5 \ge x \ge 3/5, \ 2/5 \ge y \ge 3/5,\\
 0, & \ \text{otherwise}.
  \end{cases}
 }
@@ -181,7 +182,7 @@ To implement the update formulae (\ref{eq:discu}) and (\ref{eq:discv}) in parall
 
 For a domain size of $400 \times 400$, the global update boils down to two matrix multiplications, one using $\vec{A}_u$, one using $\vec{A}_v$, each of which contains $400^4$ elements, most of which are zero.  This can be accomplished by means of a sparse matrix multiplication method, or direct kernel computations. First we describe their common structure.
 
-The 5-point computation molecule is dependent on four neighbours labeled NORTH, EAST, SOUTH and WEST. We define a 2D cartesian mesh of p*p processes, where p = sqrt(P). The N*N domain is decomposed into P square subdomains, each with dimension n*n elements, where n = sqrt(N). The challenge becomes to communicate the domain borders between neighbours, and synchronize this with computation of the domain interior. Our red-black scheme is shown in Algorithm \ref{alg:processcolor}.
+The 5-point computation molecule is dependent on four neighbours labeled \mcode{NORTH}, \mcode{EAST}, \mcode{SOUTH} and \mcode{WEST}. We define a 2D cartesian mesh of $p*p$ processes, where $p = \sqrt{P}$. The $N*N$ domain is decomposed into $P$ square subdomains, each with dimension $n*n$ elements, where $n = \sqrt{N}$. The challenge becomes to communicate the domain borders between neighbours, and synchronize this with computation of the domain interior. Our red-black scheme is shown in Algorithm \ref{alg:processcolor}.
 
 \vspace{0.7 cm}
 \begin{algorithm}[H]
@@ -197,9 +198,9 @@ The 5-point computation molecule is dependent on four neighbours labeled NORTH, 
 \end{algorithm}
 \vspace{0.7 cm}
 
-The 2D process grid is thus colored in a checkerboard pattern. Since we use periodic boundary conditions, we assume even p to ensure red-black neighbours when wrapping around the boundaries of the grid. Because the subdomain borders are shared between neighbours, we implement overlap by introducing a ghost frame surrounding the subdomain, labeled GHOST\textunderscore NORTH, GHOST\textunderscore EAST, GHOST\textunderscore SOUTH and GHOST\textunderscore WEST, which give each subdomain a total dimension of (n+2)*(n+2). In addition, we define four borders of the inner nxn domain, labeled BORDER\textunderscore NORTH, BORDER\textunderscore EAST etc. The values in the borders are recalculated every iteration, then sent to the corresponding neighbour. The values in the ghosts are used when the computation molecule centers on an element at a border. They are received from a neighbour every iteration before the computation phase starts.
+The 2D process grid is thus colored in a checkerboard pattern. Since we use periodic boundary conditions, we assume even $p$ to ensure red-black neighbours when wrapping around the boundaries of the grid. Because the subdomain borders are shared between neighbours, we implement overlap by introducing a ghost frame surrounding the subdomain, labeled \mcode{GHOST_NORTH}, \mcode{GHOST_EAST}, \mcode{GHOST_SOUTH} and \mcode{GHOST_WEST}, which give each subdomain a total dimension of $(n+2)*(n+2)$. In addition, we define four borders of the inner $n*n$ domain, labeled \mcode{BORDER_NORTH}, \mcode{BORDER_EAST} etc. The values in the borders are recalculated every iteration, then sent to the corresponding neighbour. The values in the ghosts are used when the computation molecule centers on an element at a border. They are received from a neighbour every iteration before the computation phase starts.
 
-Algorithm \ref{alg:communication} shows how each computation is preceded by a communication phase arranged in four parts to avoid deadlock. Each sendreceive is done once for u and once for v. We also show the timing calls.
+Algorithm \ref{alg:communication} shows how each computation is preceded by a communication phase arranged in four parts to avoid deadlock. Each \mcode{sendreceive} is done once for $u$ and once for $v$. We also show the timing calls.
 
 \vspace{0.7 cm}
 \begin{algorithm}[H]
@@ -237,7 +238,7 @@ Algorithm \ref{alg:communication} shows how each computation is preceded by a co
 \end{algorithm}
 \vspace{0.7 cm}
 
-We now describe the specifics our two implementations, which differ mainly in the calculateDomain() procedure. The matrix version uses a small sparse matrix library called CSparse, authored by Timothy Davis, who has contributed to several matrix routines in MATLAB as well as NVIDIA \cite{Davis}.  While fast, it's not fully competitive with professional libraries. Yet the code is readable and enables us to formulate code similar to MATLAB and formulas (9) and (10). CSparse doesn't reference any other libraries, so the code is portable between our laptops and Ferlin. Algorithm \ref{alg:sparsematrix} shows the expressions for u, with v being analogous. 
+We now describe the specifics our two implementations, which differ mainly in the \mcode{calculateDomain()} procedure. The matrix version uses a small sparse matrix library called CSparse, authored by Timothy Davis, who has contributed to several matrix routines in MATLAB as well as NVIDIA \cite{Davis}.  While fast, it's not fully competitive with professional libraries. Yet the code is readable and enables us to formulate code similar to MATLAB and formulas (9) and (10). CSparse doesn't reference any other libraries, so the code is portable between our laptops and Ferlin. Algorithm \ref{alg:sparsematrix} shows the expressions for u, with v being analogous. 
 
 \vspace{0.7 cm}
 \begin{algorithm}[H]
@@ -280,31 +281,30 @@ Algorithm \ref{alg:kernelcalc} shows how the kernel version computes the 5-point
 \vspace{0.7 cm}
 
 
-The east and west borders/ghosts are columns and thus non-contiguous in memory. The matrix implementation maintains two work buffers for this data, which is arranged sequentially and copied into these buffers before IO, which results in extra work due to the copy operations. In the kernel implementation we instead define an MPI\textunderscore Type\textunderscore vector which omits the buffer copying. MPI\textunderscore Cart functions are used to set up an mpi process mesh. This allows for defining arrays of neighbour coordinates, including diagonals for future use with a 9-point kernel, and is also easy to extend into 3D. 
+The east and west borders/ghosts are columns and thus non-contiguous in memory. The matrix implementation maintains two work buffers for this data, which is arranged sequentially and copied into these buffers before IO, which results in extra work due to the copy operations. In the kernel implementation we instead define an \mcode{MPI_Type_vector} which omits the buffer copying. \mcode{MPI_Cart} functions are used to set up an mpi process mesh. This allows for defining arrays of neighbour coordinates, including diagonals for future use with a 9-point kernel, and is also easy to extend into 3D. 
 
 Finally, our programs save the domains as matrix blocks which are automatically assembled and plotted in MATLAB.
 
 
-
-\vspace{0.7 cm}
-\begin{algorithm}[H]
-\label{alg:coms}
- \KwData{$dt$, $\vec{u}^k$, $\vec{v}^k$, $\vec{A}_u$, $\vec{A}_v$, red}
- \KwResult{$\vec{u}^{k+1}$ and $\vec{v}^{k+1}$ }
-collect boundary data $\vec{b}_{out}$\;
-  \eIf{red}{
-send $\vec{b}_{out}$: north, south, east, west\;
-receive $\vec{b}_{in}$: south, north, west, east\;
-   }{
-receive $\vec{b}_{in}$: south, north, west, east\;
-send $\vec{b}_{out}$: north, south, east, west\;
-  }
-$\vec{u}^{k+1} = \vec{u}^k+ dt [\vec{A}_u \vec{u}^k +  f_u(\vec{u}^{k},\vec{v}^{k})] + \vec{b}_{in}$\;
-$\vec{v}^{k+1} = \vec{v}^k+ dt [\vec{A}_v \vec{v}^k +  f_v(\vec{u}^{k},\vec{v}^{k})] + \vec{b}_{in}$\;
- \vspace{0.3 cm}
-\caption{Communication and local update.}
-\end{algorithm}
-\vspace{0.7 cm}
+% \vspace{0.7 cm}
+% \begin{algorithm}[H]
+% \label{alg:coms}
+%  \KwData{$dt$, $\vec{u}^k$, $\vec{v}^k$, $\vec{A}_u$, $\vec{A}_v$, red}
+%  \KwResult{$\vec{u}^{k+1}$ and $\vec{v}^{k+1}$ }
+% collect boundary data $\vec{b}_{out}$\;
+%   \eIf{red}{
+% send $\vec{b}_{out}$: north, south, east, west\;
+% receive $\vec{b}_{in}$: south, north, west, east\;
+%    }{
+% receive $\vec{b}_{in}$: south, north, west, east\;
+% send $\vec{b}_{out}$: north, south, east, west\;
+%   }
+% $\vec{u}^{k+1} = \vec{u}^k+ dt [\vec{A}_u \vec{u}^k +  f_u(\vec{u}^{k},\vec{v}^{k})] + \vec{b}_{in}$\;
+% $\vec{v}^{k+1} = \vec{v}^k+ dt [\vec{A}_v \vec{v}^k +  f_v(\vec{u}^{k},\vec{v}^{k})] + \vec{b}_{in}$\;
+%  \vspace{0.3 cm}
+% \caption{Communication and local update.}
+% \end{algorithm}
+% \vspace{0.7 cm}
 
 \section*{Performance Evaluation}
 \subsection*{Extrapolated Speedup}
@@ -341,7 +341,7 @@ Kernal method & $S_P $& 1.2 & 1.3 & 1.3 & 1.3\\
 \end{table}
 
 \subsection*{Experimental Speedup}
-We run a series of trials on Ferlin and record the initialisation time, $t_{init}$, the communication time, $t_{comm}$, the calculation time, $t_{calc}$, and the total run time $t_{tot}$.  Tables \ref{tab:matrix} and \ref{tab:kernal} show the maximum of these values for each of the trials at 1, 4, 16, 64, and 100 processes.  The values of $t_{tot}$ are used to compute the experimental speedup, shown in figures \ref{fig:sparse} and \ref{fig:kernel}.
+We run a series of trials on Ferlin (a multicore machine operated by PDC Center for High Performance Computing) and record the initialisation time, $t_{init}$, the communication time, $t_{comm}$, the calculation time, $t_{calc}$, and the total run time $t_{tot}$.  Tables \ref{tab:matrix} and \ref{tab:kernal} show the maximum of these values for each of the trials at 1, 4, 16, 64, and 100 processes.  The values of $t_{tot}$ are used to compute the experimental speedup, shown in figures \ref{fig:sparse} and \ref{fig:kernel}.
 
 \begin{table}[h]
 \def\arraystretch{1.2}
@@ -442,19 +442,17 @@ $P$ & $t_{init}$ & $t_{comm}$ & $t_{calc}$ & $t_{tot}$ \\
 \subsection*{Speedup Analysis}
 There are a few reasons why the extrapolation of Amdahl's Law does not provide an accurate predictor for the parallel speedup.  The most obvious reason is that $f$, the fraction of the computation which cannot be divided into parallel tasks, does not in itself account for an upper bound on the speedup.  In fact, our best measure of $f$ is $t_{init}$ and, as can be seen in tables \ref{tab:matrix} and \ref{tab:kernal}, this accounts for only a minuscule portion of the total runtime.  It is more likely that the speedup can be explained by the memory hierarchies employed by Ferlin.  
 
-** TVEKSAMT vi vet inget om hur ferlin är byggd. When the number of processes is low, so is the available cache.  As the number of processes increases, more of the working set, and at some point the entire working set, can fit into the available caches, allowing for a quicker memory access time. **
-
 The matrix implementation shows a slightly supralinear speedup with a final efficiency of $\approx1.1$ at 100 processes. The good speedup is likely to come from the fact that the implementation is slow to begin with.
 
 On the other hand, the kernel implementation (which is several times faster both sequentially and in parallel), accesses memory in a linear fashion more favorable for caching. The faster kernel implementation shows a sharp drop in speedup after 64 processes, the final efficiency being $\approx0.22$. For the kernel with larger domain, final efficiency $\approx0.42$ with a more linear curve.
 
-IN order to investigate the fraction between computation and other efforts, we calculate $(t_{init}+t_{comm})/t_{calc}$ at $P$ = 100 yields 0.75 for matrix, 4.15 for kernel and 2.76 for kernel with larger domain. Clearly the calculation effort is dominated by communication and initalization as the problem size per process decreases. 
+In order to investigate the fraction between computation and other efforts, we calculate $(t_{init}+t_{comm})/t_{calc}$ at $P$ = 100. This yields 0.75 for the matrix method, 4.15 for the kernel method and 2.76 for the kernel method with larger domain. Clearly the calculation effort is dominated by communication and initalization as the problem size per process decreases. Here, non-blocking communication might help alleviate the domination of $t_{comm}$.
 
-Cache architecture surely effects performance as well, considering that the implementations don't access memory in the same order. We conclude that there exists an optimal problem size per process. If too small, it will fail to exploit the system architecture and fully utilize the processor power. For a sufficiently large problem, the kernel implementation shows sublinear but constant speedup.
+Cache architecture surely effects performance as well, considering that the implementations don't access memory in the same order. We conclude that there exists an optimal problem size per process. If too small, it will fail to exploit the system architecture and fully utilize the processor power. 
 
 \section*{Patterns}
 
-A variety of patterns 
+We demonstrate some of the pattern classes which occur at different locations in the parameter space of $F$ and $K$, as proposed in \cite{Pearson}. Figure \ref{fig:gray-scott-patterns} shows a few of these patterns while Figure \ref{fig:gray-scott-time} shows the time progression of the diffusion-reaction system for iterations 2000, 5000, 10000, 15000 and 30000. The images show the concentration of $U$, with the color scheme moving from blue (low values) through yellow to red (high values). 
 
 \begin{figure}
     \centering
@@ -500,7 +498,7 @@ A variety of patterns
         \label{fig:it_30000}
     \end{subfigure}
     \caption{Reaction and diffusion of the Gray-Scott system, $F=0.0375$, $K=0.0634$.}
-    \label{fig:gray-scott}
+    \label{fig:gray-scott-time}
 \end{figure}
 
 
@@ -548,15 +546,12 @@ A variety of patterns
         \label{fig:FK4261}
     \end{subfigure}
     \caption{The Gray-Scott system, 50000 iterations for various $F$ and $K$.}
-    \label{fig:gray-scott}
+    \label{fig:gray-scott-patterns}
 \end{figure}
 
 
 \section*{Conclusions}
-
-Both our algorithms scale well with problem size and increasing P, as long as care is taken to sufficiently load each processor. The kernel implementation is consistently the faster method despite the poorer speedup. Profiling is essential for the problem at hand, on the system which will perform the computations, in order to optimize problem size per process.
-
-Finally, the explicit method may not be optimal if implicit methods can be found which speed up convergence sufficiently to counteract expensive global operations.
+The reaction-diffusion system described by the Gray-Scott equations is solved using a sparse matrix multiplication method and a kernel method.  Both implementations scale well with problem size and increasing number of processes. Care must be taken to sufficiently load each processor, in order to maximize speedup. The kernel implementation is consistently the faster method despite the poorer speedup. When choosing an algorithm for solving a partial differential equation, consideration must be given to the system which will perform the computations, in order to optimize problem size per process and take advantage of processor architecture. 
 
 \clearpage
 \begin{thebibliography}{}
@@ -566,6 +561,8 @@ Finally, the explicit method may not be optimal if implicit methods can be found
 \bibitem{Edsberg} Lennart Edsberg {\it Introduction to Computation and Modelling for Differential Equations}, 2008, John Wiley and Sons, pp 50.
 %\bibitem{Wilkinson} Barry Wilkinson, Michael Allen {\it Parallel Programming, Techniques and Applications Using Networked Workstations and Parallel Computers}, 2005, Pearson Prentice Hall, pp 9.
 \bibitem{Davis} Timothy Davis, {\it Direct Methods for Sparse Linear Systems}, Society of Industrial and Applied Mathematics, 2006.
+\bibitem{Pearson} John E. Pearson {\it Complex Patterns in a Simple System}, Science, Vol 261, 1993.
 \end{thebibliography}
+
 
 \end{document}
