@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2015.2.8)  10 MAY 2015 22:15
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2015.2.8)  11 MAY 2015 13:03
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -528,25 +528,25 @@ subscribe by emailing sympa@lirmm.fr with 'subscribe <list> <firstname name>'
 \c@algocf=\count120
 \algocf@algoframe=\box62
 \algocf@algobox=\box63
-) (/Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/Output/report.aux
+) (Output/report.aux
 
 LaTeX Warning: Label `tab:matrix' multiply defined.
 
 )
 \openout1 = `report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 37.
-LaTeX Font Info:    ... okay on input line 37.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 38.
+LaTeX Font Info:    ... okay on input line 38.
 (/usr/local/texlive/2014/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count121
@@ -633,17 +633,17 @@ e
 \AtBeginShipoutBox=\box65
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Try loading font information for U+msa on input line 38.
+LaTeX Font Info:    Try loading font information for U+msa on input line 39.
 (/usr/local/texlive/2014/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 38.
+LaTeX Font Info:    Try loading font information for U+msb on input line 39.
 (/usr/local/texlive/2014/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
 {/usr/local/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (0.92169pt too wide) in paragraph at lines 41--42
+Overfull \hbox (0.92169pt too wide) in paragraph at lines 42--43
 \T1/cmr/m/n/10.95 The sub-ject of this re-port is the par-al-leli-sa-tion of a 
 nu-mer-i-cal method for a two-component
  []
@@ -676,96 +676,28 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [5]
-! Missing $ inserted.
-<inserted text> 
-                $
-l.189 ...surrounding the subdomain, labeled GHOST_
-                                                  NORTH, GHOST_EAST, GHOST_S...
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 193.
 
-! Missing $ inserted.
-<inserted text> 
-                $
-l.190 
-      
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
+(/usr/local/texlive/2014/texmf-dist/tex/latex/base/t1cmtt.fd
+File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
 
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 25.22153pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
 
-Overfull \hbox (223.94926pt too wide) in paragraph at lines 189--190
-\T1/cmr/m/n/10.95 main, la-beled GHOST$[]\OML/cmm/m/it/10.95 ORTH; GHOST[]AST; 
-GHOST[]OUTHandGHOST[]EST; whichgiveeachsubdomainatotaldimensionof\OT1/cmr/m/n/1
-0.95 (\OML/cmm/m/it/10.95 n \OT1/cmr/m/n/10.95 +
- []
-
-
-Overfull \hbox (1433.46422pt too wide) in paragraph at lines 189--190
-\OT1/cmr/m/n/10.95 2)\OML/cmm/m/it/10.95 x\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.
-95 n \OT1/cmr/m/n/10.95 + 2)\OML/cmm/m/it/10.95 :Inaddition; wedefinefourborder
-softheinnernxndomain; labeledBORDER[]ORTH; BORDER[]ASTetc:Thevaluesintheborders
-arerecalculatedeveryiteration; thensenttothecorrespondingneighbour:Thevaluesint
-heghostsareusedwhenthecomputationmoleculecentersonanelementataborder:Theyarerec
-eivedfromaneighboureveryiterationbeforethecomputationphasestarts:$ 
- []
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.199     sendreceive(BORDER_
-                             NORTH, GHOST_NORTH, neighbour[NORTH])
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.209 
-      
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-
-Overfull \hbox (2578.42976pt too wide) in paragraph at lines 197--209
-[]\T1/cmr/m/n/10.95 if red // (send-buffer, re-ceive-buffer, neigh-bour) sendre
-ceive(BORDER$[]\OML/cmm/m/it/10.95 ORTH; GHOST[]ORTH; neighbour\OT1/cmr/m/n/10.
-95 [\OML/cmm/m/it/10.95 NORTH\OT1/cmr/m/n/10.95 ])\OML/cmm/m/it/10.95 sendrecei
-ve\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 BORDER[]OUTH; GHOST[]OUTH; neighbour\
-OT1/cmr/m/n/10.95 [\OML/cmm/m/it/10.95 SOUTH\OT1/cmr/m/n/10.95 ])\OML/cmm/m/it/
-10.95 sendreceive\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 BORDER[]AST; GHOST[]AS
-T; neighbour\OT1/cmr/m/n/10.95 [\OML/cmm/m/it/10.95 EAST\OT1/cmr/m/n/10.95 ])\O
-ML/cmm/m/it/10.95 sendreceive\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 BORDER[]ES
-T; GHOST[]EST; neighbour\OT1/cmr/m/n/10.95 [\OML/cmm/m/it/10.95 WEST\OT1/cmr/m/
-n/10.95 ])\OML/cmm/m/it/10.95 else==weareblacksendreceive\OT1/cmr/m/n/10.95 (\O
-ML/cmm/m/it/10.95 BORDER[]OUTH; GHOST[]OUTH; neighbour\OT1/cmr/m/n/10.95 [\OML/
-cmm/m/it/10.95 SOUTH\OT1/cmr/m/n/10.95 ])\OML/cmm/m/it/10.95 sendreceive\OT1/cm
-r/m/n/10.95 (\OML/cmm/m/it/10.95 BORDER[]ORTH; GHOST[]ORTH; neighbour\OT1/cmr/m
-/n/10.95 [\OML/cmm/m/it/10.95 NORTH\OT1/cmr/m/n/10.95 ])\OML/cmm/m/it/10.95 sen
-dreceive\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 BORDER[]EST; GHOST[]EST; neighb
-our\OT1/cmr/m/n/10.95 [\OML/cmm/m/it/10.95 WEST\OT1/cmr/m/n/10.95 ])\OML/cmm/m/
-it/10.95 sendreceive\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 BORDER[]AST; GHOST[
-]AST; neighbour\OT1/cmr/m/n/10.95 [\OML/cmm/m/it/10.95 EAST\OT1/cmr/m/n/10.95 ]
-)$ 
- []
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.224 ...ns, which differ mainly in the calculate_
-                                                  domain() procedure. The ma...
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! You can't use `macro parameter character #' in math mode.
-l.224 ...ct Methods for Sparse Linear Systems'' [#
+[6]
+! You can't use `macro parameter character #' in horizontal mode.
+l.233 ...ct Methods for Sparse Linear Systems'' [#
                                                   reference#]. The author, w...
 Sorry, but I'm not programmed to handle this case;
 I'll just pretend that you didn't ask for it.
 If you're in the wrong mode, you might be able to
 return to the right one by typing `I}' or `I$' or `I\par'.
 
-! You can't use `macro parameter character #' in math mode.
-l.224 ... for Sparse Linear Systems'' [#reference#
+! You can't use `macro parameter character #' in horizontal mode.
+l.233 ... for Sparse Linear Systems'' [#reference#
                                                   ]. The author, who has con...
 Sorry, but I'm not programmed to handle this case;
 I'll just pretend that you didn't ask for it.
@@ -775,55 +707,16 @@ return to the right one by typing `I}' or `I$' or `I\par'.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.225 
-      
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-
-Overfull \hbox (2062.95998pt too wide) in paragraph at lines 224--225
-\T1/cmr/m/n/10.95 calculate$[]\OML/cmm/m/it/10.95 omain\OT1/cmr/m/n/10.95 ()\OM
-L/cmm/m/it/10.95 procedure:ThematrixversionusesasmallsparsematrixlibrarycalledC
-Sparse; whichaccompanies\OT1/cmr/m/n/10.95 \\OML/cmm/m/it/10.95 DirectMethodsfo
-rSparseLinearSystems[]\OT1/cmr/m/n/10.95 [\OML/cmm/m/it/10.95 reference\OT1/cmr
-/m/n/10.95 ]\OML/cmm/m/it/10.95 :Theauthor; whohascontributedtoseveralmatrixrou
-tinesinMATLABaswellasNVIDIA; describesCSparseas\OT1/cmr/m/n/10.95 \\OML/cmm/m/i
-t/10.95 foreducationaluse[]:Whilefast; it[]snotfullycompetitivewithprofessional
-libraries:Yetthecodeisveryreadableandenablesustoformulateconcisecodesimilartofo
-rmulas\OT1/cmr/m/n/10.95 (9)\OML/cmm/m/it/10.95 and\OT1/cmr/m/n/10.95 (10)\OML/
-cmm/m/it/10.95 :Weshowonlytheexpressionsforu; withvbeinganalogous \OT1/cmr/m/n/
-10.95 :$ 
- []
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.231     unew[i] = u[i] + ht * ( (-u[i] * v[i]^
-                                                2) + (F * (1.0 - u[i])) )
+l.247     }
+           
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
 
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.233 
-      
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.247   ru = (ht * DU) / hx^
-                            2
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.248 
-      
+l.247     }
+           
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
 
@@ -833,11 +726,43 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[6]
+[7]
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.257 ...ake use of more mpi routines. We use MPI_
+l.257     unew[i] = u[i] + ht * ( (-u[i] * v[i]^
+                                                2) + (F * (1.0 - u[i])) )
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.259 
+      
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.273   ru = (ht * DU) / hx^
+                            2
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.274 
+      
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.283 ...ake use of more mpi routines. We use MPI_
                                                   Cart functions to set up a...
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -845,20 +770,20 @@ you left one out. Proceed, with fingers crossed.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.258 
+l.284 
       
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
 
 
-Overfull \hbox (278.81087pt too wide) in paragraph at lines 257--258
+Overfull \hbox (278.81087pt too wide) in paragraph at lines 283--284
 \T1/cmr/m/n/10.95 MPI$[]\OML/cmm/m/it/10.95 artfunctionstosetupanmpiprocessmesh
 :Thisallowsfordefiningarraysofneighbourcoordinates; includingdiagonalsforfuture
 usewitha\OT1/cmr/m/n/10.95 9 \OMS/cmsy/m/n/10.95 ^^@
  []
 
 
-Overfull \hbox (265.86792pt too wide) in paragraph at lines 257--258
+Overfull \hbox (265.86792pt too wide) in paragraph at lines 283--284
 \OML/cmm/m/it/10.95 pointkernel:Thissetupisalsoeasytoextendinto\OT1/cmr/m/n/10.
 95 3\OML/cmm/m/it/10.95 D:Fortheeastandwestcolumnborders; wedefineMPI[]ype[]ect
 or[]swhichomitthebuffercopying:$ 
@@ -870,10 +795,17 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[7]
+[8]
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 25.22153pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[9]
 Package epstopdf Info: Source file: <sparse.eps>
 (epstopdf)                    date: 2015-05-09 21:38:31
 (epstopdf)                    size: 9275 bytes
@@ -882,12 +814,12 @@ Package epstopdf Info: Source file: <sparse.eps>
 (epstopdf)                    size: 8197 bytes
 (epstopdf)             Command: <repstopdf --outfile=sparse-eps-converted-to.pd
 f sparse.eps>
-(epstopdf)             \includegraphics on input line 370.
+(epstopdf)             \includegraphics on input line 396.
 Package epstopdf Info: Output file is already uptodate.
-<sparse-eps-converted-to.pdf, id=41, 562.1pt x 421.575pt>
+<sparse-eps-converted-to.pdf, id=48, 562.1pt x 421.575pt>
 File: sparse-eps-converted-to.pdf Graphic file (type pdf)
 <use sparse-eps-converted-to.pdf>
-Package pdftex.def Info: sparse-eps-converted-to.pdf used on input line 370.
+Package pdftex.def Info: sparse-eps-converted-to.pdf used on input line 396.
 (pdftex.def)             Requested size: 337.2626pt x 252.94695pt.
 Package epstopdf Info: Source file: <kernel.eps>
 (epstopdf)                    date: 2015-05-09 21:38:31
@@ -897,46 +829,13 @@ Package epstopdf Info: Source file: <kernel.eps>
 (epstopdf)                    size: 8234 bytes
 (epstopdf)             Command: <repstopdf --outfile=kernel-eps-converted-to.pd
 f kernel.eps>
-(epstopdf)             \includegraphics on input line 377.
+(epstopdf)             \includegraphics on input line 403.
 Package epstopdf Info: Output file is already uptodate.
-<kernel-eps-converted-to.pdf, id=42, 562.1pt x 421.575pt>
+<kernel-eps-converted-to.pdf, id=49, 562.1pt x 421.575pt>
 File: kernel-eps-converted-to.pdf Graphic file (type pdf)
 <use kernel-eps-converted-to.pdf>
-Package pdftex.def Info: kernel-eps-converted-to.pdf used on input line 377.
+Package pdftex.def Info: kernel-eps-converted-to.pdf used on input line 403.
 (pdftex.def)             Requested size: 337.2626pt x 252.94695pt.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-Package epstopdf Info: Source file: <kernel-1k.eps>
-(epstopdf)                    date: 2015-05-10 22:12:36
-(epstopdf)                    size: 17192 bytes
-(epstopdf)             Output file: <kernel-1k-eps-converted-to.pdf>
-(epstopdf)                    date: 2015-05-10 22:15:13
-(epstopdf)                    size: 9979 bytes
-(epstopdf)             Command: <repstopdf --outfile=kernel-1k-eps-converted-to
-.pdf kernel-1k.eps>
-(epstopdf)             \includegraphics on input line 411.
-Package epstopdf Info: Output file is already uptodate.
-<kernel-1k-eps-converted-to.pdf, id=43, 562.1pt x 421.575pt>
-File: kernel-1k-eps-converted-to.pdf Graphic file (type pdf)
-<use kernel-1k-eps-converted-to.pdf>
-Package pdftex.def Info: kernel-1k-eps-converted-to.pdf used on input line 411.
-
-(pdftex.def)             Requested size: 337.2626pt x 252.94695pt.
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 25.22153pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[8]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 25.22153pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[9 <./sparse-eps-converted-to.pdf> <./kernel-eps-converted-to.pdf>]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 25.22153pt.
@@ -950,28 +849,58 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[11 <./kernel-1k-eps-converted-to.pdf>]
+[11 <./sparse-eps-converted-to.pdf> <./kernel-eps-converted-to.pdf>]
+Package epstopdf Info: Source file: <kernel-1k.eps>
+(epstopdf)                    date: 2015-05-10 22:12:36
+(epstopdf)                    size: 17192 bytes
+(epstopdf)             Output file: <kernel-1k-eps-converted-to.pdf>
+(epstopdf)                    date: 2015-05-10 22:15:13
+(epstopdf)                    size: 9979 bytes
+(epstopdf)             Command: <repstopdf --outfile=kernel-1k-eps-converted-to
+.pdf kernel-1k.eps>
+(epstopdf)             \includegraphics on input line 437.
+Package epstopdf Info: Output file is already uptodate.
+<kernel-1k-eps-converted-to.pdf, id=68, 562.1pt x 421.575pt>
+File: kernel-1k-eps-converted-to.pdf Graphic file (type pdf)
+<use kernel-1k-eps-converted-to.pdf>
+Package pdftex.def Info: kernel-1k-eps-converted-to.pdf used on input line 437.
+
+(pdftex.def)             Requested size: 337.2626pt x 252.94695pt.
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 25.22153pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[12
+[12 <./kernel-1k-eps-converted-to.pdf>]
 
-] (/Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/Output/report.aux)
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 25.22153pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[13]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 25.22153pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[14
+
+] (Output/report.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 7319 strings out of 493117
- 103873 string characters out of 6135434
- 215003 words of memory out of 5000000
- 10638 multiletter control sequences out of 15000+600000
- 19338 words of font info for 55 fonts, out of 8000000 for 9000
+ 7338 strings out of 493117
+ 104102 string characters out of 6135434
+ 213006 words of memory out of 5000000
+ 10653 multiletter control sequences out of 15000+600000
+ 19652 words of font info for 56 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 38i,16n,45p,918b,392s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,16n,45p,1008b,420s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2014/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}
 </usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><
 /usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></
@@ -988,12 +917,12 @@ exlive/2014/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/tex
 live/2014/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb></usr/local/texli
 ve/2014/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive
 /2014/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb></usr/local/texlive/2
-014/texmf-dist/fonts/type1/public/cm-super/sfti1095.pfb>
-Output written on /Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/Output
-/report.pdf (12 pages, 271211 bytes).
+014/texmf-dist/fonts/type1/public/cm-super/sfti1095.pfb></usr/local/texlive/201
+4/texmf-dist/fonts/type1/public/cm-super/sftt1095.pfb>
+Output written on Output/report.pdf (14 pages, 302117 bytes).
 PDF statistics:
- 131 PDF objects out of 1000 (max. 8388607)
- 93 compressed objects within 1 object stream
+ 143 PDF objects out of 1000 (max. 8388607)
+ 101 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
 

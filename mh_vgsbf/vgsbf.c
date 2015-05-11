@@ -54,7 +54,7 @@
 // for example:
 // mpirun -n 16 gsbf 16
 
-#define MAXITER 20000
+#define MAXITER 100000
 
 // #define BLOPSIZE 30
 #define BLOPSIZE 20
@@ -72,7 +72,7 @@
 #define K 0.0550
 
 // JR's values
-#define HT 0.075
+#define HT 0.75
 //#define HT 0.75
 #define DU 2.0*1e-6
 #define DV 1.0*1e-6
@@ -83,8 +83,8 @@
 #define U0 0.5		// non-zero starting value at blob
 #define V0 0.25		// non-zero starting value at blob
 
-#define DOMAINSIZE 1000
-// #define DOMAINSIZE 400
+//#define DOMAINSIZE 1000
+#define DOMAINSIZE 400
 
 //=========================================================================
 // declarations

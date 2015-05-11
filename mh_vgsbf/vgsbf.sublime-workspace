@@ -467,7 +467,7 @@
 			"file": "timing",
 			"settings":
 			{
-				"buffer_size": 18677,
+				"buffer_size": 25486,
 				"line_ending": "Unix"
 			}
 		}
@@ -568,6 +568,8 @@
 	},
 	"file_history":
 	[
+		"/Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/mh_vgsbf/vgsbf.c",
+		"/Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/mh_vgsbf/seq_gsbf.c",
 		"/Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/basic_forward/gsbf.c",
 		"/Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/gray_scott/gray_scott.h",
 		"/Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/gray_scott/gray_scott.c",
@@ -693,9 +695,7 @@
 		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/select_old.html",
 		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/recipe.html",
 		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/css/recipe.css",
-		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/css/selectdish.css",
-		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/js/snippets.js",
-		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/GivenExample/index.html"
+		"/Users/mh/Documents/Git/Iprog15/lab2/dinnerplanner-html/css/selectdish.css"
 	],
 	"find":
 	{
@@ -878,7 +878,7 @@
 						[
 							[
 								1876,
-								1871
+								1860
 							]
 						],
 						"settings":
@@ -887,7 +887,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 643.0,
+						"translation.y": 951.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -897,15 +897,15 @@
 					"file": "timing",
 					"settings":
 					{
-						"buffer_size": 18677,
+						"buffer_size": 25486,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								15609,
-								15609
+								13146,
+								13146
 							]
 						],
 						"settings":
@@ -913,7 +913,7 @@
 							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 4545.0,
+						"translation.y": 3551.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -921,36 +921,8 @@
 			]
 		},
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "vgsbf.c",
-					"settings":
-					{
-						"buffer_size": 30486,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2077,
-								1975
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 886.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				}
 			]
 		}
 	],
