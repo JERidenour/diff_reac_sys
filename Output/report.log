@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2015.2.8)  11 MAY 2015 15:55
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2015.2.8)  11 MAY 2015 19:26
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -480,9 +480,13 @@ Package caption3 Info: TeX engine: e-TeX on input line 57.
 \caption@hangindent=\dimen139
 )
 \c@ContinuedFloat=\count116
+) (/usr/local/texlive/2014/texmf-dist/tex/latex/caption/subcaption.sty
+Package: subcaption 2013/02/03 v1.1-62 Sub-captions (AR)
+\c@subfigure=\count117
+\c@subtable=\count118
 ) (/usr/local/texlive/2014/texmf-dist/tex/latex/algorithm2e/algorithm2e.sty
 Package: algorithm2e 2013/01/06 v5.00 algorithms environments
-\c@AlgoLine=\count117
+\c@AlgoLine=\count119
 (/usr/local/texlive/2014/texmf-dist/tex/latex/tools/xspace.sty
 Package: xspace 2009/10/20 v1.13 Space after command names (DPC,MH)
 ) (/usr/local/texlive/2014/texmf-dist/tex/latex/relsize/relsize.sty
@@ -523,42 +527,45 @@ subscribe by emailing sympa@lirmm.fr with 'subscribe <list> <firstname name>'
 \algoheightrule=\skip73
 \algotitleheightruledefault=\skip74
 \algotitleheightrule=\skip75
-\c@algocfline=\count118
-\c@algocfproc=\count119
-\c@algocf=\count120
+\c@algocfline=\count120
+\c@algocfproc=\count121
+\c@algocf=\count122
 \algocf@algoframe=\box62
 \algocf@algobox=\box63
-) (Output/report.aux
+) (/Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/Output/report.aux
 
 LaTeX Warning: Label `tab:matrix' multiply defined.
+
+
+LaTeX Warning: Label `fig:gray-scott' multiply defined.
 
 )
 \openout1 = `report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
 (/usr/local/texlive/2014/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count121
+\scratchcounter=\count123
 \scratchdimen=\dimen146
 \scratchbox=\box64
-\nofMPsegments=\count122
-\nofMParguments=\count123
+\nofMPsegments=\count124
+\nofMParguments=\count125
 \everyMPshowfont=\toks24
-\MPscratchCnt=\count124
+\MPscratchCnt=\count126
 \MPscratchDim=\dimen147
-\MPnumerator=\count125
-\makeMPintoPDFobject=\count126
+\MPnumerator=\count127
+\makeMPintoPDFobject=\count128
 \everyMPtoPDFconversion=\toks25
 ) (/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
@@ -633,17 +640,17 @@ e
 \AtBeginShipoutBox=\box65
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Try loading font information for U+msa on input line 39.
+LaTeX Font Info:    Try loading font information for U+msa on input line 40.
 (/usr/local/texlive/2014/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 39.
+LaTeX Font Info:    Try loading font information for U+msb on input line 40.
 (/usr/local/texlive/2014/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
 {/usr/local/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (0.92169pt too wide) in paragraph at lines 42--43
+Overfull \hbox (0.92169pt too wide) in paragraph at lines 43--44
 \T1/cmr/m/n/10.95 The sub-ject of this re-port is the par-al-leli-sa-tion of a 
 nu-mer-i-cal method for a two-component
  []
@@ -676,7 +683,7 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [5]
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 194.
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 195.
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
@@ -688,26 +695,10 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [6]
-! You can't use `macro parameter character #' in horizontal mode.
-l.239 ...ct Methods for Sparse Linear Systems'' [#
-                                                  reference#]. The author, w...
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-! You can't use `macro parameter character #' in horizontal mode.
-l.239 ... for Sparse Linear Systems'' [#reference#
-                                                  ]. The author, who has con...
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.255     }
+l.258     }
            
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -715,7 +706,7 @@ you left one out. Proceed, with fingers crossed.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.255     }
+l.258     }
            
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
@@ -727,22 +718,6 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [7]
-! Missing $ inserted.
-<inserted text> 
-                $
-l.268   ru = (ht * DU) / (hx)^
-                              2\;
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.269 
-      
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 25.22153pt.
@@ -768,12 +743,12 @@ Package epstopdf Info: Source file: <sparse.eps>
 (epstopdf)                    size: 8197 bytes
 (epstopdf)             Command: <repstopdf --outfile=sparse-eps-converted-to.pd
 f sparse.eps>
-(epstopdf)             \includegraphics on input line 395.
+(epstopdf)             \includegraphics on input line 398.
 Package epstopdf Info: Output file is already uptodate.
 <sparse-eps-converted-to.pdf, id=48, 562.1pt x 421.575pt>
 File: sparse-eps-converted-to.pdf Graphic file (type pdf)
 <use sparse-eps-converted-to.pdf>
-Package pdftex.def Info: sparse-eps-converted-to.pdf used on input line 395.
+Package pdftex.def Info: sparse-eps-converted-to.pdf used on input line 398.
 (pdftex.def)             Requested size: 337.2626pt x 252.94695pt.
 Package epstopdf Info: Source file: <kernel.eps>
 (epstopdf)                    date: 2015-05-09 21:38:31
@@ -783,12 +758,12 @@ Package epstopdf Info: Source file: <kernel.eps>
 (epstopdf)                    size: 8234 bytes
 (epstopdf)             Command: <repstopdf --outfile=kernel-eps-converted-to.pd
 f kernel.eps>
-(epstopdf)             \includegraphics on input line 402.
+(epstopdf)             \includegraphics on input line 405.
 Package epstopdf Info: Output file is already uptodate.
 <kernel-eps-converted-to.pdf, id=49, 562.1pt x 421.575pt>
 File: kernel-eps-converted-to.pdf Graphic file (type pdf)
 <use kernel-eps-converted-to.pdf>
-Package pdftex.def Info: kernel-eps-converted-to.pdf used on input line 402.
+Package pdftex.def Info: kernel-eps-converted-to.pdf used on input line 405.
 (pdftex.def)             Requested size: 337.2626pt x 252.94695pt.
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -812,12 +787,12 @@ Package epstopdf Info: Source file: <kernel-1k.eps>
 (epstopdf)                    size: 9979 bytes
 (epstopdf)             Command: <repstopdf --outfile=kernel-1k-eps-converted-to
 .pdf kernel-1k.eps>
-(epstopdf)             \includegraphics on input line 436.
+(epstopdf)             \includegraphics on input line 439.
 Package epstopdf Info: Output file is already uptodate.
 <kernel-1k-eps-converted-to.pdf, id=68, 562.1pt x 421.575pt>
 File: kernel-1k-eps-converted-to.pdf Graphic file (type pdf)
 <use kernel-1k-eps-converted-to.pdf>
-Package pdftex.def Info: kernel-1k-eps-converted-to.pdf used on input line 436.
+Package pdftex.def Info: kernel-1k-eps-converted-to.pdf used on input line 439.
 
 (pdftex.def)             Requested size: 337.2626pt x 252.94695pt.
 
@@ -827,6 +802,182 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  This may cause the page layout to be inconsistent, however.
 
 [12 <./kernel-1k-eps-converted-to.pdf>]
+Package epstopdf Info: Source file: <it_0.eps>
+(epstopdf)                    date: 2015-05-11 18:01:13
+(epstopdf)                    size: 256055 bytes
+(epstopdf)             Output file: <it_0-eps-converted-to.pdf>
+(epstopdf)                    date: 2015-05-11 18:02:13
+(epstopdf)                    size: 7603 bytes
+(epstopdf)             Command: <repstopdf --outfile=it_0-eps-converted-to.pdf 
+it_0.eps>
+(epstopdf)             \includegraphics on input line 463.
+Package epstopdf Info: Output file is already uptodate.
+<it_0-eps-converted-to.pdf, id=80, 562.1pt x 421.575pt>
+File: it_0-eps-converted-to.pdf Graphic file (type pdf)
+<use it_0-eps-converted-to.pdf>
+Package pdftex.def Info: it_0-eps-converted-to.pdf used on input line 463.
+(pdftex.def)             Requested size: 200.75996pt x 150.57039pt.
+Package epstopdf Info: Source file: <it_2000.eps>
+(epstopdf)                    date: 2015-05-11 18:01:13
+(epstopdf)                    size: 270972 bytes
+(epstopdf)             Output file: <it_2000-eps-converted-to.pdf>
+(epstopdf)                    date: 2015-05-11 18:02:14
+(epstopdf)                    size: 43684 bytes
+(epstopdf)             Command: <repstopdf --outfile=it_2000-eps-converted-to.p
+df it_2000.eps>
+(epstopdf)             \includegraphics on input line 470.
+Package epstopdf Info: Output file is already uptodate.
+<it_2000-eps-converted-to.pdf, id=81, 562.1pt x 421.575pt>
+File: it_2000-eps-converted-to.pdf Graphic file (type pdf)
+<use it_2000-eps-converted-to.pdf>
+Package pdftex.def Info: it_2000-eps-converted-to.pdf used on input line 470.
+(pdftex.def)             Requested size: 200.75996pt x 150.57039pt.
+Package epstopdf Info: Source file: <it_5000.eps>
+(epstopdf)                    date: 2015-05-11 18:01:13
+(epstopdf)                    size: 499161 bytes
+(epstopdf)             Output file: <it_5000-eps-converted-to.pdf>
+(epstopdf)                    date: 2015-05-11 18:02:15
+(epstopdf)                    size: 134938 bytes
+(epstopdf)             Command: <repstopdf --outfile=it_5000-eps-converted-to.p
+df it_5000.eps>
+(epstopdf)             \includegraphics on input line 477.
+Package epstopdf Info: Output file is already uptodate.
+<it_5000-eps-converted-to.pdf, id=82, 562.1pt x 421.575pt>
+File: it_5000-eps-converted-to.pdf Graphic file (type pdf)
+<use it_5000-eps-converted-to.pdf>
+Package pdftex.def Info: it_5000-eps-converted-to.pdf used on input line 477.
+(pdftex.def)             Requested size: 200.75996pt x 150.57039pt.
+Package epstopdf Info: Source file: <it_10000.eps>
+(epstopdf)                    date: 2015-05-11 18:01:13
+(epstopdf)                    size: 1020164 bytes
+(epstopdf)             Output file: <it_10000-eps-converted-to.pdf>
+(epstopdf)                    date: 2015-05-11 18:02:17
+(epstopdf)                    size: 341049 bytes
+(epstopdf)             Command: <repstopdf --outfile=it_10000-eps-converted-to.
+pdf it_10000.eps>
+(epstopdf)             \includegraphics on input line 484.
+Package epstopdf Info: Output file is already uptodate.
+<it_10000-eps-converted-to.pdf, id=83, 562.1pt x 421.575pt>
+File: it_10000-eps-converted-to.pdf Graphic file (type pdf)
+<use it_10000-eps-converted-to.pdf>
+Package pdftex.def Info: it_10000-eps-converted-to.pdf used on input line 484.
+(pdftex.def)             Requested size: 200.75996pt x 150.57039pt.
+Package epstopdf Info: Source file: <it_15000.eps>
+(epstopdf)                    date: 2015-05-11 18:01:13
+(epstopdf)                    size: 1509049 bytes
+(epstopdf)             Output file: <it_15000-eps-converted-to.pdf>
+(epstopdf)                    date: 2015-05-11 18:02:18
+(epstopdf)                    size: 539080 bytes
+(epstopdf)             Command: <repstopdf --outfile=it_15000-eps-converted-to.
+pdf it_15000.eps>
+(epstopdf)             \includegraphics on input line 491.
+Package epstopdf Info: Output file is already uptodate.
+<it_15000-eps-converted-to.pdf, id=84, 562.1pt x 421.575pt>
+File: it_15000-eps-converted-to.pdf Graphic file (type pdf)
+<use it_15000-eps-converted-to.pdf>
+Package pdftex.def Info: it_15000-eps-converted-to.pdf used on input line 491.
+(pdftex.def)             Requested size: 200.75996pt x 150.57039pt.
+Package epstopdf Info: Source file: <it_30000.eps>
+(epstopdf)                    date: 2015-05-11 18:01:13
+(epstopdf)                    size: 1633166 bytes
+(epstopdf)             Output file: <it_30000-eps-converted-to.pdf>
+(epstopdf)                    date: 2015-05-11 18:02:20
+(epstopdf)                    size: 575963 bytes
+(epstopdf)             Command: <repstopdf --outfile=it_30000-eps-converted-to.
+pdf it_30000.eps>
+(epstopdf)             \includegraphics on input line 498.
+Package epstopdf Info: Output file is already uptodate.
+<it_30000-eps-converted-to.pdf, id=85, 562.1pt x 421.575pt>
+File: it_30000-eps-converted-to.pdf Graphic file (type pdf)
+<use it_30000-eps-converted-to.pdf>
+Package pdftex.def Info: it_30000-eps-converted-to.pdf used on input line 498.
+(pdftex.def)             Requested size: 200.75996pt x 150.57039pt.
+
+! LaTeX Error: File `FK1250' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.511 ...includegraphics[width=\textwidth]{FK1250}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `FK3565' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.518 ...includegraphics[width=\textwidth]{FK3565}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Package epstopdf Info: Source file: <FK2050.eps>
+(epstopdf)                    date: 2015-05-11 19:21:05
+(epstopdf)                    size: 929932 bytes
+(epstopdf)             Output file: <FK2050-eps-converted-to.pdf>
+(epstopdf)                    date: 2015-05-11 19:23:28
+(epstopdf)                    size: 416704 bytes
+(epstopdf)             Command: <repstopdf --outfile=FK2050-eps-converted-to.pd
+f FK2050.eps>
+(epstopdf)             \includegraphics on input line 525.
+Package epstopdf Info: Output file is already uptodate.
+<FK2050-eps-converted-to.pdf, id=86, 562.1pt x 421.575pt>
+File: FK2050-eps-converted-to.pdf Graphic file (type pdf)
+<use FK2050-eps-converted-to.pdf>
+Package pdftex.def Info: FK2050-eps-converted-to.pdf used on input line 525.
+(pdftex.def)             Requested size: 200.75996pt x 150.57039pt.
+Package epstopdf Info: Source file: <FK3863.eps>
+(epstopdf)                    date: 2015-05-11 19:21:05
+(epstopdf)                    size: 1524892 bytes
+(epstopdf)             Output file: <FK3863-eps-converted-to.pdf>
+(epstopdf)                    date: 2015-05-11 19:23:30
+(epstopdf)                    size: 614370 bytes
+(epstopdf)             Command: <repstopdf --outfile=FK3863-eps-converted-to.pd
+f FK3863.eps>
+(epstopdf)             \includegraphics on input line 532.
+Package epstopdf Info: Output file is already uptodate.
+<FK3863-eps-converted-to.pdf, id=87, 562.1pt x 421.575pt>
+File: FK3863-eps-converted-to.pdf Graphic file (type pdf)
+<use FK3863-eps-converted-to.pdf>
+Package pdftex.def Info: FK3863-eps-converted-to.pdf used on input line 532.
+(pdftex.def)             Requested size: 200.75996pt x 150.57039pt.
+
+! LaTeX Error: File `FK2550' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.539 ...includegraphics[width=\textwidth]{FK2550}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: File `FK4261' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.546 ...includegraphics[width=\textwidth]{FK4261}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 25.22153pt.
@@ -840,21 +991,37 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[14
+[14 <./it_0-eps-converted-to.pdf> <./it_2000-eps-converted-to.pdf> <./it_5000-e
+ps-converted-to.pdf> <./it_10000-eps-converted-to.pdf> <./it_15000-eps-converte
+d-to.pdf> <./it_30000-eps-converted-to.pdf>]
 
-] (Output/report.aux)
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 25.22153pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[15 <./FK2050-eps-converted-to.pdf> <./FK3863-eps-converted-to.pdf>]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 25.22153pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[16
+
+] (/Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/Output/report.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 7342 strings out of 493117
- 104173 string characters out of 6135434
- 213038 words of memory out of 5000000
- 10657 multiletter control sequences out of 15000+600000
- 19652 words of font info for 56 fonts, out of 8000000 for 9000
+ 7475 strings out of 493117
+ 107071 string characters out of 6135434
+ 214200 words of memory out of 5000000
+ 10774 multiletter control sequences out of 15000+600000
+ 22087 words of font info for 64 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 38i,16n,45p,1008b,420s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,16n,45p,1008b,522s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2014/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}
 </usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><
 /usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></
@@ -868,15 +1035,17 @@ exlive/2014/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/loc
 al/texlive/2014/texmf-dist/fonts/type1/public/cm-super/sfbx1095.pfb></usr/local
 /texlive/2014/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/t
 exlive/2014/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/tex
-live/2014/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb></usr/local/texli
-ve/2014/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive
-/2014/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb></usr/local/texlive/2
-014/texmf-dist/fonts/type1/public/cm-super/sfti1095.pfb></usr/local/texlive/201
-4/texmf-dist/fonts/type1/public/cm-super/sftt1095.pfb>
-Output written on Output/report.pdf (14 pages, 298711 bytes).
+live/2014/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texli
+ve/2014/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb></usr/local/texlive
+/2014/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2
+014/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb></usr/local/texlive/201
+4/texmf-dist/fonts/type1/public/cm-super/sfti1095.pfb></usr/local/texlive/2014/
+texmf-dist/fonts/type1/public/cm-super/sftt1095.pfb>
+Output written on /Users/mh/Documents/Git/Parpro15/project/diff_reac_sys/Output
+/report.pdf (16 pages, 2962751 bytes).
 PDF statistics:
- 143 PDF objects out of 1000 (max. 8388607)
- 101 compressed objects within 2 object streams
+ 209 PDF objects out of 1000 (max. 8388607)
+ 148 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 56 words of extra memory for PDF output out of 10000 (max. 10000000)
 

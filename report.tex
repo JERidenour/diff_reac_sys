@@ -446,7 +446,13 @@ There are a few reasons why the extrapolation of Amdahl's Law does not provide a
 
 ** TVEKSAMT vi vet inget om hur ferlin är byggd. When the number of processes is low, so is the available cache.  As the number of processes increases, more of the working set, and at some point the entire working set, can fit into the available caches, allowing for a quicker memory access time. **
 
-The matrix implementation shows a mostly linear speedup (although the plot could be interpreted as a gently decreasing curve), but the sequential version is not fast. We suspect that the sparse matrix multiplication largely fails to exploit memory proximity, and a large fraction of memory accesses result in a cache miss. On the other hand, the kernel implementation (which is several times faster both sequentially and in parallel), accesses memory in a linear fashion more favorable for caching. Looking at its initially supralinear speedup which sharply descends after 64 processes, we suspect that there exists (for this computer) an optimal domain size per node. We conclude that profiling is essential for optimal code design.
+The matrix implementation shows a slightly supralinear speedup with a final efficiency of $\approx1.1$ at 100 processes. The good speedup is likely to come from the fact that the implementation is slow to begin with.
+
+On the other hand, the kernel implementation (which is several times faster both sequentially and in parallel), accesses memory in a linear fashion more favorable for caching. The faster kernel implementation shows a sharp drop in speedup after 64 processes, the final efficiency being $\approx0.22$. For the kernel with larger domain, final efficiency $\approx0.42$ with a more linear curve.
+
+IN order to investigate the fraction between computation and other efforts, we calculate $(t_{init}+t_{comm})/t_{calc}$ at $P$ = 100 yields 0.75 for matrix, 4.15 for kernel and 2.76 for kernel with larger domain. Clearly the calculation effort is dominated by communication and initalization as the problem size per process decreases. 
+
+Cache architecture surely effects performance as well, considering that the implementations don't access memory in the same order. We conclude that there exists an optimal problem size per process. If too small, it will fail to exploit the system architecture and fully utilize the processor power. For a sufficiently large problem, the kernel implementation shows sublinear but constant speedup.
 
 \section*{Patterns}
 
@@ -547,6 +553,10 @@ The matrix implementation shows a mostly linear speedup (although the plot could
 
 
 \section*{Conclusions}
+
+Both our algorithms scale well with problem size and increasing P, as long as care is taken to sufficiently load each processor. The kernel implementation is consistently the faster method despite the poorer speedup. Profiling is essential for the problem at hand, on the system which will perform the computations, in order to optimize problem size per process.
+
+Finally, the explicit method may not be optimal if implicit methods can be found which speed up convergence sufficiently to counteract expensive global operations.
 
 \clearpage
 \begin{thebibliography}{}
