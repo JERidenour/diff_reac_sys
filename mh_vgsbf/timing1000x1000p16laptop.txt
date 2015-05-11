@@ -1,0 +1,6 @@
+
+
+
+
+Sequential t_init: 0.036187, t_comm: 0.000000, t_calc: 312.337143.
+Sequential t_init: 0.040021, t_comm: 0.000000, t_calc: 321.562233.

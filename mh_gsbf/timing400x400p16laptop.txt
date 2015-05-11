@@ -1,0 +1,20 @@
+Process 6, t_init: 0.002306, t_comm: 359.800403, t_calc: 13.296038.
+Process 1, t_init: 0.005091, t_comm: 359.877866, t_calc: 13.216706.
+Process 5, t_init: 0.004429, t_comm: 359.976299, t_calc: 13.121601.
+Process 2, t_init: 0.004106, t_comm: 359.916136, t_calc: 13.175972.
+Process 13, t_init: 0.005861, t_comm: 359.883306, t_calc: 13.205691.
+Process 4, t_init: 0.004335, t_comm: 359.914755, t_calc: 13.182428.
+Process 0, t_init: 0.004475, t_comm: 359.797642, t_calc: 13.299034.
+Process 3, t_init: 0.003956, t_comm: 359.704505, t_calc: 13.387021.
+Process 12, t_init: 0.005168, t_comm: 359.722544, t_calc: 13.373025.
+Process 11, t_init: 0.006092, t_comm: 359.872566, t_calc: 13.223113.
+Process 8, t_init: 0.005041, t_comm: 359.862407, t_calc: 13.232921.
+Process 14, t_init: 0.004533, t_comm: 359.653533, t_calc: 13.443604.
+Process 15, t_init: 0.004340, t_comm: 359.794180, t_calc: 13.296604.
+Process 9, t_init: 0.005724, t_comm: 359.805324, t_calc: 13.289974.
+Process 10, t_init: 0.005123, t_comm: 359.922539, t_calc: 13.167437.
+
+
+Setting N and n to: 400 x 400.
+Sequential t_init: 0.008702, t_comm: 0.000000, t_calc: 47.151608.
+Seq wrote [400 400] elements.
