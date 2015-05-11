@@ -10,7 +10,8 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{pdfpages}
-\usepackage{caption} 
+\usepackage{caption}
+\usepackage{subcaption}
 \usepackage[]{algorithm2e}
 
 \captionsetup[table]{skip=10pt}
@@ -236,7 +237,9 @@ Algorithm \ref{alg:communication} shows how each computation is preceded by a co
 \end{algorithm}
 \vspace{0.7 cm}
 
-We now describe the specifics our two implementations, which differ mainly in the calculateDomain() procedure. The matrix version uses a small sparse matrix library called CSparse, which accompanies ``Direct Methods for Sparse Linear Systems'' [#reference#]. The author, who has contributed to several matrix routines in MATLAB as well as NVIDIA, describes CSparse as ``for educational use''. While fast, it's not fully competitive with professional libraries. Yet the code is readable and enables us to formulate code similar to MATLAB and formulas (9) and (10). CSparse doesn't reference any other libraries, so the code is portable between our laptops and Ferlin. Algorithm \ref{alg:sparsematrix} shows the expressions for u, with v being analogous. 
+We now describe the specifics our two implementations, which differ mainly in the calculateDomain() procedure. The matrix version uses a small sparse matrix library called CSparse, which accompanies ``Direct Methods for Sparse Linear Systems'' 
+%[#reference#]. 
+The author, who has contributed to several matrix routines in MATLAB as well as NVIDIA, describes CSparse as ``for educational use''. While fast, it's not fully competitive with professional libraries. Yet the code is readable and enables us to formulate code similar to MATLAB and formulas (9) and (10). CSparse doesn't reference any other libraries, so the code is portable between our laptops and Ferlin. Algorithm \ref{alg:sparsematrix} shows the expressions for u, with v being analogous. 
 
 \vspace{0.7 cm}
 \begin{algorithm}[H]
@@ -265,7 +268,7 @@ Algorithm \ref{alg:kernelcalc} shows how the kernel version computes the 5-point
 \begin{algorithm}[H]
 \label{alg:kernelcalc}
   \SetAlgoLined
-  ru = (ht * DU) / (hx)^2\;
+  ru = $(ht * DU) / (hx)^2$\;
 
   \ForEach{element $i$ in $u$}{
     unew[i][j] = u[i][j] + ru * (u[i - 1][j] - (4 * u[i][j]) + \
@@ -446,6 +449,54 @@ There are a few reasons why the extrapolation of Amdahl's Law does not provide a
 The matrix implementation shows a mostly linear speedup (although the plot could be interpreted as a gently decreasing curve), but the sequential version is not fast. We suspect that the sparse matrix multiplication largely fails to exploit memory proximity, and a large fraction of memory accesses result in a cache miss. On the other hand, the kernel implementation (which is several times faster both sequentially and in parallel), accesses memory in a linear fashion more favorable for caching. Looking at its initially supralinear speedup which sharply descends after 64 processes, we suspect that there exists (for this computer) an optimal domain size per node. We conclude that profiling is essential for optimal code design.
 
 \section*{Patterns}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{it_0}
+        \caption{Initial values.}
+        \label{fig:it_0}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{it_2000}
+        \caption{2000 iterations.}
+        \label{fig:it_2000}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{it_5000}
+        \caption{5000 iterations.}
+        \label{fig:it_5000}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{it_10000}
+        \caption{10000 iterations.}
+        \label{fig:it_10000}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{it_15000}
+        \caption{15000 iterations.}
+        \label{fig:it_15000}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{it_30000}
+        \caption{30000 iterations.}
+        \label{fig:it_30000}
+    \end{subfigure}
+    \caption{Reaction and diffusion of the Gray-Scott system.}
+    \label{fig:gray-scott}
+\end{figure}
+
 \section*{Conclusions}
 
 \clearpage
