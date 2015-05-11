@@ -180,10 +180,11 @@ To implement the update formulae (\ref{eq:discu}) and (\ref{eq:discv}) in parall
 
 For a domain size of $400 \times 400$, the global update boils down to two matrix multiplications, one using $\vec{A}_u$, one using $\vec{A}_v$, each of which contains $400^4$ elements, most of which are zero.  This can be accomplished by means of a sparse matrix multiplication method, or direct kernel computations. First we describe their common structure.
 
-The 5-point computation molecule is dependent on four neighbours labeled NORTH, EAST, SOUTH and WEST. We define a 2D cartesian mesh of pxp processes, where p = sqrt(P). The NxN domain is decomposed into P square subdomains, each with dimension nxn elements, where n = sqrt(N). The challenge becomes to communicate the domain borders between neighbours, and synchronize this with computation of the domain interior. We implement a red-black scheme as follows:
+The 5-point computation molecule is dependent on four neighbours labeled NORTH, EAST, SOUTH and WEST. We define a 2D cartesian mesh of p*p processes, where p = sqrt(P). The N*N domain is decomposed into P square subdomains, each with dimension n*n elements, where n = sqrt(N). The challenge becomes to communicate the domain borders between neighbours, and synchronize this with computation of the domain interior. Our red-black scheme is shown in Algorithm \ref{alg:processcolor}.
 
 \vspace{0.7 cm}
 \begin{algorithm}[H]
+\label{alg:processcolor}
   \SetAlgoLined
   \eIf{(even row AND even process) OR (odd row AND odd process)}{
     color := red\;
@@ -195,12 +196,13 @@ The 5-point computation molecule is dependent on four neighbours labeled NORTH, 
 \end{algorithm}
 \vspace{0.7 cm}
 
-The 2D process grid is thus colored in a checkerboard pattern. Since we use periodic boundary conditions, we assume even p to ensure red-black neighbours when wrapping around the boundaries of the grid. Because the subdomain borders are shared between neighbours, we implement overlap by introducing a ghost frame surrounding the subdomain, labeled GHOST\textunderscore NORTH, GHOST\textunderscore EAST, GHOST\textunderscore SOUTH and GHOST\textunderscore WEST, which give each subdomain a total dimension of (n+2)x(n+2). In addition, we define four borders of the inner nxn domain, labeled BORDER\textunderscore NORTH, BORDER\textunderscore EAST etc. The values in the borders are recalculated every iteration, then sent to the corresponding neighbour. The values in the ghosts are used when the computation molecule centers on an element at a border. They are received from a neighbour every iteration before the computation phase starts.
+The 2D process grid is thus colored in a checkerboard pattern. Since we use periodic boundary conditions, we assume even p to ensure red-black neighbours when wrapping around the boundaries of the grid. Because the subdomain borders are shared between neighbours, we implement overlap by introducing a ghost frame surrounding the subdomain, labeled GHOST\textunderscore NORTH, GHOST\textunderscore EAST, GHOST\textunderscore SOUTH and GHOST\textunderscore WEST, which give each subdomain a total dimension of (n+2)*(n+2). In addition, we define four borders of the inner nxn domain, labeled BORDER\textunderscore NORTH, BORDER\textunderscore EAST etc. The values in the borders are recalculated every iteration, then sent to the corresponding neighbour. The values in the ghosts are used when the computation molecule centers on an element at a border. They are received from a neighbour every iteration before the computation phase starts.
 
-Each computation iteration is preceded by a communication phase arranged in four parts to avoid deadlock. Each sendreceive is done once for u and once for v. We also show the timing calls:
+Algorithm \ref{alg:communication} shows how each computation is preceded by a communication phase arranged in four parts to avoid deadlock. Each sendreceive is done once for u and once for v. We also show the timing calls.
 
 \vspace{0.7 cm}
 \begin{algorithm}[H]
+\label{alg:communication}
   \SetAlgoLined
   \While{iter < maxiter}
   {
@@ -220,29 +222,35 @@ Each computation iteration is preceded by a communication phase arranged in four
     }
     end := endTimer()\;
     tComm += end-start\;
-    start := startTimer()\;   
+    \BlankLine
+    start := startTimer()\;  
+    \BlankLine 
     calculateDomain()\;
+    \BlankLine
     end := endTimer()\;
     tCalc += end-start\;
+    \BlankLine
     iter++\;
   }
   \caption{Sendreceive phases with timing calls}
 \end{algorithm}
 \vspace{0.7 cm}
 
-We now describe the specifics our two implementations, which differ mainly in the calculateDomain() procedure. The matrix version uses a small sparse matrix library called CSparse, which accompanies ``Direct Methods for Sparse Linear Systems'' [#reference#]. The author, who has contributed to several matrix routines in MATLAB as well as NVIDIA, describes CSparse as ``for educational use''. While fast, it's not fully competitive with professional libraries. Yet the code is readable and enables us to formulate code similar to MATLAB and formulas (9) and (10). CSparse doesn't reference any other libraries, so the code is portable between our laptops and Ferlin. We show only the expressions for u, with v being analogous:
+We now describe the specifics our two implementations, which differ mainly in the calculateDomain() procedure. The matrix version uses a small sparse matrix library called CSparse, which accompanies ``Direct Methods for Sparse Linear Systems'' [#reference#]. The author, who has contributed to several matrix routines in MATLAB as well as NVIDIA, describes CSparse as ``for educational use''. While fast, it's not fully competitive with professional libraries. Yet the code is readable and enables us to formulate code similar to MATLAB and formulas (9) and (10). CSparse doesn't reference any other libraries, so the code is portable between our laptops and Ferlin. Algorithm \ref{alg:sparsematrix} shows the expressions for u, with v being analogous. 
 
 \vspace{0.7 cm}
 \begin{algorithm}[H]
+\label{alg:sparsematrix}
   \SetAlgoLined
   \ForEach{element $i$ in $u$}{
     unew[i] = u[i] + ht * ( (-u[i] * v[i]^2) + (F * (1.0 - u[i])) )\;
-
+    \BlankLine
     \tcc*[h]{CSparse call equivalent to: unew = Au*v + unew,}\\
 
     \tcc*[h]{where Au is a constant, sparse matrix.}\\ 
 
     csGaxpy(Au, u, unew)\;
+    \BlankLine
     unew[boundaries] += sigma * ghost\;
     }
   \caption{Sparse matrix implementation of calculateDomain()}
@@ -250,23 +258,28 @@ We now describe the specifics our two implementations, which differ mainly in th
 \vspace{0.7 cm}
 
 
-The east and west borders/ghosts are columns and thus non-contiguous in memory. This version maintains two work buffers for this data, which is arranged sequentially and copied into these buffers before IO. While 
 
-The kernel version computes the 5-point molecule for each domain element with a direct expression:
+Algorithm \ref{alg:kernelcalc} shows how the kernel version computes the 5-point molecule for each domain element with a direct expression.
 
-def calculateDomain():
+\vspace{0.7 cm}
+\begin{algorithm}[H]
+\label{alg:kernelcalc}
+  \SetAlgoLined
+  ru = (ht * DU) / (hx)^2\;
 
-  ru = (ht * DU) / hx^2
+  \ForEach{element $i$ in $u$}{
+    unew[i][j] = u[i][j] + ru * (u[i - 1][j] - (4 * u[i][j]) + \
 
-  for each i,j in domain
+      \Indp u[i + 1][j] + u[i][j - 1] + u[i][j + 1]) + \
 
-    unew[i][j] = u[i][j] + ru * (u[i - 1][j] - (4 * u[i][j]) + u[i + 1][j] + u[i][j - 1] + u[i][j + 1]) + ht * (-u[i][j] * v[i][j] * v[i][j] + F * (1.0 - u[i][j]))
+      ht * (-u[i][j] * v[i][j] * v[i][j] + F * (1.0 - u[i][j]))\;
+    }
+  \caption{Kernel implementation of calculateDomain()}
+\end{algorithm}
+\vspace{0.7 cm}
 
-  end for
 
-end
-
-Also, in the kernel implementation we make use of more mpi routines. We use MPI_Cart functions to set up an mpi process mesh. This allows for defining arrays of neighbour coordinates, including diagonals for future use with a 9-point kernel. This setup is also easy to extend into 3D. For the east and west column borders, we define MPI_Type_vector's which omit the buffer copying.
+The east and west borders/ghosts are columns and thus non-contiguous in memory. The matrix implementation maintains two work buffers for this data, which is arranged sequentially and copied into these buffers before IO, which results in extra work due to the copy operations. In the kernel implementation we instead define an MPI\textunderscore Type\textunderscore vector which omits the buffer copying. MPI\textunderscore Cart functions are used to set up an mpi process mesh. This allows for defining arrays of neighbour coordinates, including diagonals for future use with a 9-point kernel, and is also easy to extend into 3D. 
 
 Finally, our programs save the domains as matrix blocks which are automatically assembled and plotted in MATLAB.
 
