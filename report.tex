@@ -200,7 +200,7 @@ The 5-point computation molecule is dependent on four neighbours labeled \mcode{
 
 The 2D process grid is thus colored in a checkerboard pattern. Since we use periodic boundary conditions, we assume even $p$ to ensure red-black neighbours when wrapping around the boundaries of the grid. Because the subdomain borders are shared between neighbours, we implement overlap by introducing a ghost frame surrounding the subdomain, labeled \mcode{GHOST_NORTH}, \mcode{GHOST_EAST}, \mcode{GHOST_SOUTH} and \mcode{GHOST_WEST}, which give each subdomain a total dimension of $(n+2)*(n+2)$. In addition, we define four borders of the inner $n*n$ domain, labeled \mcode{BORDER_NORTH}, \mcode{BORDER_EAST} etc. The values in the borders are recalculated every iteration, then sent to the corresponding neighbour. The values in the ghosts are used when the computation molecule centers on an element at a border. They are received from a neighbour every iteration before the computation phase starts.
 
-Algorithm \ref{alg:communication} shows how each computation is preceded by a communication phase arranged in four parts to avoid deadlock. Each \mcode{sendreceive} is done once for $u$ and once for $v$. We also show the timing calls.
+Algorithm \ref{alg:communication} shows how each computation is preceded by a communication phase arranged in four parts to avoid deadlock. Each \mcode{sendreceive} is done once for $u$ and once for $v$. We also show the timing calls - we measure initalization, communication and computation separately. Saving data to disk at the end is not included in the timing.
 
 \vspace{0.7 cm}
 \begin{algorithm}[H]
@@ -440,15 +440,18 @@ $P$ & $t_{init}$ & $t_{comm}$ & $t_{calc}$ & $t_{tot}$ \\
 \end{figure}
 
 \subsection*{Speedup Analysis}
-There are a few reasons why the extrapolation of Amdahl's Law does not provide an accurate predictor for the parallel speedup.  The most obvious reason is that $f$, the fraction of the computation which cannot be divided into parallel tasks, does not in itself account for an upper bound on the speedup.  In fact, our best measure of $f$ is $t_{init}$ and, as can be seen in tables \ref{tab:matrix} and \ref{tab:kernal}, this accounts for only a minuscule portion of the total runtime.  It is more likely that the speedup can be explained by the memory hierarchies employed by Ferlin.  
 
-The matrix implementation shows a slightly supralinear speedup with a final efficiency of $\approx1.1$ at 100 processes. The good speedup is likely to come from the fact that the implementation is slow to begin with.
+% There are a few reasons why the extrapolation of Amdahl's Law does not provide an accurate predictor for the parallel speedup.  The most obvious reason is that $f$, the fraction of the computation which cannot be divided into parallel tasks, does not in itself account for an upper bound on the speedup.  In fact, our best measure of $f$ is $t_{init}$ and, as can be seen in tables \ref{tab:matrix} and \ref{tab:kernal}, this accounts for only a minuscule portion of the total runtime.  It is more likely that the speedup can be explained by the memory hierarchies employed by Ferlin. 
 
-On the other hand, the kernel implementation (which is several times faster both sequentially and in parallel), accesses memory in a linear fashion more favorable for caching. The faster kernel implementation shows a sharp drop in speedup after 64 processes, the final efficiency being $\approx0.22$. For the kernel with larger domain, final efficiency $\approx0.42$ with a more linear curve.
+ Our computation and initialization routines are completely parallel. Assuming that the MPI communication routines are mostly parallel, our best measure of $f$ is the fraction of $t_{comm}$ which consists of waiting time due to the red-black method, plus any fraction of MPI's non-parallel initialization. Our $t_{init}$ is consistently small, so $f$ depends mostly on $2n*P$, the size of data to be communicated. As the problem size increases quadratically, $2n*P$ increases linearly, so $f$ scales well in relation to problem size. This is one reason why extrapolation of Amdahl's Law does not provide an accurate predictor for the parallel speedup.
 
-In order to investigate the fraction between computation and other efforts, we calculate $(t_{init}+t_{comm})/t_{calc}$ at $P$ = 100. This yields 0.75 for the matrix method, 4.15 for the kernel method and 2.76 for the kernel method with larger domain. Clearly the calculation effort is dominated by communication and initalization as the problem size per process decreases. Here, non-blocking communication might help alleviate the domination of $t_{comm}$.
+The matrix implementation shows a slightly supralinear speedup with a final efficiency of $\approx1.1$ at 100 processes. The good speedup is likely to come from the fact that the implementation is slow to begin with. Neither $f$ nor $t_{init} + t_{comm}$ dominates sufficiently to put an upper bound on the speedup.
 
-Cache architecture surely effects performance as well, considering that the implementations don't access memory in the same order. We conclude that there exists an optimal problem size per process. If too small, it will fail to exploit the system architecture and fully utilize the processor power. 
+On the other hand, the kernel implementation is several times faster both sequentially and in parallel. A likely reason is that the main computation accesses memory in a linear fashion more favorable for caching. The faster kernel implementation shows a sharp drop in speedup after 64 processes, the final efficiency being $\approx0.22$. For the kernel with larger domain, final efficiency $\approx0.42$ with a more linear curve. We suspect that the communication and initialization start to dominate as $P$ increases. In order to investigate the fraction between computation and other efforts, we calculate $(t_{init}+t_{comm})/t_{calc}$ at $P$ = 100. This yields 0.75 for the matrix method, 4.15 for the kernel method and 2.76 for the kernel method with larger domain. Indeed, the calculation effort is clearly dominated by communication and initalization as the problem size per process decreases. Here, non-blocking communication might help alleviate the domination of $t_{comm}$.
+
+Cache and processor architecture surely effects performance as well, considering that the implementations don't access memory in the same order. We experienced puzzling results with the sequential version of the matrix method - our laptops ran it up to 10 times faster than a single process on Ferlin.  
+
+% We conclude that there exists an optimal problem size per process. If too small, it will fail to exploit the system architecture and fully utilize the processor power. 
 
 \section*{Patterns}
 
@@ -551,7 +554,12 @@ We demonstrate some of the pattern classes which occur at different locations in
 
 
 \section*{Conclusions}
-The reaction-diffusion system described by the Gray-Scott equations is solved using a sparse matrix multiplication method and a kernel method.  Both implementations scale well with problem size and increasing number of processes. Care must be taken to sufficiently load each processor, in order to maximize speedup. The kernel implementation is consistently the faster method despite the poorer speedup. When choosing an algorithm for solving a partial differential equation, consideration must be given to the system which will perform the computations, in order to optimize problem size per process and take advantage of processor architecture. 
+The reaction-diffusion system described by the Gray-Scott equations is solved using a sparse matrix multiplication method and a kernel method. Both implementations scale well with problem size and increasing number of processes. The kernel implementation is consistently the faster method despite the poorer speedup. 
+
+When choosing an algorithm for solving a partial differential equation, consideration must be given to the system which will perform the computations, in order to optimize problem size per process and take advantage of processor architecture. 
+
+We conclude that there exists an optimal problem size per process. If too small, it will fail to exploit the system architecture and fully utilize the processor power, which will allow communication and initialization to dominate. Care must be taken to sufficiently load each processor, in order to maximize speedup.
+
 
 \clearpage
 \begin{thebibliography}{}
