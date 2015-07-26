@@ -1,0 +1,228 @@
+INFO: /usr/heimdal/bin/klist -Tf for job 050812042480 gives:
+
+Credentials cache: FILE:/tmp/krb5cc_16172
+        Principal: ridenour@NADA.KTH.SE
+
+  Issued           Expires        Flags    Principal
+May  8 17:38:50  May 15 09:38:22  FfA    krbtgt/NADA.KTH.SE@NADA.KTH.SE
+May  8 17:38:50  May 15 09:38:22  fA     afs@NADA.KTH.SE
+May  8 17:38:50  May 15 09:38:22  fA     afs/pdc.kth.se@NADA.KTH.SE
+
+May  8 17:38:50  May 15 09:38:21  User's (AFS ID 16172) tokens for pdc.kth.se
+May  8 17:38:50  May 15 09:38:21  User's (AFS ID 16172) tokens for nada.kth.se
+
+STDOUT and STDERR for job 050812042480 of user ridenour is:
+WARNING: i-compilers/11.1 cannot be loaded due to a conflict.
+HINT: Might try "module unload i-compilers" first.
+
+ ========================   JOB MAP   ========================
+
+ Data for node: Name: k02n08.pdc.kth.se  Num procs: 8
+         Process OMPI jobid: [49770,1] Process rank: 0
+         Process OMPI jobid: [49770,1] Process rank: 8
+         Process OMPI jobid: [49770,1] Process rank: 16
+         Process OMPI jobid: [49770,1] Process rank: 24
+         Process OMPI jobid: [49770,1] Process rank: 32
+         Process OMPI jobid: [49770,1] Process rank: 40
+         Process OMPI jobid: [49770,1] Process rank: 48
+         Process OMPI jobid: [49770,1] Process rank: 56
+
+ Data for node: Name: k02n26.pdc.kth.se  Num procs: 8
+         Process OMPI jobid: [49770,1] Process rank: 1
+         Process OMPI jobid: [49770,1] Process rank: 9
+         Process OMPI jobid: [49770,1] Process rank: 17
+         Process OMPI jobid: [49770,1] Process rank: 25
+         Process OMPI jobid: [49770,1] Process rank: 33
+         Process OMPI jobid: [49770,1] Process rank: 41
+         Process OMPI jobid: [49770,1] Process rank: 49
+         Process OMPI jobid: [49770,1] Process rank: 57
+
+ Data for node: Name: k02n45.pdc.kth.se  Num procs: 8
+         Process OMPI jobid: [49770,1] Process rank: 2
+         Process OMPI jobid: [49770,1] Process rank: 10
+         Process OMPI jobid: [49770,1] Process rank: 18
+         Process OMPI jobid: [49770,1] Process rank: 26
+         Process OMPI jobid: [49770,1] Process rank: 34
+         Process OMPI jobid: [49770,1] Process rank: 42
+         Process OMPI jobid: [49770,1] Process rank: 50
+         Process OMPI jobid: [49770,1] Process rank: 58
+
+ Data for node: Name: k06n01.pdc.kth.se  Num procs: 8
+         Process OMPI jobid: [49770,1] Process rank: 3
+         Process OMPI jobid: [49770,1] Process rank: 11
+         Process OMPI jobid: [49770,1] Process rank: 19
+         Process OMPI jobid: [49770,1] Process rank: 27
+         Process OMPI jobid: [49770,1] Process rank: 35
+         Process OMPI jobid: [49770,1] Process rank: 43
+         Process OMPI jobid: [49770,1] Process rank: 51
+         Process OMPI jobid: [49770,1] Process rank: 59
+
+ Data for node: Name: k06n06.pdc.kth.se  Num procs: 8
+         Process OMPI jobid: [49770,1] Process rank: 4
+         Process OMPI jobid: [49770,1] Process rank: 12
+         Process OMPI jobid: [49770,1] Process rank: 20
+         Process OMPI jobid: [49770,1] Process rank: 28
+         Process OMPI jobid: [49770,1] Process rank: 36
+         Process OMPI jobid: [49770,1] Process rank: 44
+         Process OMPI jobid: [49770,1] Process rank: 52
+         Process OMPI jobid: [49770,1] Process rank: 60
+
+ Data for node: Name: k06n08.pdc.kth.se  Num procs: 8
+         Process OMPI jobid: [49770,1] Process rank: 5
+         Process OMPI jobid: [49770,1] Process rank: 13
+         Process OMPI jobid: [49770,1] Process rank: 21
+         Process OMPI jobid: [49770,1] Process rank: 29
+         Process OMPI jobid: [49770,1] Process rank: 37
+         Process OMPI jobid: [49770,1] Process rank: 45
+         Process OMPI jobid: [49770,1] Process rank: 53
+         Process OMPI jobid: [49770,1] Process rank: 61
+
+ Data for node: Name: k09n01.pdc.kth.se  Num procs: 8
+         Process OMPI jobid: [49770,1] Process rank: 6
+         Process OMPI jobid: [49770,1] Process rank: 14
+         Process OMPI jobid: [49770,1] Process rank: 22
+         Process OMPI jobid: [49770,1] Process rank: 30
+         Process OMPI jobid: [49770,1] Process rank: 38
+         Process OMPI jobid: [49770,1] Process rank: 46
+         Process OMPI jobid: [49770,1] Process rank: 54
+         Process OMPI jobid: [49770,1] Process rank: 62
+
+ Data for node: Name: k09n12.pdc.kth.se  Num procs: 8
+         Process OMPI jobid: [49770,1] Process rank: 7
+         Process OMPI jobid: [49770,1] Process rank: 15
+         Process OMPI jobid: [49770,1] Process rank: 23
+         Process OMPI jobid: [49770,1] Process rank: 31
+         Process OMPI jobid: [49770,1] Process rank: 39
+         Process OMPI jobid: [49770,1] Process rank: 47
+         Process OMPI jobid: [49770,1] Process rank: 55
+         Process OMPI jobid: [49770,1] Process rank: 63
+
+ =============================================================
+Process 0, t_init: 0.001413, t_comm: 2.843780, t_calc: 6.743064,
+total: 9.588257.
+Process 1, t_init: 0.001404, t_comm: 2.534456, t_calc: 7.061450,
+total: 9.597309.
+Process 2, t_init: 0.001419, t_comm: 2.492405, t_calc: 7.107298,
+total: 9.601122.
+Process 3, t_init: 0.001557, t_comm: 2.629068, t_calc: 6.962301,
+total: 9.592925.
+Process 4, t_init: 0.001339, t_comm: 2.519166, t_calc: 7.081279,
+total: 9.601784.
+Process 5, t_init: 0.009324, t_comm: 2.682302, t_calc: 6.902266,
+total: 9.593892.
+Process 6, t_init: 0.001316, t_comm: 2.576173, t_calc: 7.012589,
+total: 9.590078.
+Process 7, t_init: 0.001474, t_comm: 2.590375, t_calc: 7.007430,
+total: 9.599278.
+Process 8, t_init: 0.001316, t_comm: 2.838819, t_calc: 6.759370,
+total: 9.599505.
+Process 9, t_init: 0.001370, t_comm: 2.510555, t_calc: 7.090443,
+total: 9.602368.
+Process 10, t_init: 0.001428, t_comm: 2.657401, t_calc: 6.943242,
+total: 9.602071.
+Process 11, t_init: 0.001427, t_comm: 2.493995, t_calc: 7.096614,
+total: 9.592036.
+Process 12, t_init: 0.001392, t_comm: 2.766809, t_calc: 6.830512,
+total: 9.598714.
+Process 13, t_init: 0.001318, t_comm: 2.513290, t_calc: 7.086399,
+total: 9.601007.
+Process 14, t_init: 0.001434, t_comm: 2.577050, t_calc: 7.013355,
+total: 9.591840.
+Process 15, t_init: 0.001443, t_comm: 2.557800, t_calc: 7.032485,
+total: 9.591727.
+Process 16, t_init: 0.001318, t_comm: 2.638493, t_calc: 6.960261,
+total: 9.600071.
+Process 17, t_init: 0.001419, t_comm: 2.543428, t_calc: 7.054295,
+total: 9.599143.
+Process 18, t_init: 0.001421, t_comm: 2.658087, t_calc: 6.941976,
+total: 9.601484.
+Process 19, t_init: 0.001322, t_comm: 2.509939, t_calc: 7.087462,
+total: 9.598723.
+Process 20, t_init: 0.001379, t_comm: 2.312275, t_calc: 7.286149,
+total: 9.599803.
+Process 21, t_init: 0.001435, t_comm: 2.631233, t_calc: 6.964644,
+total: 9.597313.
+Process 22, t_init: 0.001429, t_comm: 2.553795, t_calc: 7.036011,
+total: 9.591235.
+Process 23, t_init: 0.001427, t_comm: 2.811934, t_calc: 6.786144,
+total: 9.599505.
+Process 24, t_init: 0.001337, t_comm: 2.393661, t_calc: 7.191993,
+total: 9.586990.
+Process 25, t_init: 0.001382, t_comm: 2.518677, t_calc: 7.080449,
+total: 9.600508.
+Process 26, t_init: 0.001326, t_comm: 2.222178, t_calc: 7.373047,
+total: 9.596551.
+Process 27, t_init: 0.001346, t_comm: 2.632609, t_calc: 6.967292,
+total: 9.601247.
+Process 28, t_init: 0.001309, t_comm: 2.691615, t_calc: 6.902776,
+total: 9.595700.
+Process 29, t_init: 0.001350, t_comm: 2.638117, t_calc: 6.954525,
+total: 9.593992.
+Process 30, t_init: 0.001464, t_comm: 2.650330, t_calc: 6.939121,
+total: 9.590914.
+Process 31, t_init: 0.001347, t_comm: 2.828585, t_calc: 6.771090,
+total: 9.601023.
+Process 32, t_init: 0.001339, t_comm: 2.646713, t_calc: 6.954975,
+total: 9.603026.
+Process 33, t_init: 0.001376, t_comm: 2.588106, t_calc: 6.998152,
+total: 9.587634.
+Process 34, t_init: 0.001397, t_comm: 2.785964, t_calc: 6.812187,
+total: 9.599549.
+Process 35, t_init: 0.001450, t_comm: 2.570127, t_calc: 7.026942,
+total: 9.598520.
+Process 36, t_init: 0.001298, t_comm: 2.834700, t_calc: 6.765481,
+total: 9.601480.
+Process 37, t_init: 0.001483, t_comm: 2.692518, t_calc: 6.900846,
+total: 9.594847.
+Process 38, t_init: 0.001305, t_comm: 2.619919, t_calc: 6.965587,
+total: 9.586811.
+Process 39, t_init: 0.001417, t_comm: 2.488840, t_calc: 7.081246,
+total: 9.571504.
+Process 40, t_init: 0.001341, t_comm: 2.623858, t_calc: 6.976011,
+total: 9.601209.
+Process 41, t_init: 0.001356, t_comm: 2.654818, t_calc: 6.930891,
+total: 9.587065.
+Process 42, t_init: 0.001622, t_comm: 2.550941, t_calc: 7.035921,
+total: 9.588484.
+Process 43, t_init: 0.001361, t_comm: 2.685473, t_calc: 6.914887,
+total: 9.601721.
+Process 44, t_init: 0.001394, t_comm: 2.845944, t_calc: 6.751663,
+total: 9.599001.
+Process 45, t_init: 0.001431, t_comm: 2.795707, t_calc: 6.799149,
+total: 9.596286.
+Process 46, t_init: 0.001491, t_comm: 2.185936, t_calc: 7.390906,
+total: 9.578334.
+Process 47, t_init: 0.001386, t_comm: 2.473547, t_calc: 7.126550,
+total: 9.601483.
+Process 48, t_init: 0.001333, t_comm: 2.789895, t_calc: 6.807251,
+total: 9.598480.
+Process 49, t_init: 0.001389, t_comm: 2.673733, t_calc: 6.913131,
+total: 9.588253.
+Process 50, t_init: 0.001410, t_comm: 2.696661, t_calc: 6.896494,
+total: 9.594566.
+Process 51, t_init: 0.001348, t_comm: 2.690441, t_calc: 6.880153,
+total: 9.571941.
+Process 52, t_init: 0.001417, t_comm: 2.442191, t_calc: 7.154579,
+total: 9.598187.
+Process 53, t_init: 0.001331, t_comm: 2.628114, t_calc: 6.969863,
+total: 9.599308.
+Process 54, t_init: 0.001297, t_comm: 2.469892, t_calc: 7.114260,
+total: 9.585449.
+Process 55, t_init: 0.001441, t_comm: 2.824502, t_calc: 6.773140,
+total: 9.599083.
+Process 56, t_init: 0.001314, t_comm: 2.849896, t_calc: 6.745424,
+total: 9.596634.
+Process 57, t_init: 0.001341, t_comm: 2.489894, t_calc: 7.109787,
+total: 9.601022.
+Process 58, t_init: 0.001360, t_comm: 2.518673, t_calc: 7.080120,
+total: 9.600153.
+Process 59, t_init: 0.001402, t_comm: 2.693936, t_calc: 6.903475,
+total: 9.598812.
+Process 60, t_init: 0.001309, t_comm: 2.718939, t_calc: 6.874870,
+total: 9.595118.
+Process 61, t_init: 0.001346, t_comm: 2.534024, t_calc: 7.066158,
+total: 9.601528.
+Process 62, t_init: 0.001437, t_comm: 2.370511, t_calc: 7.218904,
+total: 9.590852.
+Process 63, t_init: 0.001436, t_comm: 2.713809, t_calc: 6.883565,
+total: 9.598810.

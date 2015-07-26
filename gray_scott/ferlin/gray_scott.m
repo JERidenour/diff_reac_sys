@@ -3,14 +3,14 @@ clear all
 %physics constants
 Du = 2e-6;
 Dv = 1e-6;
-f = 0.012; 
-k = 0.050;
+f = 0.0375; 
+k = 0.0634;
 
 %numerical parameters
 N = 400*400; %total nr of elements
 n = sqrt(N); %dimension of global mesh
 h = 1/(n-1); %spacial step length
-maxiter = 40000; %number of iterations
+maxiter = 100000; %number of iterations
 dt = 0.75; %temporal step length
 
 %parallelization parameters
@@ -41,20 +41,17 @@ u_new = u;
 v_new = v;
 
 % Stability parameters
-%lambdas = eigs(su*A);
-%lambda_max = max(lambdas);
-%Cu = -2/lambda_max;
-%display(lambda_max)
-%display(Cu)
+lambdas = eigs(sv*A);
+lambda_max = max(lambdas);
+Cu = -2/lambda_max;
+display(lambda_max)
+display(Cu)
 % Cv = -2/max(eigs(sv*A));
 % display(Cv)
-%display(dt)
+display(dt)
 
 %% run the simulation
-str = sprintf('gray_scott_F%d_K%d.avi', f, k);
-writerObj = VideoWriter(str);
-writerObj.FrameRate = 50;
-open(writerObj);
+
 %initial values
 r = floor(n/20);
 c = floor(n/2);
@@ -73,19 +70,13 @@ for i=0:maxiter
     u = unew;
     v = vnew;
     
-    if mod(i,40)==0
+    if mod(i,300)==0
         U=reshape(u,n,n);
         contourf(U);
-        frame = getframe;
-        writeVideo(writerObj, frame);
-        %pause(0.05)
-   end
+        pause(0.05)
+    end
     
 end
-close(writerObj);
-% x = 0:h:1;
-% y = 0:h:1;
-% U = reshape(u,n,n);
-% contourf(x,y,U)
-% str = sprintf('Gray-Scott system, %d iterations', maxiter);
-% title(str)
+
+U = reshape(u,n,n);
+contourf(U)

@@ -1,0 +1,72 @@
+INFO: /usr/heimdal/bin/klist -Tf for job 050716480516 gives:
+
+Credentials cache: FILE:/tmp/krb5cc_16172
+        Principal: ridenour@NADA.KTH.SE
+
+  Issued           Expires        Flags    Principal
+May  7 21:34:36  May 14 18:23:38  FfA    krbtgt/NADA.KTH.SE@NADA.KTH.SE
+May  7 21:34:36  May 14 18:23:38  fA     afs@NADA.KTH.SE
+May  7 21:34:36  May 14 18:23:38  fA     afs/pdc.kth.se@NADA.KTH.SE
+
+May  7 21:34:36  May 14 18:23:37  User's (AFS ID 16172) tokens for pdc.kth.se
+May  7 21:34:36  May 14 18:23:37  User's (AFS ID 16172) tokens for nada.kth.se
+
+STDOUT and STDERR for job 050716480516 of user ridenour is:
+WARNING: i-compilers/11.1 cannot be loaded due to a conflict.
+HINT: Might try "module unload i-compilers" first.
+
+ ========================   JOB MAP   ========================
+
+ Data for node: Name: k07n44.pdc.kth.se  Num procs: 8
+         Process OMPI jobid: [40662,1] Process rank: 0
+         Process OMPI jobid: [40662,1] Process rank: 2
+         Process OMPI jobid: [40662,1] Process rank: 4
+         Process OMPI jobid: [40662,1] Process rank: 6
+         Process OMPI jobid: [40662,1] Process rank: 8
+         Process OMPI jobid: [40662,1] Process rank: 10
+         Process OMPI jobid: [40662,1] Process rank: 12
+         Process OMPI jobid: [40662,1] Process rank: 14
+
+ Data for node: Name: k09n22.pdc.kth.se  Num procs: 8
+         Process OMPI jobid: [40662,1] Process rank: 1
+         Process OMPI jobid: [40662,1] Process rank: 3
+         Process OMPI jobid: [40662,1] Process rank: 5
+         Process OMPI jobid: [40662,1] Process rank: 7
+         Process OMPI jobid: [40662,1] Process rank: 9
+         Process OMPI jobid: [40662,1] Process rank: 11
+         Process OMPI jobid: [40662,1] Process rank: 13
+         Process OMPI jobid: [40662,1] Process rank: 15
+
+ =============================================================
+Process 0, t_init: 0.003727, t_comm: 1.517464, t_calc: 13.251555,
+total: 14.772747.
+Process 1, t_init: 0.003701, t_comm: 1.567724, t_calc: 13.200618,
+total: 14.772044.
+Process 2, t_init: 0.003712, t_comm: 1.582476, t_calc: 13.184033,
+total: 14.770221.
+Process 3, t_init: 0.003733, t_comm: 1.591829, t_calc: 13.173327,
+total: 14.768889.
+Process 4, t_init: 0.008248, t_comm: 1.567390, t_calc: 13.174360,
+total: 14.749998.
+Process 5, t_init: 0.003761, t_comm: 1.593685, t_calc: 13.166753,
+total: 14.764199.
+Process 6, t_init: 0.003734, t_comm: 1.605567, t_calc: 13.160316,
+total: 14.769617.
+Process 7, t_init: 0.003946, t_comm: 1.601726, t_calc: 13.162523,
+total: 14.768194.
+Process 8, t_init: 0.003787, t_comm: 1.586505, t_calc: 13.174865,
+total: 14.765157.
+Process 9, t_init: 0.004035, t_comm: 1.606788, t_calc: 13.153095,
+total: 14.763919.
+Process 10, t_init: 0.006508, t_comm: 1.575556, t_calc: 13.167844,
+total: 14.749908.
+Process 11, t_init: 0.003744, t_comm: 1.620755, t_calc: 13.142097,
+total: 14.766596.
+Process 12, t_init: 0.003718, t_comm: 1.591525, t_calc: 13.174318,
+total: 14.769561.
+Process 13, t_init: 0.003711, t_comm: 1.579577, t_calc: 13.189266,
+total: 14.772555.
+Process 14, t_init: 0.004095, t_comm: 1.579267, t_calc: 13.177536,
+total: 14.760898.
+Process 15, t_init: 0.003887, t_comm: 1.558293, t_calc: 13.204684,
+total: 14.766864

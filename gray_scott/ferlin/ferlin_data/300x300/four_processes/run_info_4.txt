@@ -1,0 +1,34 @@
+INFO: /usr/heimdal/bin/klist -Tf for job 050716430489 gives:
+
+Credentials cache: FILE:/tmp/krb5cc_16172
+        Principal: ridenour@NADA.KTH.SE
+
+  Issued           Expires        Flags    Principal
+May  7 18:43:34  May 14 18:23:38  FfA    krbtgt/NADA.KTH.SE@NADA.KTH.SE
+May  7 18:43:34  May 14 18:23:38  fA     afs@NADA.KTH.SE
+May  7 18:43:34  May 14 18:23:38  fA     afs/pdc.kth.se@NADA.KTH.SE
+
+May  7 18:43:34  May 14 18:23:37  User's (AFS ID 16172) tokens for pdc.kth.se
+May  7 18:43:34  May 14 18:23:37  User's (AFS ID 16172) tokens for nada.kth.se
+
+STDOUT and STDERR for job 050716430489 of user ridenour is:
+WARNING: i-compilers/11.1 cannot be loaded due to a conflict.
+HINT: Might try "module unload i-compilers" first.
+
+ ========================   JOB MAP   ========================
+
+ Data for node: Name: k04n17.pdc.kth.se  Num procs: 4
+         Process OMPI jobid: [12154,1] Process rank: 0
+         Process OMPI jobid: [12154,1] Process rank: 1
+         Process OMPI jobid: [12154,1] Process rank: 2
+         Process OMPI jobid: [12154,1] Process rank: 3
+
+ =============================================================
+Process 0, t_init: 0.021203, t_comm: 1.677627, t_calc: 112.711434,
+total: 114.410264.
+Process 1, t_init: 0.021470, t_comm: 16.912231, t_calc: 97.471163,
+total: 114.404864.
+Process 2, t_init: 0.021513, t_comm: 17.003739, t_calc: 97.377201,
+total: 114.402453.
+Process 3, t_init: 0.021278, t_comm: 3.119721, t_calc: 111.265259,
+total: 114.406259.

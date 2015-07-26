@@ -1,0 +1,25 @@
+INFO: /usr/heimdal/bin/klist -Tf for job 050716315417 gives:
+
+Credentials cache: FILE:/tmp/krb5cc_16172
+        Principal: ridenour@NADA.KTH.SE
+
+  Issued           Expires        Flags    Principal
+May  7 18:32:34  May 14 18:23:38  FfA    krbtgt/NADA.KTH.SE@NADA.KTH.SE
+May  7 18:32:34  May 14 18:23:38  fA     afs@NADA.KTH.SE
+May  7 18:32:34  May 14 18:23:38  fA     afs/pdc.kth.se@NADA.KTH.SE
+
+May  7 18:32:34  May 14 18:23:37  User's (AFS ID 16172) tokens for pdc.kth.se
+May  7 18:32:34  May 14 18:23:37  User's (AFS ID 16172) tokens for nada.kth.se
+
+STDOUT and STDERR for job 050716315417 of user ridenour is:
+WARNING: i-compilers/11.1 cannot be loaded due to a conflict.
+HINT: Might try "module unload i-compilers" first.
+
+ ========================   JOB MAP   ========================
+
+ Data for node: Name: k04n17.pdc.kth.se  Num procs: 1
+         Process OMPI jobid: [12528,1] Process rank: 0
+
+ =============================================================
+Process 0, t_init: 0.076161, t_comm: 1.794127, t_calc: 403.855360,
+total: 405.725648.
