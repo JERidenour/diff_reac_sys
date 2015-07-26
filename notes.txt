@@ -3,5 +3,5 @@ Psq			total process count
 Nglobal		total count of data points in domain
 n_inner 	dimension of inner local grid sqrt(N_inner), length of boundary data
 n 			n_inner+2
-N_inner 	n_inner^2 count of local inner elements
+N_inner 	count of local inner elements (n_inner^2) 
 N 			n^2 count of 

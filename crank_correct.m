@@ -99,7 +99,7 @@ IpTv = sparse(eye(size(A)))+rv*A;
 
 %% iterate
 
-maxtime = 50;
+maxtime = 5000;
 
 for t = 1:maxtime
     
@@ -114,10 +114,10 @@ v_new = ImTv\RHSv;
 u = u_new;
 v = v_new;
     
-% if mod(t,100)==0
-%    contourf(reshape(u,[n n]))
-%    pause(0.001)
-% end
+if mod(t,100)==0
+   contourf(reshape(u,[n n]))
+   pause(0.001)
+end
 
 
 

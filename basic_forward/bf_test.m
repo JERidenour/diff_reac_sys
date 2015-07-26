@@ -3,10 +3,10 @@ clear
 
 
 n = 64;
-hx = 1/(n-1)    % i,j = [1...n]
+hx = 1/(n-1);    % i,j = [1...n]
 hx2 = hx^2;
 
-ht = 0.25
+ht = 0.025;
 
 Du = 2*1e-5;
 Dv = 1e-5;
@@ -124,9 +124,9 @@ v_new = v;
 %% Forward
 
 %maxtime = 500000;
-maxtime = 10000;
+maxit = 50000;
 
-for t = 1:maxtime
+for i = 1:maxit
 
 % u_new = u + ht*(Tu*u -u.*(v.^2) + F*(1-u));
 % v_new = v + ht*(Tv*v + u.*(v.^2) - (F+k)*v);
@@ -138,26 +138,34 @@ v_new = v + (ht*Dv/hx2)*A*v + ht*(u.*(v.^2) - (F+k)*v);
 u = u_new;
 v = v_new;
 
-if mod(t,30)==0
-        subplot 121
+if mod(i,30)==0
+        i
+        %subplot 121
         contourf(reshape(u,[n n]))
-        axis equal
-        subplot 122
-        contourf(reshape(v,[n n]))
-        axis equal
+        %axis equal
+        %subplot 122
+        %contourf(reshape(v,[n n]))
+        %axis equal
         pause(0.001)
     end
 
 end
 
-%%
-figure(1)
-subplot 121
-contourf(reshape(u,[n n]))
-axis equal
-subplot 122
-contourf(reshape(v,[n n]))
-axis equal
-pause(0.001)
+        %subplot 121
+        contourf(reshape(u,[n n]))
+        %axis equal
+        %subplot 122
+        %contourf(reshape(v,[n n]))
+        %axis equal
+
+% %%
+% figure(1)
+% subplot 121
+% contourf(reshape(u,[n n]))
+% axis equal
+% subplot 122
+% contourf(reshape(v,[n n]))
+% axis equal
+% pause(0.001)
 
 
